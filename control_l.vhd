@@ -10,6 +10,7 @@ ENTITY control_l IS
           op         : OUT INST;
           ldpc       : OUT STD_LOGIC;
           wrd        : OUT STD_LOGIC;
+          vwrd        : OUT STD_LOGIC;
           addr_a     : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_b     : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_d     : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -31,7 +32,9 @@ ENTITY control_l IS
 		  inta		 : OUT STD_LOGIC;
 		  call       : OUT STD_LOGIC;
 		  il_inst	 : OUT STD_LOGIC;
-		  mem_op     : OUT STD_LOGIC
+		  mem_op     : OUT STD_LOGIC;
+		  va_old_vd       : OUT STD_LOGIC;
+		  vec_produce_sca : OUT STD_LOGIC
 		 );
 END control_l; 
 
@@ -45,7 +48,9 @@ ARCHITECTURE Structure OF control_l IS
 	SIGNAL IO: INST;
 	SIGNAL jump_wd: std_logic;
 	SIGNAL special: INST;
+	SIGNAL super_special: INST;
 	SIGNAL op_s: INST;
+	SIGNAL special_Rb_N : std_logic;
 BEGIN
 
 	with ir(5 downto 3) select
@@ -93,6 +98,13 @@ BEGIN
 				   HALT_I when F_HALT,
 				   ILLEGAL_I when others;
 
+	with ir(5 downto 3) select
+	 	super_special <= ILLEGAL_I when F_LDV, -- TODO: LDV
+						 ILLEGAL_I when F_STV, -- TODO: STV
+						 MVVR_I when F_MVVR, -- MVVR
+						 MVRV_I when F_MVRV, -- MVRV
+						 special when others; -- ILLEGAL
+
 	with ir(8) select
 		move <= MOVI_I when '0', -- MOVI
 				MOVHI_I when others; -- MOVHI
@@ -119,13 +131,18 @@ BEGIN
 			    jump when OP_JUMP, --JAL
 		        LDB_I when OP_LDB, --LDB
 			    STB_I when OP_STB, -- STB
-			    special when OP_SPECIAL, -- HALT
+			    super_special when OP_SPECIAL, -- HALT
 			    ILLEGAL_I when others;
 
 	op <= op_s;
 
 	il_inst <= '1' when op_s = ILLEGAL_I else '0';
 	call <= '1' when op_s = CALL_I else '0';
+
+	with ir (5 downto 3) select
+		special_Rb_N <= '1' when F_MVVR, --MVVR
+						'1' when F_MVRV, --MVRV
+						'0' when others; -- TODO LDV, STV
 
 	with ir(15 downto 12) select
 		Rb_N <= '1' when OP_ADDI, --ADDI
@@ -134,6 +151,7 @@ BEGIN
 				'1' when OP_MOV, --MOVI i MOVHI
 				'1' when OP_LDB, --LDB
 				'1' when OP_STB, --STB
+				special_Rb_N when OP_SPECIAL, -- special
 				'0' when others;
 
 	addr_a <= ir(11 downto 9) when ir(15 downto 12) = OP_MOV else
@@ -158,6 +176,7 @@ BEGIN
 					 ir(2 downto 0) when others;
 
 	immed <= ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7 downto 0) when ir(15 downto 12) = OP_MOV else
+			"0000000000000" & ir(2 downto 0) when ir(15 downto 12) = OP_SPECIAL else
 			ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5 downto 0);
 	
 	with ir(2 downto 0) select
@@ -173,9 +192,12 @@ BEGIN
 			 jump_wd when ir(15 downto 12) = OP_JUMP else --jal
 			 '1' when ir(15 downto 12) = OP_LDB else --ldb
 			 '1' when ir(15 downto 12) = OP_IO and ir(8) = '0' else --in
-			 '1' when ir(15 downto 12) = OP_SPECIAL and (special = WRS_I or special = GETIID_I) else --wrs
+			 '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVVR_I else --mvvr
+			 '1' when ir(15 downto 12) = OP_SPECIAL and (super_special = WRS_I or super_special = GETIID_I) else --wrs
 			 '0';
-					
+	
+	vwrd <= '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVRV_I else --mvr TODO: ADDV, SUBV, MULV, DIVV, LDV
+			'0';
 	--with ir(15 downto 12) select
 		--wrd <= '1' when "0000", 						--op arit
 			--   '1' when "0001", 						--comparacions
@@ -239,4 +261,10 @@ BEGIN
 	mem_op <= '1' when (ir(15 downto 12) = OP_LD or ir(15 downto 12) = OP_LDB or
 				        ir(15 downto 12) = OP_ST or ir(15 downto 12) = OP_STB) else
 			  '0';
+
+	va_old_vd <= '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVRV_I else
+			'0';
+	
+	vec_produce_sca <= '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVVR_I else
+			'0';
 END Structure;

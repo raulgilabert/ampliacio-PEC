@@ -9,6 +9,7 @@ entity multi is
          boot      : IN  STD_LOGIC;
          ldpc_l    : IN  STD_LOGIC;
          wrd_l     : IN  STD_LOGIC;
+         vwrd_l    : IN  STD_LOGIC;
          wr_m_l    : IN  STD_LOGIC;
          w_b       : IN  STD_LOGIC;
          intr      : IN  STD_LOGIC;
@@ -25,6 +26,7 @@ entity multi is
          exc_code : IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
          ldpc      : OUT STD_LOGIC;
          wrd       : OUT STD_LOGIC;
+         vwrd      : OUT STD_LOGIC;
          wr_m      : OUT STD_LOGIC;
          ldir      : OUT STD_LOGIC;
          ins_dad   : OUT STD_LOGIC;
@@ -88,6 +90,9 @@ begin
     d_sys <= '1' when state = SYSTEM else d_sys_l;
     wrd <= wrd_l when state = DEMW else
             '1' when state = SYSTEM else 
+            '0';
+
+    vwrd <= vwrd_l when state = DEMW else
             '0';
     wr_m <= wr_m_l when state = DEMW else '0';
     word_byte <= w_b when state = DEMW else '0';

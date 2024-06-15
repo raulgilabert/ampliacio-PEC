@@ -13,7 +13,7 @@ ENTITY sisa IS
           SRAM_OE_N : out   std_logic := '1';
           SRAM_WE_N : out   std_logic := '1';
 			 LEDG		  : OUT	 std_LOGIC_VECTOR(7 DOWNTO 0);
-			 LEDR		  : OUT	 std_LOGIC_VECTOR(9 DOWNTO 0);
+			 LEDR		  : OUT	 std_LOGIC_VECTOR(7 DOWNTO 0);
 			 HEX0 	  : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
 			 HEX1 	  : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
 			 HEX2		  : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
