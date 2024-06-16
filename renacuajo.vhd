@@ -12,8 +12,12 @@ package renacuajo_pkg is
 		IN_I, OUT_I,																  -- Input/output instructions
         MUL_I, MULH_I, MULHU_I, DIV_I, DIVU_I,                      -- Multiplication and division instructions
 
+        ADDF_I, SUBF_I, MULF_I, DIVF_I, CMPLT_I, CMPEF_I, CMPEQF_I, -- Op/Cmp Float
+
         JZ_I, JNZ_I, JMP_I, JAL_I, CALL_I,                          -- Jump instructions
         
+        LDF_I, STF_I,                                               -- Float memory instructions
+
         LDB_I, STB_I,                                               -- Byte memory instructions
 
         EI_I, DI_I, RETI_I, GETIID_I, RDS_I, WRS_I, HALT_I,        -- Special instruction
@@ -30,7 +34,10 @@ package renacuajo_pkg is
     constant OP_BRANCH  : STD_LOGIC_VECTOR(3 DOWNTO 0) := "0110";
     constant OP_IO      : STD_LOGIC_VECTOR(3 DOWNTO 0) := "0111";
     constant OP_MULDIV  : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1000";
+    constant OP_FLOAT   : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1001";
     constant OP_JUMP    : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1010";
+    constant OP_LDF     : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1011";
+    constant OP_STF     : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1100";
     constant OP_LDB     : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1101";
     constant OP_STB     : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1110";
     constant OP_SPECIAL : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1111";
@@ -58,6 +65,15 @@ package renacuajo_pkg is
     constant F_MULHU    : STD_LOGIC_VECTOR(2 DOWNTO 0) := "010";
     constant F_DIV      : STD_LOGIC_VECTOR(2 DOWNTO 0) := "100";
     constant F_DIVU     : STD_LOGIC_VECTOR(2 DOWNTO 0) := "101";
+
+-- FUNCTION CODES FLOAT OP/CMP
+    constant F_ADDF       : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000";
+    constant F_SUBF       : STD_LOGIC_VECTOR(2 DOWNTO 0) := "001";
+    constant F_MULF       : STD_LOGIC_VECTOR(2 DOWNTO 0) := "010";
+    constant F_DIVF       : STD_LOGIC_VECTOR(2 DOWNTO 0) := "011";
+    constant F_CMPLT      : STD_LOGIC_VECTOR(2 DOWNTO 0) := "100";
+    constant F_CMPLEF     : STD_LOGIC_VECTOR(2 DOWNTO 0) := "101";
+    constant F_CMPEQF     : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111";
 
 -- FUNCTION CODES JUMP
     constant F_JZ       : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000";
