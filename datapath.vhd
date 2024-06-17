@@ -20,8 +20,10 @@ ENTITY datapath IS
           pc       : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           in_d     : IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
 		  Rb_N     : IN  STD_LOGIC;
-		  d_sys	   : IN  STD_LOGIC;					
+		  d_sys	   : IN  STD_LOGIC;
+		  d_fpu	   : IN STD_LOGIC;
 	      a_sys	   : IN  STD_LOGIC;
+		  a_fpu	   : IN STD_LOGIC;
 		  ei 	   : IN  STD_LOGIC;
 		  di 	   : IN  STD_LOGIC;
 		  reti	   : IN  STD_LOGIC;
@@ -54,7 +56,9 @@ ARCHITECTURE Structure OF datapath IS
 	    addr_b 	: IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 		addr_d 	: IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 		d_sys	: IN  STD_LOGIC;					--WrD del banc de sistema
+		d_fpu	: IN STD_LOGIC;						--WrD del banc de punt flotant
 		a_sys	: IN  STD_LOGIC; 					-- Seleccina el mux
+		a_fpu	: IN STD_LOGIC;
 		ei 		: IN  STD_LOGIC;
 		di		: IN  STD_LOGIC;
 		reti	: IN  STD_LOGIC;
@@ -105,7 +109,9 @@ BEGIN
 			a => ra,
 			b => rb,
 			d_sys => d_sys,
+			d_fpu => d_fpu,
 			a_sys => a_sys,
+			a_fpu => a_fpu,
 			ei => ei,
 			di => di,
 			reti => reti,

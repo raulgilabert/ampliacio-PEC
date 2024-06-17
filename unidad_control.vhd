@@ -35,7 +35,9 @@ ENTITY unidad_control IS
 		  wr_out	: OUT STD_LOGIC;
 		  addr_io   : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		  a_sys		: OUT STD_LOGIC;
+		  a_fpu		: OUT STD_LOGIC;
 		  d_sys		: OUT STD_LOGIC;
+		  d_fpu		: OUT STD_LOGIC;
 		  ei		: OUT STD_LOGIC;
 		  di		: OUT STD_LOGIC;
 		  reti		: OUT STD_LOGIC;
@@ -68,7 +70,9 @@ ARCHITECTURE Structure OF unidad_control IS
 				wr_out	 : OUT STD_LOGIC;
 				rd_in		 : OUT STD_LOGIC;
 				a_sys		 : OUT STD_LOGIC;
+				a_fpu		 : OUT STD_LOGIC;
 				d_sys 	 : OUT STD_LOGIC;
+				d_fpu	 : OUT STD_LOGIC;
 				ei 		 : OUT STD_LOGIC;
 				di		 : OUT STD_LOGIC;
 				reti	 	 : OUT STD_LOGIC;
@@ -235,7 +239,9 @@ BEGIN
 			wr_out => wr_out,
 			addr_io => addr_io,
 			a_sys => a_sys,
+			a_fpu => a_fpu,
 			d_sys => d_sys_s,
+			d_fpu => d_fpu,
 			ei => ei_s,
 			di => di_s, 
 			reti => reti_s,

@@ -23,7 +23,9 @@ ENTITY control_l IS
 		  wr_out	 : OUT STD_LOGIC;
 		  rd_in		 : OUT STD_LOGIC;
 		  a_sys		 : OUT STD_LOGIC;
+		  a_fpu		 : OUT STD_LOGIC;
 		  d_sys 	 : OUT STD_LOGIC;
+		  d_fpu		 : OUT STD_LOGIC;
 		  ei 		 : OUT STD_LOGIC;
 		  di		 : OUT STD_LOGIC;
 		  reti	 	 : OUT STD_LOGIC;
@@ -174,6 +176,8 @@ BEGIN
 			 '1' when ir(15 downto 12) = OP_LDB else --ldb
 			 '1' when ir(15 downto 12) = OP_IO and ir(8) = '0' else --in
 			 '1' when ir(15 downto 12) = OP_SPECIAL and (special = WRS_I or special = GETIID_I) else --wrs
+			 '1' when ir(15 downto 12) = OP_LDF else --ldf
+			 '1' when ir(15 downto 12) = OP_FLOAT else --op/cmp float
 			 '0';
 					
 	--with ir(15 downto 12) select
@@ -190,6 +194,7 @@ BEGIN
 	 with ir(15 downto 12) select
 		wr_m <= '1' when OP_ST,
 				  '1' when OP_STB,
+				  '1' when OP_STF
 				  '0' when others;
 				  
 	with ir(15 downto 12) select
@@ -204,11 +209,14 @@ BEGIN
 	with ir(15 downto 12) select
 		immed_x2 <= '1' when OP_LD,
 						'1' when OP_ST,
+						'1' when OP_LDF,
+						'1' when OP_STF,
 						'1' when OP_BRANCH,
 						'0' when others;
 		
 	in_d <= "01" when ir(15 downto 12) = OP_LD else --ld
 			"01" when ir(15 downto 12) = OP_LDB else --ldb
+			"01" when ir(15 downto 12) = OP_LDF else --ldf
 			"10" when ir(15 downto 12) = OP_JUMP else --jal
 			"11" when ir(15 downto 12) = OP_IO and ir(8) = '0' else --in
 			"11" when ir(15 downto 12) = OP_SPECIAL and special = GETIID_I else --in
@@ -232,8 +240,14 @@ BEGIN
 
 	a_sys <= '1' when ir(15 downto 12) = OP_SPECIAL and (special = RDS_I or special = RETI_I) else --en reti activem pq el pc pugui sortir
 			 '0';
+
+	a_fpu <= '1' when ir(15 downto 12) = OP_LDF or ir(15 downto 12) = OP_FLOAT else
+			 '0';
 	
 	d_sys <= '1' when ir(15 downto 12) = OP_SPECIAL and special = WRS_I else 
+			 '0';
+
+	d_fpu <= '1' when ir(15 downto 12) = OP_STF or ir(15 downto 12) = OP_FLOAT else
 			 '0';
 	
 	mem_op <= '1' when (ir(15 downto 12) = OP_LD or ir(15 downto 12) = OP_LDB or

@@ -60,7 +60,9 @@ ARCHITECTURE Structure OF proc IS
 			 wr_out	  : OUT STD_LOGIC;
 			 addr_io   : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 			 d_sys	   : OUT STD_LOGIC;
+			 d_fpu	   : OUT STD_LOGIC;
 			 a_sys	   : OUT STD_LOGIC;
+			 a_fpu	   : OUT STD_LOGIC;
 			 ei 	   : OUT STD_LOGIC;
 			 di		: OUT STD_LOGIC;
 			 reti	   : OUT STD_LOGIC;
@@ -89,7 +91,9 @@ ARCHITECTURE Structure OF proc IS
 				 Rb_N     : IN STD_LOGIC;
 				 rd_io	 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 				 d_sys	 : IN STD_LOGIC;
+				 d_fpu	 : IN STD_LOGIC;
 				 a_sys	 : IN STD_LOGIC;
+				 a_fpu	 : IN STD_LOGIC;
 				 ei 	 : IN STD_LOGIC;
 				 di 	 : IN STD_LOGIC;
 				 reti	 : IN STD_LOGIC;
@@ -123,7 +127,9 @@ ARCHITECTURE Structure OF proc IS
 		SIGNAL aluout: std_logic_vector(15 downto 0);
 		SIGNAL tknbr: std_logic_vector(1 downto 0);
 		SIGNAL d_sys_s : std_logic;
+		SIGNAL d_fpu_s : std_logic;
 		SIGNAL a_sys_s : std_logic;
+		SIGNAL a_fpu_s : std_logic;
 		SIGNAL ei_s : std_logic; 	 
 		SIGNAL di_s : std_logic; 	 
 		SIGNAL reti_s : std_logic;	
@@ -156,7 +162,9 @@ BEGIN
 				wr_out => wr_out,
 				addr_io => addr_io,
 				d_sys => d_sys_s,
+				d_fpu => d_fpu_s,
 				a_sys => a_sys_s, 
+				a_fpu => a_fpu_s,
 				ei => ei_s,
 				di => di_s,
 				reti => reti_s,
@@ -194,7 +202,9 @@ BEGIN
 				rd_io => rd_io,
 				wr_io => wr_io,
 				d_sys => d_sys_s,
-				a_sys => a_sys_s, 
+				d_fpu => d_fpu_s,
+				a_sys => a_sys_s,
+				a_fpu => a_fpu_s, 
 				ei => ei_s,
 				di => di_s,
 				reti => reti_s,
