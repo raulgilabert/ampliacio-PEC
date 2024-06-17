@@ -28,7 +28,9 @@ entity MemoryController is
         rd_data_VGA	: IN STD_LOGIC_VECTOR(15 DOWNTO 0);
         vga_byte_m : out std_logic;
         mem_except: OUT STD_LOGIC;
-        mem_op      : IN STD_LOGIC
+        mem_op      : IN STD_LOGIC;
+        mode: IN mode_t;
+        mem_prot: OUT STD_LOGIC
 	
           );
 end MemoryController;
@@ -84,12 +86,15 @@ begin
 	VGA_addr_s <= addr(12 downto 0);--std_LOGIC_VECTOR(unsigned(addr) - x"A000");
 	 
 	addr_VGA <= VGA_addr_s when addr >= x"A000" and addr <= x"B2BE" else "0000000000000";
-	we_VGA <= '1' when addr >= x"A000" and addr <= x"B2BE" else '0';
+	we_VGA <= '1' when addr >= x"A000" and addr <= x"B2BE" and we = '1' else '0';
   wr_data_VGA <= wr_data;
   vga_byte_m <= byte_m;
 
   mem_except <= '1' when byte_m = '0' and addr(0) = '1' and mem_op = '1' else '0';
 
+  mem_prot <= '1' when mode = USER and ((addr >= x"8000" and addr <= x"A000") or (addr > x"B2BE" and addr < x"FFFF")) and mem_op = '1' else '0';
+  
+  
   --SRAM_DQ <= data;
 	
 end comportament;
