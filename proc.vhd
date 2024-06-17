@@ -132,7 +132,7 @@ ARCHITECTURE Structure OF proc IS
 		SIGNAL int_e_s : std_logic;
 		SIGNAL sys_s : STD_LOGIC;
 		SIGNAL pc_sys : STD_LOGIC_VECTOR(15 downto 0);
-		SIGNAL wrd_fpu : STD_LOGIC;
+		SIGNAL wrd_fpu_s : STD_LOGIC;
 BEGIN
 
 		c0: unidad_control
