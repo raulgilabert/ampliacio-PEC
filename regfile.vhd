@@ -9,18 +9,16 @@ ENTITY regfile IS
         wrd    	: IN  STD_LOGIC;
         d      	: IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
         addr_a 	: IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
-		addr_b 	: IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+	    addr_b 	: IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 		addr_d 	: IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 		d_sys	: IN  STD_LOGIC;					--WrD del banc de sistema
-		d_fpu	: IN STD_LOGIC;						--WrD del banc de punt flotant
 		a_sys	: IN  STD_LOGIC; 					-- Seleccina el mux
-		a_fpu	: IN STD_LOGIC;
 		ei 		: IN  STD_LOGIC;
 		di		: IN  STD_LOGIC;
 		reti	: IN  STD_LOGIC;
 		boot	: IN  STD_LOGIC;
 		sys		: IN  STD_LOGIC;
-		PCret	: IN  STD_LOGIC_VECTOR(15 downto 0);
+		PCret		: IN  STD_LOGIC_VECTOR(15 downto 0);
 		a      	: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		b		: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		int_e	: OUT STD_LOGIC; 					-- interrupt enable
@@ -34,18 +32,15 @@ ARCHITECTURE Structure OF regfile IS
 	TYPE t_regs is array(0 to 7) of std_logic_vector(15 downto 0);
 	SIGNAL regs: t_regs;
 	SIGNAL sys_regs: t_regs;
-	SIGNAL fpu_regs: t_regs;
 
 BEGIN
 	PROCESS (clk, boot)
 	BEGIN
 		if rising_edge(clk) then		
-			if (d_sys = '0' and wrd = '1' and d_fpu = '0') then
+			if (d_sys = '0' and wrd = '1') then
 				regs(to_integer(unsigned(addr_d))) <= d;
-			elsif (d_sys = '1' and wrd = '1' and d_fpu = '0') then 
+			elsif (d_sys = '1' and wrd = '1') then 
 				sys_regs(to_integer(unsigned(addr_d))) <= d;
-			elsif (d_sys = '0' and wrd = '1' and d_fpu = '1') then
-				fpu_regs(to_integer(unsigned(addr_d))) <= d;
 			elsif (ei = '1') then 
 				sys_regs(7)(1) <= '1';
 			elsif (di = '1') then
@@ -71,10 +66,7 @@ BEGIN
 		END if;
 	END PROCESS;
 	
-	a <= regs(to_integer(unsigned(addr_a))) when a_sys = '0' and a_fpu = '0' else 
-		fpu_regs(to_integer(unsigned(addr_a))) when a_sys = '0' and a_fpu = '1' else
-		sys_regs(to_integer(unsigned(addr_a)));
-		
+	a <= regs(to_integer(unsigned(addr_a))) when a_sys = '0' else sys_regs(to_integer(unsigned(addr_a)));
 	b <= regs(to_integer(unsigned(addr_b)));
 
 	int_e <= sys_regs(7)(1);

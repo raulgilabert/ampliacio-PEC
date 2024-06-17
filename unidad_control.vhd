@@ -35,9 +35,7 @@ ENTITY unidad_control IS
 		  wr_out	: OUT STD_LOGIC;
 		  addr_io   : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		  a_sys		: OUT STD_LOGIC;
-		  a_fpu		: OUT STD_LOGIC;
 		  d_sys		: OUT STD_LOGIC;
-		  d_fpu		: OUT STD_LOGIC;
 		  ei		: OUT STD_LOGIC;
 		  di		: OUT STD_LOGIC;
 		  reti		: OUT STD_LOGIC;
@@ -46,7 +44,8 @@ ENTITY unidad_control IS
 		  pc_sys : IN STD_LOGIC_VECTOR(15 downto 0);
 		  call	 : OUT STD_LOGIC;
 		  il_inst : OUT STD_LOGIC;
-		  mem_op : OUT STD_LOGIC
+		  mem_op : OUT STD_LOGIC;
+		  wrd_fpu : OUT STD_LOGIC
 		  );
 END unidad_control;
 
@@ -70,9 +69,7 @@ ARCHITECTURE Structure OF unidad_control IS
 				wr_out	 : OUT STD_LOGIC;
 				rd_in		 : OUT STD_LOGIC;
 				a_sys		 : OUT STD_LOGIC;
-				a_fpu		 : OUT STD_LOGIC;
 				d_sys 	 : OUT STD_LOGIC;
-				d_fpu	 : OUT STD_LOGIC;
 				ei 		 : OUT STD_LOGIC;
 				di		 : OUT STD_LOGIC;
 				reti	 	 : OUT STD_LOGIC;
@@ -80,7 +77,8 @@ ARCHITECTURE Structure OF unidad_control IS
 				inta		 : OUT STD_LOGIC;
 				call		 : OUT STD_LOGIC;
 				il_inst	 : OUT STD_LOGIC;
-				mem_op : OUT STD_LOGIC
+				mem_op : OUT STD_LOGIC;
+				wrd_fpu : OUT STD_LOGIC
 		);
 	END COMPONENT;
 
@@ -239,16 +237,15 @@ BEGIN
 			wr_out => wr_out,
 			addr_io => addr_io,
 			a_sys => a_sys,
-			a_fpu => a_fpu,
 			d_sys => d_sys_s,
-			d_fpu => d_fpu,
 			ei => ei_s,
 			di => di_s, 
 			reti => reti_s,
 			inta => inta_s,
 			call => call,
 			il_inst => il_inst,
-			mem_op => mem_op
+			mem_op => mem_op,
+			wrd_fpu => wrd_fpu
 		);
 	
 		reti <= reti_s;

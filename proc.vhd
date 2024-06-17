@@ -60,9 +60,7 @@ ARCHITECTURE Structure OF proc IS
 			 wr_out	  : OUT STD_LOGIC;
 			 addr_io   : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 			 d_sys	   : OUT STD_LOGIC;
-			 d_fpu	   : OUT STD_LOGIC;
 			 a_sys	   : OUT STD_LOGIC;
-			 a_fpu	   : OUT STD_LOGIC;
 			 ei 	   : OUT STD_LOGIC;
 			 di		: OUT STD_LOGIC;
 			 reti	   : OUT STD_LOGIC;
@@ -71,7 +69,8 @@ ARCHITECTURE Structure OF proc IS
 			 pc_sys  : IN STD_LOGIC_VECTOR(15 downto 0);
 			 call   : OUT STD_LOGIC;
 			 il_inst : OUT STD_LOGIC;
-			 mem_op : OUT STD_LOGIC
+			 mem_op : OUT STD_LOGIC;
+			 wrd_fpu : OUT STD_LOGIC
 		 );
 	END COMPONENT;
 	
@@ -91,15 +90,14 @@ ARCHITECTURE Structure OF proc IS
 				 Rb_N     : IN STD_LOGIC;
 				 rd_io	 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 				 d_sys	 : IN STD_LOGIC;
-				 d_fpu	 : IN STD_LOGIC;
 				 a_sys	 : IN STD_LOGIC;
-				 a_fpu	 : IN STD_LOGIC;
 				 ei 	 : IN STD_LOGIC;
 				 di 	 : IN STD_LOGIC;
 				 reti	 : IN STD_LOGIC;
 				 boot	 : IN STD_LOGIC;
 				 --intr	 : IN STD_LOGIC;
 				 sys	: IN STD_LOGIC;
+				 wrd_fpu  : IN STD_LOGIC;
 				 addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				 data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				 aluout	 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -127,15 +125,14 @@ ARCHITECTURE Structure OF proc IS
 		SIGNAL aluout: std_logic_vector(15 downto 0);
 		SIGNAL tknbr: std_logic_vector(1 downto 0);
 		SIGNAL d_sys_s : std_logic;
-		SIGNAL d_fpu_s : std_logic;
 		SIGNAL a_sys_s : std_logic;
-		SIGNAL a_fpu_s : std_logic;
 		SIGNAL ei_s : std_logic; 	 
 		SIGNAL di_s : std_logic; 	 
 		SIGNAL reti_s : std_logic;	
 		SIGNAL int_e_s : std_logic;
 		SIGNAL sys_s : STD_LOGIC;
 		SIGNAL pc_sys : STD_LOGIC_VECTOR(15 downto 0);
+		SIGNAL wrd_fpu : STD_LOGIC;
 BEGIN
 
 		c0: unidad_control
@@ -162,9 +159,7 @@ BEGIN
 				wr_out => wr_out,
 				addr_io => addr_io,
 				d_sys => d_sys_s,
-				d_fpu => d_fpu_s,
 				a_sys => a_sys_s, 
-				a_fpu => a_fpu_s,
 				ei => ei_s,
 				di => di_s,
 				reti => reti_s,
@@ -177,7 +172,8 @@ BEGIN
 				exc_code => exc_code,
 				call => call,
 				il_inst => il_inst,
-			mem_op => mem_op
+				mem_op => mem_op,
+				wrd_fpu => wrd_fpu_s
 			);
 		
 		e0: datapath
@@ -202,9 +198,7 @@ BEGIN
 				rd_io => rd_io,
 				wr_io => wr_io,
 				d_sys => d_sys_s,
-				d_fpu => d_fpu_s,
 				a_sys => a_sys_s,
-				a_fpu => a_fpu_s, 
 				ei => ei_s,
 				di => di_s,
 				reti => reti_s,
@@ -212,6 +206,7 @@ BEGIN
 				--intr => intr,
 				int_e => int_e_s,
 				sys => sys_s,
+				wrd_fpu => wrd_fpu_s,
 				pc_sys => pc_sys,
 				except => except,
 				exc_code => exc_code,

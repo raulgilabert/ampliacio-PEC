@@ -21,9 +21,7 @@ ENTITY datapath IS
           in_d     : IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
 		  Rb_N     : IN  STD_LOGIC;
 		  d_sys	   : IN  STD_LOGIC;
-		  d_fpu	   : IN STD_LOGIC;
 	      a_sys	   : IN  STD_LOGIC;
-		  a_fpu	   : IN STD_LOGIC;
 		  ei 	   : IN  STD_LOGIC;
 		  di 	   : IN  STD_LOGIC;
 		  reti	   : IN  STD_LOGIC;
@@ -31,6 +29,7 @@ ENTITY datapath IS
 		  boot	   : IN  STD_LOGIC;
 		  except   : IN  std_logic;
 		  exc_code : IN  std_logic_vector(3 downto 0);
+		  wrd_fpu  : IN std_logic;
           addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
           data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		  aluout   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -56,9 +55,7 @@ ARCHITECTURE Structure OF datapath IS
 	    addr_b 	: IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 		addr_d 	: IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 		d_sys	: IN  STD_LOGIC;					--WrD del banc de sistema
-		d_fpu	: IN STD_LOGIC;						--WrD del banc de punt flotant
 		a_sys	: IN  STD_LOGIC; 					-- Seleccina el mux
-		a_fpu	: IN STD_LOGIC;
 		ei 		: IN  STD_LOGIC;
 		di		: IN  STD_LOGIC;
 		reti	: IN  STD_LOGIC;
@@ -94,6 +91,17 @@ ARCHITECTURE Structure OF datapath IS
 			 result: out std_logic_vector(15 downto 0)
 			);
     END COMPONENT;
+
+	COMPONENT regfile_fpu IS
+    PORT (clk    : IN  STD_LOGIC;
+          wrd    : IN  STD_LOGIC;
+          d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+          addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+          addr_b : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+          addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+          a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+          b      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
+	END COMPONENT;
 			
 	SIGNAL ra: std_logic_vector(15 downto 0);	
 	SIGNAL rb: std_logic_vector(15 downto 0);	
@@ -121,9 +129,7 @@ BEGIN
 			a => ra,
 			b => rb,
 			d_sys => d_sys,
-			d_fpu => d_fpu,
 			a_sys => a_sys,
-			a_fpu => a_fpu,
 			ei => ei,
 			di => di,
 			reti => reti,
@@ -157,6 +163,18 @@ BEGIN
 			funct5 => fp_funct,
 			result => fp_result
 		);
+
+	reg0_fpu: regfile_fpu
+		PORT MAP(
+			clk => clk,
+			wrd => wrd_fpu,
+			d => d,
+			addr_a => addr_a,
+			addr_b => addr_b,
+			addr_d => addr_d,
+			a => ,
+			b =>
+	);
 
 	new_pc <= std_logic_vector(unsigned(pc) + 2);
 		
