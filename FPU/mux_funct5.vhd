@@ -13,7 +13,12 @@ entity mux_funct5 is
 end mux_funct5;
 
 architecture rtl of mux_funct5 is
+    signal less : std_logic;
+    signal eq : std_logic;
 begin
+
+    less <= add_sub(15);
+
     with funct5 select
         result <= add_sub when "00000"|"00001",
                   mult when "00010",

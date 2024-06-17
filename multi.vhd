@@ -50,7 +50,7 @@ architecture Structure of multi is
     SIGNAL fp_op : boolean;
 begin
 
-    fp_op <= true when (op_l = ADDF_I or op_l = SUBF_I or op_l = MULF_I or op_l = DIVF_I or op_l = CMPLT_I or op_l = CMPEF_I or op_l = CMPEQF_I) else false;
+    fp_op <= true when (op_l = ADDF_I or op_l = SUBF_I or op_l = MULF_I or op_l = DIVF_I or op_l = CMPLTF_I or op_l = CMPLEF_I or op_l = CMPEQF_I) else false;
 
     -- Aqui iria la m quina de estados del modelos de Moore que gestiona el multiciclo
     -- Aqui irian la generacion de las senales de control que su valor depende del ciclo en que se esta.
@@ -71,7 +71,7 @@ begin
                 when DEMW => 
                     if (intr = '1' and int_e = '1') or except = '1' then 
                         state <= SYSTEM;
-                    else if (fp_op) then
+                    elsif (fp_op) then
                         state <= FP1;
                     else
                         state <= F;
@@ -84,7 +84,7 @@ begin
                     state <= FP3;
                 when FP3 =>
                     state <= F;
-                END case;
+            END case;
 		 else 
 			state <= state;
 		 END if;

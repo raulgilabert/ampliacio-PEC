@@ -112,13 +112,13 @@ begin
             exc_flag := '1';
             -- handle zeros and denorms
             if ((exp_1 = 0) and (exp_2 /= 0)) then
-                if (b1_funct5 = "00001") then
+                if (b1_funct5 = "00001" or b1_funct5 = "00100" or b1_funct5 = "00101" or b1_funct5 = "00111") then
                     exc_res := not(b1_in2(15)) & b1_in2(14 downto 0);
                 else
                     exc_res := b1_in2;
                 end if;
             elsif ((exp_2 = 0) and (exp_1 /= 0)) then
-                if (b1_funct5 = "00001") then
+                if (b1_funct5 = "00001" or b1_funct5 = "00100" or b1_funct5 = "00101" or b1_funct5 = "00111") then
                     exc_res := not(b1_in1(15)) & b1_in1(14 downto 0);
                 else
                     exc_res := b1_in1;
@@ -186,9 +186,15 @@ begin
         variable s_r: std_logic;  -- result sign
         begin
             case p1_out_funct5 is 
-                when "00000" => -- add
+                when "00000" => -- addf
                     alu_r := std_logic_vector(signed(p1_out_alu_in1) + signed(p1_out_alu_in2));
-                when "00001" => -- sub
+                when "00001" => -- subf
+                    alu_r := std_logic_vector(signed(p1_out_alu_in1) - signed(p1_out_alu_in2));
+                when "00100" => -- cmpltf
+                    alu_r := std_logic_vector(signed(p1_out_alu_in1) - signed(p1_out_alu_in2));
+                when "00101" => -- cmplef
+                    alu_r := std_logic_vector(signed(p1_out_alu_in1) - signed(p1_out_alu_in2));
+                when "00111" => -- cmpeqf
                     alu_r := std_logic_vector(signed(p1_out_alu_in1) - signed(p1_out_alu_in2));
                 when others =>
                     alu_r := (others => '0');

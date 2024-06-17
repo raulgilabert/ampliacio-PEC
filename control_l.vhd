@@ -41,6 +41,7 @@ ARCHITECTURE Structure OF control_l IS
 	SIGNAL arit_log: INST;
 	SIGNAL cmp: INST;
 	SIGNAL mul_div: INST;
+	SIGNAL fp_op: INST;
 	SIGNAL jump: INST;
 	SIGNAL move: INST;
 	SIGNAL branch: INST;
@@ -76,6 +77,16 @@ BEGIN
 				   DIV_I WHEN F_DIV, -- DIV
 				   DIVU_I WHEN F_DIVU,-- DIVU
 				   ILLEGAL_I WHEN others;
+
+	with ir(5 downto 3) select
+		fp_op <= ADDF_I when F_ADDF, -- ADDF
+				 SUBF_I WHEN F_SUBF, -- SUBF
+				 MULF_I WHEN F_MULF, -- MULF
+				 DIVF_I WHEN F_DIVF, -- DIVF
+				 CMPLTF_I WHEN F_CMPLTF,-- CMPLTF
+				 CMPLEF_I WHEN F_CMPLEF,-- CMPLEF
+				 CMPEQF_I WHEN F_CMPEQF,-- CMPEQF
+				 ILLEGAL_I WHEN others;
 				 
 	with ir(2 downto 0) select
 		jump <= JZ_I when F_JZ, -- JZ
@@ -194,7 +205,7 @@ BEGIN
 	 with ir(15 downto 12) select
 		wr_m <= '1' when OP_ST,
 				  '1' when OP_STB,
-				  '1' when OP_STF
+				  '1' when OP_STF,
 				  '0' when others;
 				  
 	with ir(15 downto 12) select

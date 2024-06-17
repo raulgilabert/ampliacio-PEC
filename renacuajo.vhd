@@ -12,7 +12,7 @@ package renacuajo_pkg is
 		IN_I, OUT_I,																  -- Input/output instructions
         MUL_I, MULH_I, MULHU_I, DIV_I, DIVU_I,                      -- Multiplication and division instructions
 
-        ADDF_I, SUBF_I, MULF_I, DIVF_I, CMPLT_I, CMPLEF_I, CMPEQF_I,-- Op/Cmp Float
+        ADDF_I, SUBF_I, MULF_I, DIVF_I, CMPLTF_I, CMPLEF_I, CMPEQF_I,-- Op/Cmp Float
 
         JZ_I, JNZ_I, JMP_I, JAL_I, CALL_I,                          -- Jump instructions
         
@@ -71,7 +71,7 @@ package renacuajo_pkg is
     constant F_SUBF       : STD_LOGIC_VECTOR(2 DOWNTO 0) := "001";
     constant F_MULF       : STD_LOGIC_VECTOR(2 DOWNTO 0) := "010";
     constant F_DIVF       : STD_LOGIC_VECTOR(2 DOWNTO 0) := "011";
-    constant F_CMPLT      : STD_LOGIC_VECTOR(2 DOWNTO 0) := "100";
+    constant F_CMPLTF     : STD_LOGIC_VECTOR(2 DOWNTO 0) := "100";
     constant F_CMPLEF     : STD_LOGIC_VECTOR(2 DOWNTO 0) := "101";
     constant F_CMPEQF     : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111";
 

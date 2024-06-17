@@ -107,7 +107,7 @@ ARCHITECTURE Structure OF datapath IS
 	SIGNAL new_pc: std_logic_vector(15 downto 0);
 	SIGNAL addr_m_s: std_logic_vector(15 downto 0);
 	SIGNAL fp_ra, fp_rb, fp_result: std_logic_vector(15 downto 0);
-	SIGNAL fp_func: std_logic_vector(4 downto 0);
+	SIGNAL fp_funct: std_logic_vector(4 downto 0);
 BEGIN
 
 	reg0: regfile
@@ -197,7 +197,7 @@ BEGIN
 					"00001" when SUBF_I,
 					"00010" when MULF_I,
 					"00011" when DIVF_I,
-					"00100" when CMPLT_I,
+					"00100" when CMPLTF_I,
 					"00101" when CMPLEF_I,
 					"00111" when others;
 	
