@@ -23,13 +23,13 @@ BEGIN
 	process(clk)
 	begin
 		if(rising_edge(clk)) then
-			if(wrd = '1') then
-				registre(conv_integer(addr_d)) <= d;
+			if (wrd = '1') then
+				fpu_regs(conv_integer(addr_d)) <= d;
 			end if;
 		end if;
 	end process;	
 	
-	a <= registre(conv_integer(addr_a));
-	b <= registre(conv_integer(addr_b));
+	a <= fpu_regs(conv_integer(addr_a));
+	b <= fpu_regs(conv_integer(addr_b));
 
 END Structure;

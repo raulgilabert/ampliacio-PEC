@@ -168,12 +168,12 @@ BEGIN
 		PORT MAP(
 			clk => clk,
 			wrd => wrd_fpu,
-			d => d,
+			d => fp_result,
 			addr_a => addr_a,
 			addr_b => addr_b,
 			addr_d => addr_d,
-			a => ,
-			b =>
+			a => fp_ra,
+			b => fp_rb
 	);
 
 	new_pc <= std_logic_vector(unsigned(pc) + 2);
