@@ -44,11 +44,13 @@ end entity;
 architecture Structure of multi is
 
     -- Aqui iria la declaracion de las los estados de la maquina de estados
-    TYPE state_t is (F, DEMW, SYSTEM);
+    TYPE state_t is (F, DEMW, SYSTEM, FP1, FP2, FP3);
 
     SIGNAL state: state_t; 
-
+    SIGNAL fp_op : boolean;
 begin
+
+    fp_op <= true when (op_l = ADDF_I or op_l = SUBF_I or op_l = MULF_I or op_l = DIVF_I or op_l = CMPLT_I or op_l = CMPEF_I or op_l = CMPEQF_I) else false;
 
     -- Aqui iria la m quina de estados del modelos de Moore que gestiona el multiciclo
     -- Aqui irian la generacion de las senales de control que su valor depende del ciclo en que se esta.
@@ -69,10 +71,18 @@ begin
                 when DEMW => 
                     if (intr = '1' and int_e = '1') or except = '1' then 
                         state <= SYSTEM;
-                    else 
+                    else if (fp_op) then
+                        state <= FP1;
+                    else
                         state <= F;
                     END if;
                 when SYSTEM => 
+                    state <= F;
+                when FP1 =>
+                    state <= FP2;
+                when FP2 =>
+                    state <= FP3;
+                when FP3 =>
                     state <= F;
                 END case;
 		 else 

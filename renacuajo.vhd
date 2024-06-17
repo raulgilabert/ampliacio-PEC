@@ -12,7 +12,7 @@ package renacuajo_pkg is
 		IN_I, OUT_I,																  -- Input/output instructions
         MUL_I, MULH_I, MULHU_I, DIV_I, DIVU_I,                      -- Multiplication and division instructions
 
-        ADDF_I, SUBF_I, MULF_I, DIVF_I, CMPLT_I, CMPEF_I, CMPEQF_I, -- Op/Cmp Float
+        ADDF_I, SUBF_I, MULF_I, DIVF_I, CMPLT_I, CMPLEF_I, CMPEQF_I,-- Op/Cmp Float
 
         JZ_I, JNZ_I, JMP_I, JAL_I, CALL_I,                          -- Jump instructions
         
@@ -20,7 +20,7 @@ package renacuajo_pkg is
 
         LDB_I, STB_I,                                               -- Byte memory instructions
 
-        EI_I, DI_I, RETI_I, GETIID_I, RDS_I, WRS_I, HALT_I,        -- Special instruction
+        EI_I, DI_I, RETI_I, GETIID_I, RDS_I, WRS_I, HALT_I,         -- Special instruction
         NOP_I, ILLEGAL_I                                            -- No operation and illegal instruction
     );
 

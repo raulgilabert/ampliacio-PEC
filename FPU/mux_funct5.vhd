@@ -5,7 +5,6 @@ use ieee.numeric_std.all;
 entity mux_funct5 is
     port(
         add_sub: in std_logic_vector(15 downto 0) ;
-        fmadd_fmsub: in std_logic_vector(15 downto 0) ;
         mult: in std_logic_vector(15 downto 0) ;
         div: in std_logic_vector(15 downto 0) ;
         funct5: in std_logic_vector(4 downto 0) ;
@@ -19,6 +18,5 @@ begin
         result <= add_sub when "00000"|"00001",
                   mult when "00010",
                   div when "00011",
-                  fmadd_fmsub when "00100"|"00101",
                   (others => '0') when others;
 end architecture;

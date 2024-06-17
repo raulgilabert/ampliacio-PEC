@@ -84,6 +84,16 @@ ARCHITECTURE Structure OF datapath IS
 				 div_zero : OUT std_logic
 				 );
 	END COMPONENT;
+
+	COMPONENT bf16_unit is
+		port(clk: in std_logic;
+			 reset: in std_logic;
+		 	 in1: in std_logic_vector(15 downto 0) ;
+			 in2: in std_logic_vector(15 downto 0) ;
+			 funct5: in std_logic_vector(4 downto 0) ;
+			 result: out std_logic_vector(15 downto 0)
+			);
+    END COMPONENT;
 			
 	SIGNAL ra: std_logic_vector(15 downto 0);	
 	SIGNAL rb: std_logic_vector(15 downto 0);	
@@ -96,6 +106,8 @@ ARCHITECTURE Structure OF datapath IS
 	SIGNAL z: std_logic;
 	SIGNAL new_pc: std_logic_vector(15 downto 0);
 	SIGNAL addr_m_s: std_logic_vector(15 downto 0);
+	SIGNAL fp_ra, fp_rb, fp_result: std_logic_vector(15 downto 0);
+	SIGNAL fp_func: std_logic_vector(4 downto 0);
 BEGIN
 
 	reg0: regfile
@@ -136,6 +148,16 @@ BEGIN
 			div_zero => div_zero
 		);
 
+	fpu: bf16_unit
+		PORT map(
+			clk => clk,
+			reset => not boot,
+		 	in1 => fp_ra,
+			in2 => fp_rb,
+			funct5 => fp_funct,
+			result => fp_result
+		);
+
 	new_pc <= std_logic_vector(unsigned(pc) + 2);
 		
 	with in_d select
@@ -169,5 +191,14 @@ BEGIN
 	
 	wr_io <= rb;
 	addr_m <= addr_m_s;
+
+	with op select
+		fp_funct <= "00000" when ADDF_I,
+					"00001" when SUBF_I,
+					"00010" when MULF_I,
+					"00011" when DIVF_I,
+					"00100" when CMPLT_I,
+					"00101" when CMPLEF_I,
+					"00111" when others;
 	
 END Structure;

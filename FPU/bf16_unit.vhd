@@ -8,9 +8,9 @@ entity bf16_unit is
         reset: in std_logic;
         in1: in std_logic_vector(15 downto 0) ;
         in2: in std_logic_vector(15 downto 0) ;
-        in3: in std_logic_vector(15 downto 0) ;
         funct5: in std_logic_vector(4 downto 0) ;
-        result: out std_logic_vector(15 downto 0)
+        result: out std_logic_vector(15 downto 0);
+        done: out std_logic
     );
 end bf16_unit;
 
@@ -21,18 +21,6 @@ architecture rtl of bf16_unit is
             reset: in std_logic;
             in1: in std_logic_vector(15 downto 0) ;
             in2: in std_logic_vector(15 downto 0) ;
-            funct5: in std_logic_vector(4 downto 0) ;
-            result: out std_logic_vector(15 downto 0)
-        );
-    end component;
-
-    component bf16_fmadd_fmsub
-        port(
-            clk: in std_logic;
-            reset: in std_logic;
-            in1: in std_logic_vector(15 downto 0) ;
-            in2: in std_logic_vector(15 downto 0) ;
-            in3: in std_logic_vector(15 downto 0) ;
             funct5: in std_logic_vector(4 downto 0) ;
             result: out std_logic_vector(15 downto 0)
         );
@@ -61,7 +49,6 @@ architecture rtl of bf16_unit is
     component mux_funct5
         port(
             add_sub: in std_logic_vector(15 downto 0) ;
-            fmadd_fmsub: in std_logic_vector(15 downto 0) ;
             mult: in std_logic_vector(15 downto 0) ;
             div: in std_logic_vector(15 downto 0) ;
             funct5: in std_logic_vector(4 downto 0) ;
@@ -76,7 +63,6 @@ architecture rtl of bf16_unit is
 
     -- Connect output of each circuit to multiplexer
     signal mux_add_sub: std_logic_vector(15 downto 0) ;
-    signal mux_fmadd_fmsub: std_logic_vector(15 downto 0) ;
     signal mux_mult: std_logic_vector(15 downto 0) ;
     signal mux_div: std_logic_vector(15 downto 0) ;
 
@@ -87,14 +73,6 @@ begin
                                         in2 => in2,
                                         funct5 => funct5,
                                     	result => mux_add_sub );
-    
-    fmadd_fmsub: bf16_fmadd_fmsub port map (   clk => clk,
-                                               reset => reset,
-                                               in1 => in1,
-                                               in2 => in2,
-                                               in3 => in3,
-                                               funct5 => funct5,
-                                               result => mux_fmadd_fmsub );
 
     mult: bf16_mult port map (  clk => clk,
                                 reset => reset,
@@ -109,7 +87,6 @@ begin
                              	result => mux_div );
 
     mux: mux_funct5 port map (   add_sub => mux_add_sub,
-                                 fmadd_fmsub => mux_fmadd_fmsub,
                                  mult => mux_mult,
                                  div => mux_div,
                                  funct5 => p3_funct5,
