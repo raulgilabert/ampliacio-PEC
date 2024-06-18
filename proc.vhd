@@ -182,7 +182,7 @@ BEGIN
 				il_inst => il_inst,
 			mem_op => mem_op,
 			mode => mode_s,
-			inst_prot => inst_prot.
+			inst_prot => inst_prot,
 				wrd_fpu => wrd_fpu_s
 			);
 		
