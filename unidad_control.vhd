@@ -46,7 +46,8 @@ ENTITY unidad_control IS
 		  il_inst : OUT STD_LOGIC;
 		  mem_op : OUT STD_LOGIC;
 		  inst_prot : OUT STD_LOGIC;
-		  mode : IN mode_t
+		  mode : IN mode_t;
+		  wrd_fpu : OUT STD_LOGIC
 		  );
 END unidad_control;
 
@@ -78,7 +79,8 @@ ARCHITECTURE Structure OF unidad_control IS
 				inta		 : OUT STD_LOGIC;
 				call		 : OUT STD_LOGIC;
 				il_inst	 : OUT STD_LOGIC;
-				mem_op : OUT STD_LOGIC
+				mem_op : OUT STD_LOGIC;
+				wrd_fpu : OUT STD_LOGIC
 		);
 	END COMPONENT;
 
@@ -250,7 +252,8 @@ BEGIN
 			inta => inta_s,
 			call => call,
 			il_inst => il_inst,
-			mem_op => mem_op
+			mem_op => mem_op,
+			wrd_fpu => wrd_fpu
 		);
 	
 		reti <= reti_s;

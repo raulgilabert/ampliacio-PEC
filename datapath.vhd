@@ -20,7 +20,7 @@ ENTITY datapath IS
           pc       : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           in_d     : IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
 		  Rb_N     : IN  STD_LOGIC;
-		  d_sys	   : IN  STD_LOGIC;					
+		  d_sys	   : IN  STD_LOGIC;
 	      a_sys	   : IN  STD_LOGIC;
 		  ei 	   : IN  STD_LOGIC;
 		  di 	   : IN  STD_LOGIC;
@@ -29,6 +29,7 @@ ENTITY datapath IS
 		  boot	   : IN  STD_LOGIC;
 		  except   : IN  std_logic;
 		  exc_code : IN  std_logic_vector(3 downto 0);
+		  wrd_fpu  : IN std_logic;
           addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
           data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		  aluout   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -84,6 +85,27 @@ ARCHITECTURE Structure OF datapath IS
 				 div_zero : OUT std_logic
 				 );
 	END COMPONENT;
+
+	COMPONENT bf16_unit is
+		port(clk: in std_logic;
+			 reset: in std_logic;
+		 	 in1: in std_logic_vector(15 downto 0) ;
+			 in2: in std_logic_vector(15 downto 0) ;
+			 funct5: in std_logic_vector(4 downto 0) ;
+			 result: out std_logic_vector(15 downto 0)
+			);
+    END COMPONENT;
+
+	COMPONENT regfile_fpu IS
+    PORT (clk    : IN  STD_LOGIC;
+          wrd    : IN  STD_LOGIC;
+          d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+          addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+          addr_b : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+          addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+          a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+          b      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
+	END COMPONENT;
 			
 	SIGNAL ra: std_logic_vector(15 downto 0);	
 	SIGNAL rb: std_logic_vector(15 downto 0);	
@@ -96,6 +118,8 @@ ARCHITECTURE Structure OF datapath IS
 	SIGNAL z: std_logic;
 	SIGNAL new_pc: std_logic_vector(15 downto 0);
 	SIGNAL addr_m_s: std_logic_vector(15 downto 0);
+	SIGNAL fp_ra, fp_rb, fp_result: std_logic_vector(15 downto 0);
+	SIGNAL fp_funct: std_logic_vector(4 downto 0);
 BEGIN
 
 	reg0: regfile
@@ -136,6 +160,28 @@ BEGIN
 			div_zero => div_zero
 		);
 
+	fpu: bf16_unit
+		PORT map(
+			clk => clk,
+			reset => not boot,
+		 	in1 => fp_ra,
+			in2 => fp_rb,
+			funct5 => fp_funct,
+			result => fp_result
+		);
+
+	reg0_fpu: regfile_fpu
+		PORT MAP(
+			clk => clk,
+			wrd => wrd_fpu,
+			d => fp_result,
+			addr_a => addr_a,
+			addr_b => addr_b,
+			addr_d => addr_d,
+			a => fp_ra,
+			b => fp_rb
+	);
+
 	new_pc <= std_logic_vector(unsigned(pc) + 2);
 		
 	with in_d select
@@ -169,5 +215,14 @@ BEGIN
 	
 	wr_io <= rb;
 	addr_m <= addr_m_s;
+
+	with op select
+		fp_funct <= "00000" when ADDF_I,
+					"00001" when SUBF_I,
+					"00010" when MULF_I,
+					"00011" when DIVF_I,
+					"00100" when CMPLTF_I,
+					"00101" when CMPLEF_I,
+					"00111" when others;
 	
 END Structure;
