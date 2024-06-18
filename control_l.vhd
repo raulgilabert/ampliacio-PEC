@@ -43,6 +43,7 @@ ARCHITECTURE Structure OF control_l IS
 	SIGNAL cmp: INST;
 	SIGNAL mul_div: INST;
 	SIGNAL jump: INST;
+	SIGNAL super_jump: INST;
 	SIGNAL move: INST;
 	SIGNAL branch: INST;
 	SIGNAL IO: INST;
@@ -51,6 +52,7 @@ ARCHITECTURE Structure OF control_l IS
 	SIGNAL super_special: INST;
 	SIGNAL op_s: INST;
 	SIGNAL special_Rb_N : std_logic;
+	SIGNAL addr_b_jump : std_logic_vector(2 downto 0);
 BEGIN
 
 	with ir(5 downto 3) select
@@ -87,6 +89,17 @@ BEGIN
 				JAL_I when F_JAL,
 				CALL_I when F_CALL,
 				ILLEGAL_I when others;-- JAL
+
+	with ir(5 downto 3) select
+		super_jump <= jump when F_JUMP,
+				      MULV_I when F_MULV,
+					  MULHV_I when F_MULHV,
+					  MULHUV_I when F_MULHUV,
+					  ADDV_I when F_ADDV,
+					  SUBV_I when F_SUBV,
+					  SHAV_I when F_SHAV,
+					  SHLV_I when F_SHLV,
+					  ILLEGAL_I when others;
 
 	with ir(5 downto 0) select 
 		special <= EI_I when F_EI,
@@ -128,7 +141,7 @@ BEGIN
 			    branch when OP_BRANCH, -- BZ & BNZ
 				io when OP_IO, --IN & OUT
 			    mul_div when OP_MULDIV, --MUL & DIV
-			    jump when OP_JUMP, --JAL
+			    super_jump when OP_JUMP, --JAL
 		        LDB_I when OP_LDB, --LDB
 			    STB_I when OP_STB, -- STB
 			    super_special when OP_SPECIAL, -- HALT
@@ -167,12 +180,16 @@ BEGIN
 
 	reti <= '1' when ir(15 downto 12) = OP_SPECIAL and special = RETI_I else '0';
 
+	with ir(5 downto 3) select
+		addr_b_jump <= ir(11 downto 9) when F_JUMP,
+					   ir(2 downto 0) when others;
+
 	with ir(15 downto 12) select
 		addr_b <= ir(11 downto 9) when OP_ST,
 					 ir(11 downto 9) when OP_STB,
 					 ir(11 downto 9) when OP_BRANCH,
 					 ir(11 downto 9) when OP_IO,
-					 ir(11 downto 9) when OP_JUMP,
+					 addr_b_jump when OP_JUMP,
 					 ir(2 downto 0) when others;
 
 	immed <= ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7 downto 0) when ir(15 downto 12) = OP_MOV else
@@ -196,7 +213,8 @@ BEGIN
 			 '1' when ir(15 downto 12) = OP_SPECIAL and (super_special = WRS_I or super_special = GETIID_I) else --wrs
 			 '0';
 	
-	vwrd <= '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVRV_I else --mvr TODO: ADDV, SUBV, MULV, DIVV, LDV
+	vwrd <= '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVRV_I else --mvr
+			'1' when ir(15 downto 12) = OP_JUMP and ir(5 downto 3) /= F_JUMP else
 			'0';
 	--with ir(15 downto 12) select
 		--wrd <= '1' when "0000", 						--op arit

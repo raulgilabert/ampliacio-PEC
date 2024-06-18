@@ -19,7 +19,35 @@ ENTITY valu IS
 END valu;
 
 ARCHITECTURE Structure OF valu IS
+    COMPONENT addsub IS
+        PORT (x  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+              y  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+              op        : IN INST;
+              w  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+            );
+    END COMPONENT;
+
+    COMPONENT mul IS
+        PORT (x  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+              y  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+              op        : IN INST;
+              w  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+            );
+    END COMPONENT;
+
+    COMPONENT shift IS
+        PORT (x  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+              y  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+              op        : IN INST;
+              w  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+            );
+    END COMPONENT;
+
     SIGNAL new_vec_reg: STD_LOGIC_VECTOR(127 downto 0);
+    SIGNAL add_sub_res: STD_LOGIC_VECTOR(127 downto 0);
+    SIGNAL mul_res:     STD_LOGIC_VECTOR(127 downto 0);
+    SIGNAL shift_res:   STD_LOGIC_VECTOR(127 downto 0);
+
 BEGIN
     -- Asignación de new_vec_reg basada en immed
     with immed select
@@ -36,6 +64,13 @@ BEGIN
     -- Asignación de w_vec basada en op
     with op select
         w_vec <= new_vec_reg when MVRV_I,
+                 add_sub_res when ADDV_I,
+                 add_sub_res when SUBV_I,
+                 mul_res when MULV_I,
+                 mul_res when MULHV_I,
+                 mul_res when MULHUV_I,
+                 shift_res when SHAV_I,
+                 shift_res when SHLV_I,
                  (others => 'X') when others;
 
     -- Inicialización de señales no utilizadas
@@ -51,4 +86,33 @@ BEGIN
                  (others => 'X') when others;
 
     div_zero <= '0';
+
+    add_sub_gen: for i in 0 to 7 generate
+        add_sub_i: addsub PORT MAP(
+            x => x_vec(15 + 16*i downto 16*i),
+            y => y(15 + 16*i downto 16*i),
+            op => op,
+            w => add_sub_res(15 + 16*i downto 16*i)
+        );
+    end generate;
+
+    mul_gen: for i in 0 to 7 generate
+        mul_i: mul PORT MAP(
+            x => x_vec(15 + 16*i downto 16*i),
+            y => y(15 + 16*i downto 16*i),
+            op => op,
+            w => mul_res(15 + 16*i downto 16*i)
+        );
+    end generate;
+
+   shift_gen: for i in 0 to 7 generate
+        shift_i: shift PORT MAP(
+            x => x_vec(15 + 16*i downto 16*i),
+            y => y(15 + 16*i downto 16*i),
+            op => op,
+            w => shift_res(15 + 16*i downto 16*i)
+        );
+    end generate;
+
+
 END Structure;
