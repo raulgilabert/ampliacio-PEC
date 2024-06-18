@@ -28,10 +28,10 @@ BEGIN
             if (wrd = '1') then
                 vregs(to_integer(unsigned(addr_d))) <= d;
             end if;
-        old_d <= vregs(to_integer(unsigned(addr_d)));
         end if;
     END PROCESS;
 
     a <= vregs(to_integer(unsigned(addr_a)));
+    old_d <= vregs(to_integer(unsigned(addr_d)));
     b <= vregs(to_integer(unsigned(addr_b)));
 END Structure;
