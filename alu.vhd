@@ -77,7 +77,7 @@ BEGIN
          mul_res                          when op = MUL_I or op = MULH_I or op = MULHU_I else
          div_res                          when op = DIV_I or op = DIVU_I else
          shift_res                        when op = SHA_I or op = SHL_I else
-         x                                when op = JZ_I or op = JNZ_I or op = JMP_I or op = JAL_I or op = RETI_I or op = EI_I or op = DI_I or op = WRS_I or op = RDS_I else
+         x                                when op = JZ_I or op = JNZ_I or op = JMP_I or op = JAL_I or op = RETI_I or op = EI_I or op = DI_I or op = WRS_I or op = RDS_I or op = CALL_I else
          "XXXXXXXXXXXXXXXX";
 
 	z <= '1' when y = x"0000" else '0';

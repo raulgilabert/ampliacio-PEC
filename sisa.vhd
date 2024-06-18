@@ -3,6 +3,9 @@ USE ieee.std_logic_1164.all;
 USE ieee.std_logic_arith.all;
 USE ieee.std_logic_unsigned.all;
 
+library work;
+use work.renacuajo_pkg.all;
+
 ENTITY sisa IS
     PORT (CLOCK_50  : IN    STD_LOGIC;
           SRAM_ADDR : out   std_logic_vector(17 downto 0);
@@ -54,7 +57,9 @@ ARCHITECTURE Structure OF sisa IS
 			div_zero	: out std_logic;
 			il_inst 	: out std_logic;
 			call 		: out std_logic;
-			mem_op		: out std_logic
+			mem_op		: out std_logic;
+			mode		: out mode_t;
+			inst_prot	: out std_logic
 		);
 	END COMPONENT;
 	
@@ -80,7 +85,9 @@ ARCHITECTURE Structure OF sisa IS
 		rd_data_VGA	: IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		vga_byte_m	: OUT std_logic;
 		mem_except 	: OUT std_logic;
-		mem_op	    : IN  std_logic
+		mem_op	    : IN  std_logic;
+		mem_prot		: OUT  std_logic;
+		mode		: IN mode_t
 		);
 	END COMPONENT;
 	
@@ -214,6 +221,8 @@ ARCHITECTURE Structure OF sisa IS
 			con_in  : IN  STD_LOGIC; -- inst ilegal
 			int_in  : IN  STD_LOGIC; -- interrupcio
 			call_in : IN  STD_LOGIC; -- syscall
+			inst_prot : IN  STD_LOGIC; -- instruccio protegida
+			mem_prot : IN  STD_LOGIC; -- memoria protegida
 			exc_code: OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
 			except  : OUT STD_LOGIC
 		);
@@ -281,6 +290,9 @@ ARCHITECTURE Structure OF sisa IS
 	SIGNAL call_s : std_logic;
 
 	SIGNAL mem_op_s : std_logic;
+	SIGNAL mem_prot_s : std_logic;
+	SIGNAL inst_prot_s : std_logic;
+	SIGNAL mode_s : mode_t;
 
 
 BEGIN
@@ -316,7 +328,9 @@ BEGIN
 			div_zero => div_zero_s,
 			il_inst => il_inst_s,
 			call => call_s,
-			mem_op => mem_op_s
+			mem_op => mem_op_s,
+			mode => mode_s,
+			inst_prot => inst_prot_s
 		);
 		
 	mem0: MemoryController
@@ -340,7 +354,9 @@ BEGIN
 			rd_data_VGA => rd_data_VGA_s,
 			vga_byte_m  => vga_byte_m_s,
 			mem_except => mem_except_s,
-			mem_op => mem_op_s
+			mem_op => mem_op_s,
+			mode => mode_s,
+			mem_prot => mem_prot_s
 		);
 		
 		io0: controladores_io
@@ -471,7 +487,9 @@ BEGIN
 				int_in => intr_s,
 				call_in => call_s,
 				exc_code => exc_code_s,
-				except => except_s
+				except => except_s,
+				inst_prot => inst_prot_s,
+				mem_prot => mem_prot_s
 			);
 	
 END Structure;

@@ -171,7 +171,8 @@ BEGIN
 			  "001" when ir(15 downto 12) = OP_SPECIAL and special = RETI_I else --hardcodegem que baixi el registre s1
 			  ir(8 downto 6);
 
-	addr_d <= ir(11 downto 9);
+	addr_d <= "011" when ir(15 downto 12) = OP_JUMP and special = CALL_I else
+			  ir(11 downto 9);
 
 	ei <= '1' when ir(15 downto 12) = OP_SPECIAL and special = EI_I else '0';
 	di <= '1' when ir(15 downto 12) = OP_SPECIAL and special = DI_I else
@@ -210,7 +211,7 @@ BEGIN
 			 '1' when ir(15 downto 12) = OP_LDB else --ldb
 			 '1' when ir(15 downto 12) = OP_IO and ir(8) = '0' else --in
 			 '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVVR_I else --mvvr
-			 '1' when ir(15 downto 12) = OP_SPECIAL and (super_special = WRS_I or super_special = GETIID_I) else --wrs
+			 '1' when ir(15 downto 12) = OP_SPECIAL and (super_special = WRS_I or super_special=RDS_I or super_special = GETIID_I) else --wrs
 			 '0';
 	
 	vwrd <= '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVRV_I else --mvr
@@ -274,6 +275,7 @@ BEGIN
 			 '0';
 	
 	d_sys <= '1' when ir(15 downto 12) = OP_SPECIAL and special = WRS_I else 
+		     '1' when ir(15 downto 12) = OP_JUMP and special = CALL_I else
 			 '0';
 	
 	mem_op <= '1' when (ir(15 downto 12) = OP_LD or ir(15 downto 12) = OP_LDB or

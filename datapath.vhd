@@ -41,7 +41,9 @@ ENTITY datapath IS
 		  int_e		: OUT STD_LOGIC;
 		  sys		: IN STD_LOGIC;
 		  pc_sys : OUT STD_LOGIC_VECTOR(15 downto 0);
-		  div_zero : OUT std_logic
+		  div_zero : OUT std_logic;
+		  mode		: OUT mode_t;
+		  call		: IN STD_LOGIC
 		  );
 END datapath;
 
@@ -70,7 +72,9 @@ ARCHITECTURE Structure OF datapath IS
 		PCsys	: OUT STD_LOGIC_VECTOR(15 downto 0);
 		addr_m	: IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		except	: IN  STD_LOGIC;
-		exc_code: IN  STD_LOGIC_VECTOR(3 DOWNTO 0)
+		exc_code: IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
+		mode	: OUT mode_t;
+		call	: IN STD_LOGIC
 	);
 	END COMPONENT;
 	
@@ -156,7 +160,9 @@ BEGIN
 			PCsys => pc_sys,
 			addr_m => addr_m_s,
 			except => except,
-			exc_code => exc_code
+			exc_code => exc_code,
+			mode => mode,
+			call => call
 		);
 
 	vreg0 : vregfile
