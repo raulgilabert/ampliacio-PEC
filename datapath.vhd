@@ -10,6 +10,7 @@ ENTITY datapath IS
     PORT (clk      : IN  STD_LOGIC;
           op        : IN INST;
           wrd      : IN  STD_LOGIC;
+          vwrd      : IN  STD_LOGIC;
           addr_a   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_b   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_d   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -29,6 +30,8 @@ ENTITY datapath IS
 		  boot	   : IN  STD_LOGIC;
 		  except   : IN  std_logic;
 		  exc_code : IN  std_logic_vector(3 downto 0);
+		  va_old_vd	   : IN  STD_LOGIC;
+		  vec_produce_sca : IN  STD_LOGIC;
           addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
           data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		  aluout   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -84,18 +87,54 @@ ARCHITECTURE Structure OF datapath IS
 				 div_zero : OUT std_logic
 				 );
 	END COMPONENT;
+
+	COMPONENT vregfile IS
+		PORT (
+			clk 	: IN  std_logic;
+			wrd		: IN  std_logic;
+			d 		: IN  std_logic_vector(127 downto 0);
+			addr_a  : IN  std_logic_vector(2 downto 0);
+			addr_b  : IN  std_logic_vector(2 downto 0);
+			addr_d  : IN  std_logic_vector(2 downto 0);
+			a 		: OUT std_logic_vector(127 downto 0);
+			b 		: OUT std_logic_vector(127 downto 0);
+			old_d	: OUT  std_logic_vector(127 downto 0)
+		);
+	END COMPONENT;
+
+	COMPONENT valu IS
+		PORT (
+			x_vec	: IN  STD_LOGIC_VECTOR(127 downto 0);
+			x_sca	: IN  STD_LOGIC_VECTOR(15 downto 0);
+			y		: IN  STD_LOGIC_VECTOR(127 downto 0);
+			immed	: IN  STD_LOGIC_VECTOR(2 downto 0);
+			op		: IN  INST;
+			w_vec	: OUT STD_LOGIC_VECTOR(127 downto 0);
+			w_sca	: OUT STD_LOGIC_VECTOR(15 downto 0);
+			div_zero: OUT std_logic
+		);
+	END COMPONENT;
 			
 	SIGNAL ra: std_logic_vector(15 downto 0);	
 	SIGNAL rb: std_logic_vector(15 downto 0);	
 	--SIGNAL rd: std_logic_vector(15 downto 0);
 	SIGNAL d: std_logic_vector(15 downto 0);
 	SIGNAL rd_alu: std_logic_vector(15 downto 0);
+	SIGNAL rd_alu_sca: std_logic_vector(15 downto 0);
+	SIGNAL rd_alu_vec: std_logic_vector(15 downto 0);
 	--SIGNAL rd_mem: std_logic_vector(15 downto 0);
 	SIGNAL immed_out: std_logic_vector(15 downto 0);
 	SIGNAL rb_out: std_logic_vector(15 downto 0);
 	SIGNAL z: std_logic;
 	SIGNAL new_pc: std_logic_vector(15 downto 0);
 	SIGNAL addr_m_s: std_logic_vector(15 downto 0);
+	SIGNAL vd: std_logic_vector(127 downto 0);
+	SIGNAL va_s: std_logic_vector(127 downto 0);
+	SIGNAL va: std_logic_vector(127 downto 0);
+	SIGNAL vb: std_logic_vector(127 downto 0);
+	SIGNAL old_vd: std_logic_vector(127 downto 0);
+	SIGNAL div_zero_sca: std_logic;
+	SIGNAL div_zero_vec: std_logic;
 BEGIN
 
 	reg0: regfile
@@ -125,17 +164,48 @@ BEGIN
 			mode => mode,
 			call => call
 		);
+
+	vreg0 : vregfile
+		PORT map(
+			clk => clk,
+			wrd => vwrd,
+			d => vd,
+			addr_a => addr_a,
+			addr_b => addr_b,
+			addr_d => addr_d,
+			a => va_s,
+			b => vb,
+			old_d => old_vd
+		);
 		
 	alu0: alu
 		PORT map(
 			x => ra,
 			y => rb_out,
 			op => op,
-			w => rd_alu,
+			w => rd_alu_sca,
 			z => z,
-			div_zero => div_zero
+			div_zero => div_zero_sca
+		);
+	
+	va <= va_s when va_old_vd = '0' else old_vd;
+
+	valu0: valu
+		PORT map(
+			x_vec => va,
+			x_sca => ra,
+			y => vb,
+			immed => rb_out(2 downto 0),
+			op => op,
+			w_vec => vd,
+			w_sca => rd_alu_vec,
+			div_zero => div_zero_vec
 		);
 
+	rd_alu <= rd_alu_sca when vec_produce_sca = '0' else rd_alu_vec;
+
+	div_zero <= div_zero_sca when wrd = '1' else div_zero_vec when vwrd = '1' else '0';
+	
 	new_pc <= std_logic_vector(unsigned(pc) + 2);
 		
 	with in_d select

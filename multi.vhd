@@ -9,6 +9,7 @@ entity multi is
          boot      : IN  STD_LOGIC;
          ldpc_l    : IN  STD_LOGIC;
          wrd_l     : IN  STD_LOGIC;
+         vwrd_l    : IN  STD_LOGIC;
          wr_m_l    : IN  STD_LOGIC;
          w_b       : IN  STD_LOGIC;
          intr      : IN  STD_LOGIC;
@@ -25,6 +26,7 @@ entity multi is
          exc_code : IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
          ldpc      : OUT STD_LOGIC;
          wrd       : OUT STD_LOGIC;
+         vwrd      : OUT STD_LOGIC;
          wr_m      : OUT STD_LOGIC;
          ldir      : OUT STD_LOGIC;
          ins_dad   : OUT STD_LOGIC;
@@ -89,15 +91,18 @@ begin
     wrd <= wrd_l when state_s = DEMW else
             '0' when state_s = SYSTEM else 
             '0';
-    wr_m <= wr_m_l when state_s = DEMW else '0';
-    word_byte <= w_b when state_s = DEMW else '0';
-    ldpc <= ldpc_l when state_s = DEMW or state_s = SYSTEM else '0';
-    in_d <= "10" when state_s = SYSTEM else in_d_l;
-    addr_d <= "001" when state_s = SYSTEM else addr_d_l;
-    addr_a <= "101" when state_s = SYSTEM else addr_a_l;
-    op <= op_l;
     sys <= '1' when state_s = SYSTEM else '0';
 
     state <= state_s;
 
+    vwrd <= vwrd_l when state = DEMW else
+            '0';
+    wr_m <= wr_m_l when state = DEMW else '0';
+    word_byte <= w_b when state = DEMW else '0';
+    ldpc <= ldpc_l when state = DEMW or state = SYSTEM else '0';
+    in_d <= "10" when state = SYSTEM else in_d_l;
+    addr_d <= "001" when state = SYSTEM else addr_d_l;
+    addr_a <= "101" when state = SYSTEM else addr_a_l;
+    op <= op_l;
+    sys <= '1' when state = SYSTEM else '0';
 end Structure;
