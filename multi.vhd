@@ -70,20 +70,20 @@ begin
                     END if;
                 when DEMW => 
                     if (intr = '1' and int_e = '1') or except = '1' then
-                        state <= SYSTEM;
+                        state_s <= SYSTEM;
                     elsif (fp_op) then
-                        state <= FP1;
+                        state_s <= FP1;
                     else
-                        state <= F;
+                        state_s <= F;
                     END if;
                 when SYSTEM => 
-                    state <= F;
+                    state_s <= F;
                 when FP1 =>
-                    state <= FP2;
+                    state_s <= FP2;
                 when FP2 =>
-                    state <= FP3;
+                    state_s <= FP3;
                 when FP3 =>
-                    state <= F;
+                    state_s <= F;
             END case;
 		 else 
 			state_s <= state_s;
