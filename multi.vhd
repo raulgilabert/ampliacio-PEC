@@ -45,8 +45,6 @@ end entity;
 architecture Structure of multi is
 
     -- Aqui iria la declaracion de las los estados de la maquina de estados
-    TYPE state_t is (F, DEMW, SYSTEM, FP1, FP2, FP3);
-
     SIGNAL state: state_t; 
     SIGNAL fp_op : boolean;
 
