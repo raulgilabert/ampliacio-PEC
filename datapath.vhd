@@ -120,6 +120,7 @@ ARCHITECTURE Structure OF datapath IS
 	SIGNAL addr_m_s: std_logic_vector(15 downto 0);
 	SIGNAL fp_ra, fp_rb, fp_result: std_logic_vector(15 downto 0);
 	SIGNAL fp_funct: std_logic_vector(4 downto 0);
+	SIGNAL d_fpu: std_logic_vector(15 downto 0);
 BEGIN
 
 	reg0: regfile
@@ -174,7 +175,7 @@ BEGIN
 		PORT MAP(
 			clk => clk,
 			wrd => wrd_fpu,
-			d => fp_result,
+			d => d_fpu,
 			addr_a => addr_a,
 			addr_b => addr_b,
 			addr_d => addr_d,
@@ -183,6 +184,10 @@ BEGIN
 	);
 
 	new_pc <= std_logic_vector(unsigned(pc) + 2);
+
+	with in_d select
+		d_fpu <= datard_m when "01", --quan vingui algo de memoria ho posarem a d pero si no es de float no es guardara per wrd_fpu
+				 fp_result when others;
 		
 	with in_d select
 		d <= rd_alu when "00",
@@ -197,8 +202,10 @@ BEGIN
 	with immed_x2 select
 		immed_out <= immed when '0',
 						 immed(14 downto 0) & '0' when others;
-	
-	data_wr <= rb;
+
+	with op select
+		data_wr <= fp_rb when STF_I, --quan hi hagi stf deixar sortir la dada a escriure desde el regfile_fpu
+				   rb when others;
 
 	with Rb_N select
 		rb_out <= rb when '0',

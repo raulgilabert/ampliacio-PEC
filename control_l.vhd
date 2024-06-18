@@ -48,6 +48,8 @@ ARCHITECTURE Structure OF control_l IS
 	SIGNAL jump_wd: std_logic;
 	SIGNAL special: INST;
 	SIGNAL op_s: INST;
+	SIGNAL arit_cmp_float: INST;
+
 BEGIN
 
 	with ir(5 downto 3) select
@@ -105,6 +107,16 @@ BEGIN
 				   HALT_I when F_HALT,
 				   ILLEGAL_I when others;
 
+	with ir(5 downto 3) select
+		arit_cmp_float <= ADDF_I when F_ADDF, -- ADDF
+						  SUBF_I  WHEN F_SUBF, -- SUBF
+						  MULF_I WHEN F_MULF, -- MULF
+						  DIVF_I WHEN F_DIVF, -- DIVF
+						  CMPLTF_I WHEN F_CMPLTF, -- CMPLTF
+						  CMPLEF_I WHEN F_CMPLEF, -- CMPLEF
+						  CMPEQF_I WHEN F_CMPEQF, -- CMPEQF
+						  ILLEGAL_I WHEN others;
+
 	with ir(8) select
 		move <= MOVI_I when '0', -- MOVI
 				MOVHI_I when others; -- MOVHI
@@ -132,6 +144,9 @@ BEGIN
 		        LDB_I when OP_LDB, --LDB
 			    STB_I when OP_STB, -- STB
 			    special when OP_SPECIAL, -- HALT
+				LDF_I when OP_LDF, --LDF
+				STF_I when OP_STF, --STF
+				arit_cmp_float when OP_FLOAT,
 			    ILLEGAL_I when others;
 
 	op <= op_s;
@@ -146,6 +161,8 @@ BEGIN
 				'1' when OP_MOV, --MOVI i MOVHI
 				'1' when OP_LDB, --LDB
 				'1' when OP_STB, --STB
+				'1' when OP_STF, --STF
+				'1' when OP_LDF, --LDF
 				'0' when others;
 
 	addr_a <= ir(11 downto 9) when ir(15 downto 12) = OP_MOV else
@@ -168,6 +185,7 @@ BEGIN
 					 ir(11 downto 9) when OP_BRANCH,
 					 ir(11 downto 9) when OP_IO,
 					 ir(11 downto 9) when OP_JUMP,
+					 ir(11 downto 9) when OP_STF,
 					 ir(2 downto 0) when others;
 
 	immed <= ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7 downto 0) when ir(15 downto 12) = OP_MOV else
