@@ -47,7 +47,7 @@ ENTITY unidad_control IS
 		  il_inst : OUT STD_LOGIC;
 		  mem_op : OUT STD_LOGIC;
 		  inst_prot : OUT STD_LOGIC;
-		  mode : IN mode_t
+		  mode : IN mode_t;
 		  va_old_vd : OUT STD_LOGIC;
 		  vec_produce_sca : OUT STD_LOGIC
 		  );

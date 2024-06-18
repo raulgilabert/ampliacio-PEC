@@ -74,7 +74,7 @@ ARCHITECTURE Structure OF proc IS
 			 il_inst : OUT STD_LOGIC;
 			 mem_op : OUT STD_LOGIC;
 			 mode	: IN mode_t;
-			 inst_prot : OUT std_logic
+			 inst_prot : OUT std_logic;
 			 va_old_vd : OUT STD_LOGIC;
 			 vec_produce_sca : OUT STD_LOGIC
 		 );
@@ -189,7 +189,7 @@ BEGIN
 				il_inst => il_inst,
 			mem_op => mem_op,
 			mode => mode_s,
-			inst_prot => inst_prot
+			inst_prot => inst_prot,
 			va_old_vd => va_old_vd,
 			vec_produce_sca => vec_produce_sca
 			);
@@ -230,7 +230,7 @@ BEGIN
 				exc_code => exc_code,
 				div_zero => div_zero,
 				mode => mode_s,
-				call => call_s
+				call => call_s,
 				va_old_vd => va_old_vd,
 				vec_produce_sca => vec_produce_sca
 			);
