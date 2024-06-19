@@ -238,6 +238,7 @@ BEGIN
 			 '1' when ir(15 downto 12) = OP_MULDIV else -- mul & div
 			 jump_wd when ir(15 downto 12) = OP_JUMP else --jal
 			 '1' when ir(15 downto 12) = OP_LDB else --ldb
+			 '1' when ir(15 downto 12) = OP_FLOAT and (ir(5 downto 3) = F_CMPLTF or ir(5 downto 3) = F_CMPLEF or ir(5 downto 3) = F_CMPEQF) else
 			 '1' when ir(15 downto 12) = OP_IO and ir(8) = '0' else --in
 			 '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVVR_I else --mvvr
 			 '1' when ir(15 downto 12) = OP_SPECIAL and (super_special = WRS_I or super_special=RDS_I or super_special = GETIID_I) else --wrs
@@ -321,7 +322,7 @@ BEGIN
 	vec_produce_sca <= '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVVR_I else
 			'0';
 
-  wrd_fpu <= '1' when ir(15 downto 12) = OP_LDF or ir(15 downto 12) = OP_FLOAT else
+  wrd_fpu <= '1' when ir(15 downto 12) = OP_LDF or (ir(15 downto 12) = OP_FLOAT and ir(5 downto 3) /= F_CMPLTF and ir(5 downto 3) /= F_CMPLEF and ir(5 downto 3) /= F_CMPEQF) else
 			   '0';			
 
 END Structure;

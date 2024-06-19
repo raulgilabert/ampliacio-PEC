@@ -100,7 +100,7 @@ begin
     di <= di_l when state_s = DEMW else '0';
     inta <= inta_l when state_s = DEMW else '0';
     d_sys <= '1' when state_s = SYSTEM and op_l /= RDS_I else d_sys_l;
-    wrd <= wrd_l when state_s = DEMW else
+    wrd <= wrd_l when state_s = DEMW or state_s = FP3 else
             '0' when state_s = SYSTEM else 
             '0';
 

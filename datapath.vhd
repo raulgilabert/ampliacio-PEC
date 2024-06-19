@@ -234,7 +234,9 @@ ARCHITECTURE Structure OF datapath IS
 			div_zero => div_zero_vec
 		);
 
-	rd_alu <= rd_alu_sca when vec_produce_sca = '0' else rd_alu_vec;
+	rd_alu <= fp_result when op = CMPLEF_I or op = CMPLTF_I or op = CMPEQF_I else
+			  rd_alu_sca when vec_produce_sca = '0' else
+			  rd_alu_vec;
 
 	div_zero <= div_zero_sca when wrd = '1' else div_zero_vec when vwrd = '1' else '0';
 	
