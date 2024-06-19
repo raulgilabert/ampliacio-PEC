@@ -16,12 +16,14 @@ ENTITY datapath IS
           addr_d   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           immed    : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           immed_x2 : IN  STD_LOGIC;
+		  immed_x16: IN  STD_LOGIC;
           datard_m : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		  vec_rd   : IN  STD_LOGIC_VECTOR(127 DOWNTO 0);
           ins_dad  : IN  STD_LOGIC;
           pc       : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           in_d     : IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
 		  Rb_N     : IN  STD_LOGIC;
-		  d_sys	   : IN  STD_LOGIC;
+		  d_sys	   : IN  STD_LOGIC;					
 	      a_sys	   : IN  STD_LOGIC;
 		  ei 	   : IN  STD_LOGIC;
 		  di 	   : IN  STD_LOGIC;
@@ -32,9 +34,10 @@ ENTITY datapath IS
 		  exc_code : IN  std_logic_vector(3 downto 0);
 		  va_old_vd	   : IN  STD_LOGIC;
 		  vec_produce_sca : IN  STD_LOGIC;
-		  wrd_fpu  : IN std_logic;
+		  vec		: IN  STD_LOGIC;
           addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
           data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		  vec_wr   : OUT STD_LOGIC_VECTOR(127 DOWNTO 0);
 		  aluout   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		  tknbr    : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
 		  wr_io    : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -42,12 +45,7 @@ ENTITY datapath IS
 		  int_e		: OUT STD_LOGIC;
 		  sys		: IN STD_LOGIC;
 		  pc_sys : OUT STD_LOGIC_VECTOR(15 downto 0);
-		  div_zero : OUT std_logic;
-		  mode		: OUT mode_t;
-		  call		: IN STD_LOGIC;
-		  of_en		: OUT STD_LOGIC;
-		  div_z_fp	: OUT STD_LOGIC;
-		  of_fp		: OUT  STD_LOGIC
+		  div_zero : OUT std_logic
 		  );
 END datapath;
 
@@ -76,10 +74,7 @@ ARCHITECTURE Structure OF datapath IS
 		PCsys	: OUT STD_LOGIC_VECTOR(15 downto 0);
 		addr_m	: IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		except	: IN  STD_LOGIC;
-		exc_code: IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
-		mode	: OUT mode_t;
-		call	: IN STD_LOGIC;
-		of_en	: OUT STD_LOGIC
+		exc_code: IN  STD_LOGIC_VECTOR(3 DOWNTO 0)
 	);
 	END COMPONENT;
 	
@@ -119,28 +114,6 @@ ARCHITECTURE Structure OF datapath IS
 			div_zero: OUT std_logic
 		);
 	END COMPONENT;
-	
-	COMPONENT bf16_unit is
-		port(clk: in std_logic;
-			 reset: in std_logic;
-		 	 in1: in std_logic_vector(15 downto 0) ;
-			 in2: in std_logic_vector(15 downto 0) ;
-			 funct5: in std_logic_vector(4 downto 0) ;
-			 result: out std_logic_vector(15 downto 0);
-			 of_fp: out std_logic
-			);
-    END COMPONENT;
-
-	COMPONENT regfile_fpu IS
-    PORT (clk    : IN  STD_LOGIC;
-          wrd    : IN  STD_LOGIC;
-          d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
-          addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
-          addr_b : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
-          addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
-          a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-          b      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
-	END COMPONENT;
 			
 	SIGNAL ra: std_logic_vector(15 downto 0);	
 	SIGNAL rb: std_logic_vector(15 downto 0);	
@@ -160,13 +133,11 @@ ARCHITECTURE Structure OF datapath IS
 	SIGNAL va: std_logic_vector(127 downto 0);
 	SIGNAL vb: std_logic_vector(127 downto 0);
 	SIGNAL old_vd: std_logic_vector(127 downto 0);
-	SIGNAL div_zero_sca: std_logic;
-	SIGNAL div_zero_vec: std_logic;
-	SIGNAL fp_ra, fp_rb, fp_result: std_logic_vector(15 downto 0);
-	SIGNAL fp_funct: std_logic_vector(4 downto 0);
-	SIGNAL d_fpu: std_logic_vector(15 downto 0);
+	SIGNAL div_zero_s: std_LOGIC;
+	SIGNAL div_zero_s1: std_LOGIC;
+	SIGNAL vd_alu: std_logic_vector(127 downto 0);
 
-  BEGIN
+BEGIN
 
 	reg0: regfile
 		PORT map(
@@ -191,10 +162,7 @@ ARCHITECTURE Structure OF datapath IS
 			PCsys => pc_sys,
 			addr_m => addr_m_s,
 			except => except,
-			exc_code => exc_code,
-			mode => mode,
-			call => call,
-			of_en => of_en
+			exc_code => exc_code
 		);
 
 	vreg0 : vregfile
@@ -217,10 +185,11 @@ ARCHITECTURE Structure OF datapath IS
 			op => op,
 			w => rd_alu_sca,
 			z => z,
-			div_zero => div_zero_sca
+			div_zero => div_zero_s1
 		);
 	
 	va <= va_s when va_old_vd = '0' else old_vd;
+	vd <= vd_alu when vec = '0' else vec_rd;
 
 	valu0: valu
 		PORT map(
@@ -229,45 +198,18 @@ ARCHITECTURE Structure OF datapath IS
 			y => vb,
 			immed => rb_out(2 downto 0),
 			op => op,
-			w_vec => vd,
+			w_vec => vd_alu,
 			w_sca => rd_alu_vec,
-			div_zero => div_zero_vec
+			div_zero => div_zero_s
 		);
 
-	rd_alu <= fp_result when op = CMPLEF_I or op = CMPLTF_I or op = CMPEQF_I else
-			  rd_alu_sca when vec_produce_sca = '0' else
-			  rd_alu_vec;
 
-	div_zero <= div_zero_sca when wrd = '1' else div_zero_vec when vwrd = '1' else '0';
-	
-	fpu: bf16_unit
-		PORT map(
-			clk => clk,
-			reset => not boot,
-		 	in1 => fp_ra,
-			in2 => fp_rb,
-			funct5 => fp_funct,
-			result => fp_result,
-			of_fp => of_fp
-		);
 
-	reg0_fpu: regfile_fpu
-		PORT MAP(
-			clk => clk,
-			wrd => wrd_fpu,
-			d => d_fpu,
-			addr_a => addr_a,
-			addr_b => addr_b,
-			addr_d => addr_d,
-			a => fp_ra,
-			b => fp_rb
-	);
+	div_zero <= div_zero_s or div_zero_s1;
+		
+	rd_alu <= rd_alu_sca when vec_produce_sca = '0' else rd_alu_vec;
 
 	new_pc <= std_logic_vector(unsigned(pc) + 2);
-
-	with in_d select
-		d_fpu <= datard_m when "01", --quan vingui algo de memoria ho posarem a d pero si no es de float no es guardara per wrd_fpu
-				 fp_result when others;
 		
 	with in_d select
 		d <= rd_alu when "00",
@@ -279,13 +221,18 @@ ARCHITECTURE Structure OF datapath IS
 		addr_m_s <= pc when '0',
 					 rd_alu when others;
 					 
-	with immed_x2 select
-		immed_out <= immed when '0',
-						 immed(14 downto 0) & '0' when others;
+	--with immed_x2 select
+		--immed_out <= immed when '0',
+		--				 immed(14 downto 0) & '0' when others;
 
-	with op select
-		data_wr <= fp_rb when STF_I, --quan hi hagi stf deixar sortir la dada a escriure desde el regfile_fpu
-				   rb when others;
+	
+	immed_out <= immed(14 downto 0) & '0' when immed_x2 = '1' and immed_x16 = '0' else
+				 immed(11 downto 0) & "0000" when immed_x2 = '0' and immed_x16 = '1' else
+				 immed;
+
+
+	data_wr <= rb;
+	vec_wr <= vb;
 
 	with Rb_N select
 		rb_out <= rb when '0',
@@ -302,16 +249,5 @@ ARCHITECTURE Structure OF datapath IS
 	
 	wr_io <= rb;
 	addr_m <= addr_m_s;
-
-	with op select
-		fp_funct <= "00000" when ADDF_I,
-					"00001" when SUBF_I,
-					"00010" when MULF_I,
-					"00011" when DIVF_I,
-					"00100" when CMPLTF_I,
-					"00101" when CMPLEF_I,
-					"00111" when others;
-
-	div_z_fp <= '1' when fp_rb = x"0000" and op = DIVF_I else '0';
 	
 END Structure;
