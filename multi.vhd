@@ -104,7 +104,7 @@ begin
             '0' when state_s = SYSTEM else 
             '0';
 
-    vwrd <= vwrd_l when state = DEMW else
+    vwrd <= vwrd_l when state_s = DEMW else
             '0';
     wr_m <= wr_m_l when state_s = DEMW else '0';
     word_byte <= w_b when state_s = DEMW else '0';

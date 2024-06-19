@@ -40,7 +40,7 @@ END controladores_io;
 
 ARCHITECTURE Structure of controladores_io is
 
-	TYPE t_io is array(0 to 255) of std_logic_vector(15 downto 0);
+	TYPE t_io is array(0 to 31) of std_logic_vector(15 downto 0);
 	SIGNAL io_mem: t_io;
 	SIGNAL butons: std_logic_vector(3 downto 0);
 	SIGNAL interruptors: std_logic_vector(7 downto 0);
