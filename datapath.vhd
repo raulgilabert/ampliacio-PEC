@@ -118,6 +118,8 @@ ARCHITECTURE Structure OF datapath IS
 			w_sca	: OUT STD_LOGIC_VECTOR(15 downto 0);
 			div_zero: OUT std_logic
 		);
+	END COMPONENT;
+	
 	COMPONENT bf16_unit is
 		port(clk: in std_logic;
 			 reset: in std_logic;

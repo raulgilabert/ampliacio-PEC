@@ -49,7 +49,7 @@ ENTITY unidad_control IS
 		  inst_prot : OUT STD_LOGIC;
 		  mode : IN mode_t;
 		  va_old_vd : OUT STD_LOGIC;
-		  vec_produce_sca : OUT STD_LOGIC
+		  vec_produce_sca : OUT STD_LOGIC;
 		  wrd_fpu : OUT STD_LOGIC
 		  );
 END unidad_control;
