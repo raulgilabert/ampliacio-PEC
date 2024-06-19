@@ -30,7 +30,8 @@ ENTITY regfile IS
 		except	: IN  STD_LOGIC;
 		exc_code: IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
 		mode	: OUT mode_t;
-		call	: IN  STD_LOGIC
+		call	: IN  STD_LOGIC;
+		of_en	: OUT STD_LOGIC
 	);
 END regfile;
 ARCHITECTURE Structure OF regfile IS
@@ -84,5 +85,7 @@ BEGIN
 	mode <= USER when sys_regs(7)(0) = '0' else SYSTEM;
 	
 	PCsys <= sys_regs(5); -- per permetre que es faci l'escriptura en pujada de flanc
+
+	of_en <= sys_regs(7)(2);
 
 END Structure;

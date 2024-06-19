@@ -16,7 +16,7 @@ ENTITY sisa IS
           SRAM_OE_N : out   std_logic := '1';
           SRAM_WE_N : out   std_logic := '1';
 			 LEDG		  : OUT	 std_LOGIC_VECTOR(7 DOWNTO 0);
-			 LEDR		  : OUT	 std_LOGIC_VECTOR(9 DOWNTO 0);
+			 LEDR		  : OUT	 std_LOGIC_VECTOR(7 DOWNTO 0);
 			 HEX0 	  : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
 			 HEX1 	  : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
 			 HEX2		  : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
@@ -59,7 +59,10 @@ ARCHITECTURE Structure OF sisa IS
 			call 		: out std_logic;
 			mem_op		: out std_logic;
 			mode		: out mode_t;
-			inst_prot	: out std_logic
+			inst_prot	: out std_logic;
+			of_en		: out std_logic;
+			div_z_fp	: out std_logic;
+			of_fp		: out std_logic
 		);
 	END COMPONENT;
 	
@@ -218,13 +221,16 @@ ARCHITECTURE Structure OF sisa IS
 			boot    : IN  STD_LOGIC;
 			alu_in  : IN  STD_LOGIC; -- div_zero
 			mem_in  : IN  STD_LOGIC; -- alinacio impar
+			of_fp   : IN  STD_LOGIC; -- overflow coma flotant
+			div_z_fp : IN STD_LOGIC; -- div zero coma flotant
 			con_in  : IN  STD_LOGIC; -- inst ilegal
 			int_in  : IN  STD_LOGIC; -- interrupcio
 			call_in : IN  STD_LOGIC; -- syscall
 			inst_prot : IN  STD_LOGIC; -- instruccio protegida
 			mem_prot : IN  STD_LOGIC; -- memoria protegida
 			exc_code: OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-			except  : OUT STD_LOGIC
+			except  : OUT STD_LOGIC;
+			of_en	: IN STD_LOGIC
 		);
 	END COMPONENT;
 
@@ -293,7 +299,7 @@ ARCHITECTURE Structure OF sisa IS
 	SIGNAL mem_prot_s : std_logic;
 	SIGNAL inst_prot_s : std_logic;
 	SIGNAL mode_s : mode_t;
-
+	SIGNAL of_en_s, div_z_fp_s, of_fp_s : std_logic; 
 
 BEGIN
 
@@ -330,7 +336,10 @@ BEGIN
 			call => call_s,
 			mem_op => mem_op_s,
 			mode => mode_s,
-			inst_prot => inst_prot_s
+			inst_prot => inst_prot_s,
+			of_en => of_en_s,
+			div_z_fp => div_z_fp_s,
+			of_fp => of_fp_s
 		);
 		
 	mem0: MemoryController
@@ -483,13 +492,16 @@ BEGIN
 				boot => SW(9),
 				alu_in => div_zero_s,
 				mem_in => mem_except_s,
+				of_fp => of_fp_s,
+				div_z_fp => div_z_fp_s,
 				con_in => il_inst_s,
 				int_in => intr_s,
 				call_in => call_s,
 				exc_code => exc_code_s,
 				except => except_s,
 				inst_prot => inst_prot_s,
-				mem_prot => mem_prot_s
+				mem_prot => mem_prot_s,
+				of_en => of_en_s
 			);
 	
 END Structure;
