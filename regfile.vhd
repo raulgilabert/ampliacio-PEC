@@ -3,9 +3,6 @@ USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;        --Esta libreria sera necesaria si usais conversiones TO_INTEGER
 --USE ieee.std_logic_unsigned.all; --Esta libreria sera necesaria si usais conversiones CONV_INTEGER
 
-LIBRARY work;
-USE work.renacuajo_pkg.all;
-
 ENTITY regfile IS
    PORT (
 		clk    	: IN  STD_LOGIC;
@@ -28,10 +25,7 @@ ENTITY regfile IS
 		PCsys	: OUT STD_LOGIC_VECTOR(15 downto 0);
 		addr_m	: IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		except	: IN  STD_LOGIC;
-		exc_code: IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
-		mode	: OUT mode_t;
-		call	: IN  STD_LOGIC;
-		of_en	: OUT STD_LOGIC
+		exc_code: IN  STD_LOGIC_VECTOR(3 DOWNTO 0)
 	);
 END regfile;
 ARCHITECTURE Structure OF regfile IS
@@ -52,21 +46,15 @@ BEGIN
 			elsif (di = '1') then
 				sys_regs(7)(1) <= '0';
 			elsif (reti = '1') then 
-				sys_regs(7) <= sys_regs(0)(15 downto 1) & '0';
+				sys_regs(7) <= sys_regs(0);
 			END if;	
 			
-			if sys = '1' and sys_regs(7)(0) = '0' then 
+			if sys = '1' then 
 				sys_regs(0) <= sys_regs(7);
 				sys_regs(1) <= PCret;
 				sys_regs(2) <= x"000" & exc_code;
+				sys_regs(3) <= addr_m;
 				sys_regs(7)(1) <= '0';
-				sys_regs(7)(0) <= '1'; --activem el mode sistema
-                                				
-				if exc_code = x"1" then
-					sys_regs(3) <= addr_m;
-				elsif exc_code = x"E" then
-					sys_regs(3) <= regs(to_integer(unsigned(addr_a)));
-				END if;
 			END if;
 		END if;
 			
@@ -74,7 +62,7 @@ BEGIN
 			sys_regs(2) <= x"0000";
 			sys_regs(5) <= x"0000";
 			sys_regs(3) <= x"0000";
-			sys_regs(7) <= x"0001";
+			sys_regs(7) <= x"0000";
 		END if;
 	END PROCESS;
 	
@@ -82,10 +70,7 @@ BEGIN
 	b <= regs(to_integer(unsigned(addr_b)));
 
 	int_e <= sys_regs(7)(1);
-	mode <= USER when sys_regs(7)(0) = '0' else SYSTEM;
 	
 	PCsys <= sys_regs(5); -- per permetre que es faci l'escriptura en pujada de flanc
-
-	of_en <= sys_regs(7)(2);
 
 END Structure;

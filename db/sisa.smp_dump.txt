@@ -1,0 +1,43 @@
+
+State Machine - |sisa|keyboard_controller:kb|ps2_keyboard_interface:k0|m1_state
+Name m1_state.m1_tx_rising_edge_marker m1_state.m1_tx_error_no_keyboard_ack m1_state.m1_tx_done_recovery m1_state.m1_tx_wait_keyboard_ack m1_state.m1_tx_clk_l m1_state.m1_tx_clk_h m1_state.m1_tx_wait_clk_h m1_state.m1_tx_reset_timer m1_state.m1_tx_first_wait_clk_l m1_state.m1_tx_first_wait_clk_h m1_state.m1_tx_force_clk_l m1_state.m1_rx_rising_edge_marker m1_state.m1_rx_falling_edge_marker m1_state.m1_rx_clk_l m1_state.m1_rx_clk_h 
+m1_state.m1_rx_clk_h 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+m1_state.m1_rx_clk_l 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+m1_state.m1_rx_falling_edge_marker 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+m1_state.m1_rx_rising_edge_marker 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+m1_state.m1_tx_force_clk_l 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+m1_state.m1_tx_first_wait_clk_h 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+m1_state.m1_tx_first_wait_clk_l 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+m1_state.m1_tx_reset_timer 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+m1_state.m1_tx_wait_clk_h 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+m1_state.m1_tx_clk_h 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+m1_state.m1_tx_clk_l 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+m1_state.m1_tx_wait_keyboard_ack 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+m1_state.m1_tx_done_recovery 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+m1_state.m1_tx_error_no_keyboard_ack 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+m1_state.m1_tx_rising_edge_marker 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |sisa|MemoryController:mem0|rd_state
+Name rd_state.VEC_WAIT rd_state.VEC_READ rd_state.INI 
+rd_state.INI 0 0 0 
+rd_state.VEC_READ 0 1 1 
+rd_state.VEC_WAIT 1 0 1 
+
+State Machine - |sisa|MemoryController:mem0|wr_state
+Name wr_state.VEC_WAIT wr_state.VEC_WRITE wr_state.INI 
+wr_state.INI 0 0 0 
+wr_state.VEC_WRITE 0 1 1 
+wr_state.VEC_WAIT 1 0 1 
+
+State Machine - |sisa|MemoryController:mem0|SRAMController:sram_c|state
+Name state.WRITE_2 state.WRITE_1 state.WRITE_0 
+state.WRITE_0 0 0 0 
+state.WRITE_1 0 1 1 
+state.WRITE_2 1 0 1 
+
+State Machine - |sisa|proc:pro0|unidad_control:c0|multi:m|state
+Name state.M state.SYSTEM state.DEMW state.F 
+state.F 0 0 0 0 
+state.DEMW 0 0 1 1 
+state.SYSTEM 0 1 0 1 
+state.M 1 0 0 1 

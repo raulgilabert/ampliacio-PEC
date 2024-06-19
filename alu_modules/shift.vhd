@@ -24,8 +24,8 @@ BEGIN
     sha <= std_logic_vector(shift_left(signed(x), to_integer(signed(y(4 downto 0))))) when y(4) = '0' else
            std_logic_vector(shift_right(signed(x), to_integer(-signed(y(4 downto 0)))));
     
-    w <= sha when op = SHA_I or op = SHAV_I else
-         shl when op = SHL_I or op = SHLV_I else
+    w <= sha when op = SHA_I else
+         shl when op = SHL_I else
          x"0000";
 END Structural;
 

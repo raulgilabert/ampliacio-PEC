@@ -3,9 +3,6 @@ USE ieee.std_logic_1164.all;
 USE ieee.std_logic_arith.all;
 USE ieee.std_logic_unsigned.all;
 
-library work;
-use work.renacuajo_pkg.all;
-
 ENTITY sisa IS
     PORT (CLOCK_50  : IN    STD_LOGIC;
           SRAM_ADDR : out   std_logic_vector(17 downto 0);
@@ -40,29 +37,28 @@ ARCHITECTURE Structure OF sisa IS
 			clk 			: IN STD_LOGIC;
 			boot 			: IN STD_LOGIC;
 			datard_m 	: IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+			vec_rd		: IN STD_LOGIC_VECTOR(127 DOWNTO 0);
 			addr_m 		: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-			data_wr 		: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			data_wr		: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			vec_wr		: OUT STD_LOGIC_VECTOR(127 DOWNTO 0);
 			wr_m 			: OUT STD_LOGIC;
-			word_byte	: OUT STD_LOGIC;
+			word_byte 	: OUT STD_LOGIC;
 			addr_io	  	: out std_LOGIC_VECTOR(7 DOWNTO 0);
-			rd_io			: IN std_LOGIC_vector(15 downto 0);
-			wr_io			: out std_LOGIC_vector(15 downto 0);
+			rd_io			: in std_LOGIC_vector(15 DOWNTO 0);
+			wr_io			: out std_LOGIC_VECTOR(15 downto 0);
 			rd_in			: out std_LOGIC;
 			wr_out 		: out std_logic;
 			intr		: in std_logic;
 			inta		: out std_logic;
 			int_e		: out std_logic;
-			except		: in  std_logic;
-			exc_code	: in  std_logic_vector(3 downto 0);
-			div_zero	: out std_logic;
+			except 		: in std_logic;
+			exc_code 	: in std_logic_vector(3 DOWNTO 0);
+			div_zero 	: out std_logic;
 			il_inst 	: out std_logic;
 			call 		: out std_logic;
-			mem_op		: out std_logic;
-			mode		: out mode_t;
-			inst_prot	: out std_logic;
-			of_en		: out std_logic;
-			div_z_fp	: out std_logic;
-			of_fp		: out std_logic
+			mem_op 	: out std_logic;
+			vec		: out std_logic;
+			done		: in  std_logic
 		);
 	END COMPONENT;
 	
@@ -74,7 +70,7 @@ ARCHITECTURE Structure OF sisa IS
           rd_data   	: out std_logic_vector(15 downto 0);
           we        	: in  std_logic;
           byte_m    	: in  std_logic;
-          -- seÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¿Ãƒâ€šÃ‚Â½ales para la placa de desarrollo
+          -- seÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ales para la placa de desarrollo
           SRAM_ADDR 	: out   std_logic_vector(17 downto 0);
           SRAM_DQ   	: inout std_logic_vector(15 downto 0);
           SRAM_UB_N 	: out   std_logic;
@@ -89,8 +85,10 @@ ARCHITECTURE Structure OF sisa IS
 		vga_byte_m	: OUT std_logic;
 		mem_except 	: OUT std_logic;
 		mem_op	    : IN  std_logic;
-		mem_prot		: OUT  std_logic;
-		mode		: IN mode_t
+		vec				: IN STD_LOGIC;
+		wr_vdata		: IN STD_LOGIC_VECTOR(127 DOWNTO 0);
+		rd_vec			: OUT STD_LOGIC_VECTOR(127 DOWNTO 0);
+		done 			: OUT STD_LOGIC
 		);
 	END COMPONENT;
 	
@@ -221,16 +219,11 @@ ARCHITECTURE Structure OF sisa IS
 			boot    : IN  STD_LOGIC;
 			alu_in  : IN  STD_LOGIC; -- div_zero
 			mem_in  : IN  STD_LOGIC; -- alinacio impar
-			of_fp   : IN  STD_LOGIC; -- overflow coma flotant
-			div_z_fp : IN STD_LOGIC; -- div zero coma flotant
 			con_in  : IN  STD_LOGIC; -- inst ilegal
 			int_in  : IN  STD_LOGIC; -- interrupcio
 			call_in : IN  STD_LOGIC; -- syscall
-			inst_prot : IN  STD_LOGIC; -- instruccio protegida
-			mem_prot : IN  STD_LOGIC; -- memoria protegida
 			exc_code: OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-			except  : OUT STD_LOGIC;
-			of_en	: IN STD_LOGIC
+			except  : OUT STD_LOGIC
 		);
 	END COMPONENT;
 
@@ -296,10 +289,10 @@ ARCHITECTURE Structure OF sisa IS
 	SIGNAL call_s : std_logic;
 
 	SIGNAL mem_op_s : std_logic;
-	SIGNAL mem_prot_s : std_logic;
-	SIGNAL inst_prot_s : std_logic;
-	SIGNAL mode_s : mode_t;
-	SIGNAL of_en_s, div_z_fp_s, of_fp_s : std_logic; 
+	SIGNAL vec_s : std_logic;
+	SIGNAL vec_rd_s	: STD_LOGIC_VECTOR(127 DOWNTO 0);
+	SIGNAL vec_wr_s : STD_LOGIC_VECTOR(127 DOWNTO 0);
+	SIGNAL done_s : std_logic;
 
 BEGIN
 
@@ -335,11 +328,10 @@ BEGIN
 			il_inst => il_inst_s,
 			call => call_s,
 			mem_op => mem_op_s,
-			mode => mode_s,
-			inst_prot => inst_prot_s,
-			of_en => of_en_s,
-			div_z_fp => div_z_fp_s,
-			of_fp => of_fp_s
+			vec => vec_s,
+			vec_wr => vec_wr_s,
+			vec_rd => vec_rd_s,
+			done => done_s
 		);
 		
 	mem0: MemoryController
@@ -364,8 +356,10 @@ BEGIN
 			vga_byte_m  => vga_byte_m_s,
 			mem_except => mem_except_s,
 			mem_op => mem_op_s,
-			mode => mode_s,
-			mem_prot => mem_prot_s
+			vec => vec_s,
+			wr_vdata => vec_wr_s,
+			rd_vec => vec_rd_s,
+			done => done_s
 		);
 		
 		io0: controladores_io
@@ -492,16 +486,11 @@ BEGIN
 				boot => SW(9),
 				alu_in => div_zero_s,
 				mem_in => mem_except_s,
-				of_fp => of_fp_s,
-				div_z_fp => div_z_fp_s,
 				con_in => il_inst_s,
 				int_in => intr_s,
 				call_in => call_s,
 				exc_code => exc_code_s,
-				except => except_s,
-				inst_prot => inst_prot_s,
-				mem_prot => mem_prot_s,
-				of_en => of_en_s
+				except => except_s
 			);
 	
 END Structure;

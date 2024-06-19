@@ -32,6 +32,6 @@ BEGIN
     END PROCESS;
 
     a <= vregs(to_integer(unsigned(addr_a)));
-    old_d <= vregs(to_integer(unsigned(addr_d)));
     b <= vregs(to_integer(unsigned(addr_b)));
+    old_d <= vregs(to_integer(unsigned(addr_d)));
 END Structure;

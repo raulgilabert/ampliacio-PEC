@@ -18,6 +18,7 @@ ENTITY control_l IS
           wr_m       : OUT STD_LOGIC;
           in_d       : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
           immed_x2   : OUT STD_LOGIC;
+		  immed_x16	 : OUT STD_LOGIC;
           word_byte  : OUT STD_LOGIC;
 		  Rb_N       : OUT STD_LOGIC;
 		  addr_io	 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -35,7 +36,7 @@ ENTITY control_l IS
 		  mem_op     : OUT STD_LOGIC;
 		  va_old_vd       : OUT STD_LOGIC;
 		  vec_produce_sca : OUT STD_LOGIC;
-		  wrd_fpu	 : OUT STD_LOGIC
+		  vec_inst		: OUT STD_LOGIC
 		 );
 END control_l; 
 
@@ -43,9 +44,7 @@ ARCHITECTURE Structure OF control_l IS
 	SIGNAL arit_log: INST;
 	SIGNAL cmp: INST;
 	SIGNAL mul_div: INST;
-	SIGNAL fp_op: INST;
 	SIGNAL jump: INST;
-	SIGNAL super_jump: INST;
 	SIGNAL move: INST;
 	SIGNAL branch: INST;
 	SIGNAL IO: INST;
@@ -54,8 +53,6 @@ ARCHITECTURE Structure OF control_l IS
 	SIGNAL super_special: INST;
 	SIGNAL op_s: INST;
 	SIGNAL special_Rb_N : std_logic;
-	SIGNAL addr_b_jump : std_logic_vector(2 downto 0);
-	SIGNAL arit_cmp_float: INST;
 BEGIN
 
 	with ir(5 downto 3) select
@@ -84,16 +81,6 @@ BEGIN
 				   DIV_I WHEN F_DIV, -- DIV
 				   DIVU_I WHEN F_DIVU,-- DIVU
 				   ILLEGAL_I WHEN others;
-
-	with ir(5 downto 3) select
-		fp_op <= ADDF_I when F_ADDF, -- ADDF
-				 SUBF_I WHEN F_SUBF, -- SUBF
-				 MULF_I WHEN F_MULF, -- MULF
-				 DIVF_I WHEN F_DIVF, -- DIVF
-				 CMPLTF_I WHEN F_CMPLTF,-- CMPLTF
-				 CMPLEF_I WHEN F_CMPLEF,-- CMPLEF
-				 CMPEQF_I WHEN F_CMPEQF,-- CMPEQF
-				 ILLEGAL_I WHEN others;
 				 
 	with ir(2 downto 0) select
 		jump <= JZ_I when F_JZ, -- JZ
@@ -102,17 +89,6 @@ BEGIN
 				JAL_I when F_JAL,
 				CALL_I when F_CALL,
 				ILLEGAL_I when others;-- JAL
-
-	with ir(5 downto 3) select
-		super_jump <= jump when F_JUMP,
-				      MULV_I when F_MULV,
-					  MULHV_I when F_MULHV,
-					  MULHUV_I when F_MULHUV,
-					  ADDV_I when F_ADDV,
-					  SUBV_I when F_SUBV,
-					  SHAV_I when F_SHAV,
-					  SHLV_I when F_SHLV,
-					  ILLEGAL_I when others;
 
 	with ir(5 downto 0) select 
 		special <= EI_I when F_EI,
@@ -125,21 +101,15 @@ BEGIN
 				   ILLEGAL_I when others;
 
 	with ir(5 downto 3) select
-	 	super_special <= ILLEGAL_I when F_LDV, -- TODO: LDV
-						 ILLEGAL_I when F_STV, -- TODO: STV
+	 	super_special <= LDV_I when F_LDV, -- TODO: LDV
+						 STV_I when F_STV, -- TODO: STV
 						 MVVR_I when F_MVVR, -- MVVR
 						 MVRV_I when F_MVRV, -- MVRV
 						 special when others; -- ILLEGAL
 
-  with ir(5 downto 3) select
-		arit_cmp_float <= ADDF_I when F_ADDF, -- ADDF
-						  SUBF_I  WHEN F_SUBF, -- SUBF
-						  MULF_I WHEN F_MULF, -- MULF
-						  DIVF_I WHEN F_DIVF, -- DIVF
-						  CMPLTF_I WHEN F_CMPLTF, -- CMPLTF
-						  CMPLEF_I WHEN F_CMPLEF, -- CMPLEF
-						  CMPEQF_I WHEN F_CMPEQF, -- CMPEQF
-						  ILLEGAL_I WHEN others;
+
+	vec_inst <= '1' when op_s = LDV_I or op_s = STV_I else
+				'0';
 
 	with ir(8) select
 		move <= MOVI_I when '0', -- MOVI
@@ -164,13 +134,10 @@ BEGIN
 			    branch when OP_BRANCH, -- BZ & BNZ
 				io when OP_IO, --IN & OUT
 			    mul_div when OP_MULDIV, --MUL & DIV
-			    super_jump when OP_JUMP, --JAL
+			    jump when OP_JUMP, --JAL
 		        LDB_I when OP_LDB, --LDB
 			    STB_I when OP_STB, -- STB
 			    super_special when OP_SPECIAL, -- HALT
-				LDF_I when OP_LDF, --LDF
-				STF_I when OP_STF, --STF
-				arit_cmp_float when OP_FLOAT,
 			    ILLEGAL_I when others;
 
 	op <= op_s;
@@ -181,7 +148,9 @@ BEGIN
 	with ir (5 downto 3) select
 		special_Rb_N <= '1' when F_MVVR, --MVVR
 						'1' when F_MVRV, --MVRV
-						'0' when others; -- TODO LDV, STV
+						'1' when F_LDV,  --LDV
+						'1' when F_STV,	 --STV
+						'0' when others; 
 
 	with ir(15 downto 12) select
 		Rb_N <= '1' when OP_ADDI, --ADDI
@@ -191,16 +160,13 @@ BEGIN
 				'1' when OP_LDB, --LDB
 				'1' when OP_STB, --STB
 				special_Rb_N when OP_SPECIAL, -- special
-				'1' when OP_STF, --STF
-				'1' when OP_LDF, --LDF
 				'0' when others;
 
 	addr_a <= ir(11 downto 9) when ir(15 downto 12) = OP_MOV else
 			  "001" when ir(15 downto 12) = OP_SPECIAL and special = RETI_I else --hardcodegem que baixi el registre s1
 			  ir(8 downto 6);
 
-	addr_d <= "011" when ir(15 downto 12) = OP_JUMP and special = CALL_I else
-			  ir(11 downto 9);
+	addr_d <= ir(11 downto 9);
 
 	ei <= '1' when ir(15 downto 12) = OP_SPECIAL and special = EI_I else '0';
 	di <= '1' when ir(15 downto 12) = OP_SPECIAL and special = DI_I else
@@ -209,21 +175,17 @@ BEGIN
 
 	reti <= '1' when ir(15 downto 12) = OP_SPECIAL and special = RETI_I else '0';
 
-	with ir(5 downto 3) select
-		addr_b_jump <= ir(11 downto 9) when F_JUMP,
-					   ir(2 downto 0) when others;
-
 	with ir(15 downto 12) select
 		addr_b <= ir(11 downto 9) when OP_ST,
 					 ir(11 downto 9) when OP_STB,
 					 ir(11 downto 9) when OP_BRANCH,
 					 ir(11 downto 9) when OP_IO,
-					 addr_b_jump when OP_JUMP,
-					 ir(11 downto 9) when OP_STF,
+					 ir(11 downto 9) when OP_JUMP,
 					 ir(2 downto 0) when others;
 
 	immed <= ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7 downto 0) when ir(15 downto 12) = OP_MOV else
 			"0000000000000" & ir(2 downto 0) when ir(15 downto 12) = OP_SPECIAL else
+			ir(2) & ir(2) & ir(2) & ir(2) & ir(2) & ir(2) & ir(2) & ir(2) & ir(2) & ir(2) & ir(2) & ir(2) & ir(2) & ir(2 downto 0) when ir(15 downto 12) = OP_SPECIAL else
 			ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5) & ir(5 downto 0);
 	
 	with ir(2 downto 0) select
@@ -238,14 +200,13 @@ BEGIN
 			 '1' when ir(15 downto 12) = OP_MULDIV else -- mul & div
 			 jump_wd when ir(15 downto 12) = OP_JUMP else --jal
 			 '1' when ir(15 downto 12) = OP_LDB else --ldb
-			 '1' when ir(15 downto 12) = OP_FLOAT and (ir(5 downto 3) = F_CMPLTF or ir(5 downto 3) = F_CMPLEF or ir(5 downto 3) = F_CMPEQF) else
 			 '1' when ir(15 downto 12) = OP_IO and ir(8) = '0' else --in
 			 '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVVR_I else --mvvr
-			 '1' when ir(15 downto 12) = OP_SPECIAL and (super_special = WRS_I or super_special=RDS_I or super_special = GETIID_I) else --wrs
+			 '1' when ir(15 downto 12) = OP_SPECIAL and (super_special = WRS_I or super_special = GETIID_I) else --wrs
 			 '0';
 	
-	vwrd <= '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVRV_I else --mvr
-			'1' when ir(15 downto 12) = OP_JUMP and ir(5 downto 3) /= F_JUMP else
+	vwrd <= '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVRV_I else --mvr TODO: ADDV, SUBV, MULV, DIVV, LDV
+			'1' when ir(15 downto 12) = OP_SPECIAL and super_special = LDV_I else  
 			'0';
 	--with ir(15 downto 12) select
 		--wrd <= '1' when "0000", 						--op arit
@@ -258,11 +219,17 @@ BEGIN
 			   --'1' when "1101",			--ldb
 			   --'0' when others;
 
-	 with ir(15 downto 12) select
-		wr_m <= '1' when OP_ST,
-				  '1' when OP_STB,
-				  '1' when OP_STF,
-				  '0' when others;
+	--with ir(15 downto 12) select
+	--	wr_m <= '1' when OP_ST,
+	--			  '1' when OP_STB,
+	--			  '1' when OP_STV
+	--			  '0' when others;
+
+
+	wr_m <= '1' when op_s = ST_I else
+			'1' when op_s = STB_I else 
+			'1' when op_s = STV_I else 
+			'0';
 				  
 	with ir(15 downto 12) select
 		word_byte <= '1' when OP_LDB,
@@ -273,17 +240,17 @@ BEGIN
 		ldpc <= '0' when x"FFFF",
 				  '1' when others;
 				  
+	immed_x16 <= '1' when op_s = LDV_I or op_s = STV_I else
+				 '0';
+
 	with ir(15 downto 12) select
 		immed_x2 <= '1' when OP_LD,
 						'1' when OP_ST,
-						'1' when OP_LDF,
-						'1' when OP_STF,
 						'1' when OP_BRANCH,
 						'0' when others;
 		
 	in_d <= "01" when ir(15 downto 12) = OP_LD else --ld
 			"01" when ir(15 downto 12) = OP_LDB else --ldb
-			"01" when ir(15 downto 12) = OP_LDF else --ldf
 			"10" when ir(15 downto 12) = OP_JUMP else --jal
 			"11" when ir(15 downto 12) = OP_IO and ir(8) = '0' else --in
 			"11" when ir(15 downto 12) = OP_SPECIAL and special = GETIID_I else --in
@@ -309,7 +276,6 @@ BEGIN
 			 '0';
 	
 	d_sys <= '1' when ir(15 downto 12) = OP_SPECIAL and special = WRS_I else 
-		     '1' when ir(15 downto 12) = OP_JUMP and special = CALL_I else
 			 '0';
 	
 	mem_op <= '1' when (ir(15 downto 12) = OP_LD or ir(15 downto 12) = OP_LDB or
@@ -321,8 +287,4 @@ BEGIN
 	
 	vec_produce_sca <= '1' when ir(15 downto 12) = OP_SPECIAL and super_special = MVVR_I else
 			'0';
-
-  wrd_fpu <= '1' when ir(15 downto 12) = OP_LDF or (ir(15 downto 12) = OP_FLOAT and ir(5 downto 3) /= F_CMPLTF and ir(5 downto 3) /= F_CMPLEF and ir(5 downto 3) /= F_CMPEQF) else
-			   '0';			
-
 END Structure;

@@ -1,0 +1,1689 @@
+Analysis & Synthesis report for sisa
+Wed Jun 19 19:58:39 2024
+Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. Analysis & Synthesis RAM Summary
+  9. Analysis & Synthesis DSP Block Usage Summary
+ 10. State Machine - |sisa|keyboard_controller:kb|ps2_keyboard_interface:k0|m1_state
+ 11. State Machine - |sisa|MemoryController:mem0|rd_state
+ 12. State Machine - |sisa|MemoryController:mem0|wr_state
+ 13. State Machine - |sisa|MemoryController:mem0|SRAMController:sram_c|state
+ 14. State Machine - |sisa|proc:pro0|unidad_control:c0|multi:m|state
+ 15. User-Specified and Inferred Latches
+ 16. Registers Removed During Synthesis
+ 17. Removed Registers Triggering Further Register Optimizations
+ 18. General Register Statistics
+ 19. Inverted Register Statistics
+ 20. Registers Packed Into Inferred Megafunctions
+ 21. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 22. Source assignments for vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem1_rtl_0|altsyncram_mug1:auto_generated
+ 23. Source assignments for vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem0_rtl_0|altsyncram_qug1:auto_generated
+ 24. Parameter Settings for User Entity Instance: keyboard_controller:kb|ps2_keyboard_interface:k0
+ 25. Parameter Settings for User Entity Instance: vga_controller:vga_con|vga_ram_dual:U_MonitorRam
+ 26. Parameter Settings for Inferred Entity Instance: vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem1_rtl_0
+ 27. Parameter Settings for Inferred Entity Instance: vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem0_rtl_0
+ 28. Parameter Settings for Inferred Entity Instance: proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult1
+ 29. Parameter Settings for Inferred Entity Instance: proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult0
+ 30. Parameter Settings for Inferred Entity Instance: proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div0
+ 31. Parameter Settings for Inferred Entity Instance: proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1
+ 32. altsyncram Parameter Settings by Entity Instance
+ 33. lpm_mult Parameter Settings by Entity Instance
+ 34. Port Connectivity Checks: "vga_controller:vga_con|vga_sync:u_vga_sync"
+ 35. Port Connectivity Checks: "vga_controller:vga_con"
+ 36. Port Connectivity Checks: "keyboard_controller:kb|ps2_keyboard_interface:k0"
+ 37. Port Connectivity Checks: "proc:pro0|unidad_control:c0|control_l:c_l"
+ 38. Port Connectivity Checks: "proc:pro0|unidad_control:c0|multi:m"
+ 39. Elapsed Time Per Partition
+ 40. Analysis & Synthesis Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2013 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+
+
+
++--------------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                         ;
++------------------------------------+-------------------------------------------------+
+; Analysis & Synthesis Status        ; Successful - Wed Jun 19 19:58:39 2024           ;
+; Quartus II 64-Bit Version          ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
+; Revision Name                      ; sisa                                            ;
+; Top-level Entity Name              ; sisa                                            ;
+; Family                             ; Cyclone II                                      ;
+; Total logic elements               ; 7,385                                           ;
+;     Total combinational functions  ; 5,773                                           ;
+;     Dedicated logic registers      ; 2,013                                           ;
+; Total registers                    ; 2013                                            ;
+; Total pins                         ; 114                                             ;
+; Total virtual pins                 ; 0                                               ;
+; Total memory bits                  ; 57,344                                          ;
+; Embedded Multiplier 9-bit elements ; 4                                               ;
+; Total PLLs                         ; 0                                               ;
++------------------------------------+-------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                        ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                     ; Setting            ; Default Value      ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                     ; EP2C20F484C7       ;                    ;
+; Top-level entity name                                                      ; sisa               ; sisa               ;
+; Family name                                                                ; Cyclone II         ; Cyclone IV GX      ;
+; Use smart compilation                                                      ; Off                ; Off                ;
+; Enable parallel Assembler and TimeQuest Timing Analyzer during compilation ; On                 ; On                 ;
+; Enable compact report table                                                ; Off                ; Off                ;
+; Restructure Multiplexers                                                   ; Auto               ; Auto               ;
+; Create Debugging Nodes for IP Cores                                        ; Off                ; Off                ;
+; Preserve fewer node names                                                  ; On                 ; On                 ;
+; Disable OpenCore Plus hardware evaluation                                  ; Off                ; Off                ;
+; Verilog Version                                                            ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                               ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                   ; Auto               ; Auto               ;
+; Safe State Machine                                                         ; Off                ; Off                ;
+; Extract Verilog State Machines                                             ; On                 ; On                 ;
+; Extract VHDL State Machines                                                ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                          ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                 ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                             ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                    ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                  ; On                 ; On                 ;
+; Parallel Synthesis                                                         ; On                 ; On                 ;
+; DSP Block Balancing                                                        ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                         ; On                 ; On                 ;
+; Power-Up Don't Care                                                        ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                               ; Off                ; Off                ;
+; Remove Duplicate Registers                                                 ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                       ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                     ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                      ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                  ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                       ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                        ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                             ; Off                ; Off                ;
+; Optimization Technique                                                     ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                         ; 70                 ; 70                 ;
+; Auto Carry Chains                                                          ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                       ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                      ; Off                ; Off                ;
+; Auto ROM Replacement                                                       ; On                 ; On                 ;
+; Auto RAM Replacement                                                       ; On                 ; On                 ;
+; Auto Shift Register Replacement                                            ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                            ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                              ; On                 ; On                 ;
+; Strict RAM Replacement                                                     ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                          ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                     ; Off                ; Off                ;
+; Auto RAM to Logic Cell Conversion                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                      ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                         ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                         ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                              ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                        ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                          ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                    ; Off                ; Off                ;
+; Report Parameter Settings                                                  ; On                 ; On                 ;
+; Report Source Assignments                                                  ; On                 ; On                 ;
+; Report Connectivity Checks                                                 ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                         ; Off                ; Off                ;
+; Synchronization Register Chain Length                                      ; 2                  ; 2                  ;
+; PowerPlay Power Optimization                                               ; Normal compilation ; Normal compilation ;
+; HDL message level                                                          ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                            ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                   ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                         ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                  ; 100                ; 100                ;
+; Clock MUX Protection                                                       ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                ; Off                ; Off                ;
+; Block Design Naming                                                        ; Auto               ; Auto               ;
+; SDC constraint protection                                                  ; Off                ; Off                ;
+; Synthesis Effort                                                           ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal               ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                       ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                         ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                     ; On                 ; On                 ;
+; Synthesis Seed                                                             ; 1                  ; 1                  ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+
+
+Parallel compilation was disabled, but you have multiple processors available. Enable parallel compilation to reduce compilation time.
++-------------------------------------+
+; Parallel Compilation                ;
++----------------------------+--------+
+; Processors                 ; Number ;
++----------------------------+--------+
+; Number detected on machine ; 12     ;
+; Maximum allowed            ; 1      ;
++----------------------------+--------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                      ;
++----------------------------------------+-----------------+------------------------------+-----------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path       ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                            ; Library ;
++----------------------------------------+-----------------+------------------------------+-----------------------------------------------------------------------------------------+---------+
+; alu_modules/shift.vhd                  ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/alu_modules/shift.vhd                  ;         ;
+; alu_modules/mul.vhd                    ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/alu_modules/mul.vhd                    ;         ;
+; alu_modules/div.vhd                    ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/alu_modules/div.vhd                    ;         ;
+; alu_modules/cmp.vhd                    ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/alu_modules/cmp.vhd                    ;         ;
+; alu_modules/addsub.vhd                 ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/alu_modules/addsub.vhd                 ;         ;
+; IO_controllers/vga_sync.vhd            ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/IO_controllers/vga_sync.vhd            ;         ;
+; IO_controllers/vga_ram_dual.vhd        ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/IO_controllers/vga_ram_dual.vhd        ;         ;
+; IO_controllers/vga_font_rom.vhd        ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/IO_controllers/vga_font_rom.vhd        ;         ;
+; IO_controllers/vga_controller.vhd      ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/IO_controllers/vga_controller.vhd      ;         ;
+; IO_controllers/ps2_keyboard.vhd        ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/IO_controllers/ps2_keyboard.vhd        ;         ;
+; IO_controllers/keyboard_controller.vhd ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/IO_controllers/keyboard_controller.vhd ;         ;
+; IO_controllers/driver7display.vhd      ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/IO_controllers/driver7display.vhd      ;         ;
+; vregfile.vhd                           ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/vregfile.vhd                           ;         ;
+; unidad_control.vhd                     ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/unidad_control.vhd                     ;         ;
+; timer.vhd                              ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/timer.vhd                              ;         ;
+; SRAMController.vhd                     ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/SRAMController.vhd                     ;         ;
+; sisa.vhd                               ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/sisa.vhd                               ;         ;
+; renacuajo.vhd                          ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/renacuajo.vhd                          ;         ;
+; regfile.vhd                            ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/regfile.vhd                            ;         ;
+; pulsadors.vhd                          ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/pulsadors.vhd                          ;         ;
+; proc.vhd                               ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/proc.vhd                               ;         ;
+; multi.vhd                              ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/multi.vhd                              ;         ;
+; MemoryController.vhd                   ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/MemoryController.vhd                   ;         ;
+; interruptors.vhd                       ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/interruptors.vhd                       ;         ;
+; interrupt_controller.vhd               ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/interrupt_controller.vhd               ;         ;
+; exception_controller.vhd               ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/exception_controller.vhd               ;         ;
+; datapath.vhd                           ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/datapath.vhd                           ;         ;
+; controlador_io.vhd                     ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/controlador_io.vhd                     ;         ;
+; control_l.vhd                          ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/control_l.vhd                          ;         ;
+; alu.vhd                                ; yes             ; User VHDL File               ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/alu.vhd                                ;         ;
+; valu.vhd                               ; yes             ; Auto-Found VHDL File         ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/valu.vhd                               ;         ;
+; altsyncram.tdf                         ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/altsyncram.tdf                 ;         ;
+; stratix_ram_block.inc                  ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/stratix_ram_block.inc          ;         ;
+; lpm_mux.inc                            ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/lpm_mux.inc                    ;         ;
+; lpm_decode.inc                         ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/lpm_decode.inc                 ;         ;
+; aglobal130.inc                         ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/aglobal130.inc                 ;         ;
+; a_rdenreg.inc                          ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/a_rdenreg.inc                  ;         ;
+; altrom.inc                             ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/altrom.inc                     ;         ;
+; altram.inc                             ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/altram.inc                     ;         ;
+; altdpram.inc                           ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/altdpram.inc                   ;         ;
+; db/altsyncram_mug1.tdf                 ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/altsyncram_mug1.tdf                 ;         ;
+; db/altsyncram_qug1.tdf                 ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/altsyncram_qug1.tdf                 ;         ;
+; lpm_mult.tdf                           ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/lpm_mult.tdf                   ;         ;
+; lpm_add_sub.inc                        ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/lpm_add_sub.inc                ;         ;
+; multcore.inc                           ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/multcore.inc                   ;         ;
+; bypassff.inc                           ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/bypassff.inc                   ;         ;
+; altshift.inc                           ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/altshift.inc                   ;         ;
+; db/mult_h1t.tdf                        ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/mult_h1t.tdf                        ;         ;
+; db/mult_l8t.tdf                        ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/mult_l8t.tdf                        ;         ;
+; lpm_divide.tdf                         ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/lpm_divide.tdf                 ;         ;
+; abs_divider.inc                        ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/abs_divider.inc                ;         ;
+; sign_div_unsign.inc                    ; yes             ; Megafunction                 ; /home/pol/altera/13.0sp1/quartus/libraries/megafunctions/sign_div_unsign.inc            ;         ;
+; db/lpm_divide_3gm.tdf                  ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/lpm_divide_3gm.tdf                  ;         ;
+; db/sign_div_unsign_dnh.tdf             ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/sign_div_unsign_dnh.tdf             ;         ;
+; db/alt_u_div_s5f.tdf                   ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/alt_u_div_s5f.tdf                   ;         ;
+; db/add_sub_lkc.tdf                     ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/add_sub_lkc.tdf                     ;         ;
+; db/add_sub_mkc.tdf                     ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/add_sub_mkc.tdf                     ;         ;
+; db/lpm_divide_rto.tdf                  ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/lpm_divide_rto.tdf                  ;         ;
+; db/abs_divider_8dg.tdf                 ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/abs_divider_8dg.tdf                 ;         ;
+; db/lpm_abs_2s9.tdf                     ; yes             ; Auto-Generated Megafunction  ; /home/pol/Documents/Uni/Q6/PEC/PEC-proc/extensio/db/lpm_abs_2s9.tdf                     ;         ;
++----------------------------------------+-----------------+------------------------------+-----------------------------------------------------------------------------------------+---------+
+
+
++----------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary              ;
++---------------------------------------------+------------+
+; Resource                                    ; Usage      ;
++---------------------------------------------+------------+
+; Estimated Total logic elements              ; 7,385      ;
+;                                             ;            ;
+; Total combinational functions               ; 5773       ;
+; Logic element usage by number of LUT inputs ;            ;
+;     -- 4 input functions                    ; 4327       ;
+;     -- 3 input functions                    ; 1135       ;
+;     -- <=2 input functions                  ; 311        ;
+;                                             ;            ;
+; Logic elements by mode                      ;            ;
+;     -- normal mode                          ; 5296       ;
+;     -- arithmetic mode                      ; 477        ;
+;                                             ;            ;
+; Total registers                             ; 2013       ;
+;     -- Dedicated logic registers            ; 2013       ;
+;     -- I/O registers                        ; 0          ;
+;                                             ;            ;
+; I/O pins                                    ; 114        ;
+; Total memory bits                           ; 57344      ;
+; Embedded Multiplier 9-bit elements          ; 4          ;
+; Maximum fan-out node                        ; counter[2] ;
+; Maximum fan-out                             ; 1382       ;
+; Total fan-out                               ; 28037      ;
+; Average fan-out                             ; 3.54       ;
++---------------------------------------------+------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                                                     ;
++----------------------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
+; Compilation Hierarchy Node                         ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                                                                     ; Library Name ;
++----------------------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
+; |sisa                                              ; 5773 (4)          ; 2013 (3)     ; 57344       ; 4            ; 0       ; 2         ; 114  ; 0            ; |sisa                                                                                                                                                                   ; work         ;
+;    |MemoryController:mem0|                         ; 190 (168)         ; 8 (6)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|MemoryController:mem0                                                                                                                                             ; work         ;
+;       |SRAMController:sram_c|                      ; 22 (22)           ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|MemoryController:mem0|SRAMController:sram_c                                                                                                                       ; work         ;
+;    |controladores_io:io0|                          ; 85 (85)           ; 529 (529)    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|controladores_io:io0                                                                                                                                              ; work         ;
+;    |driver7display:disp|                           ; 56 (56)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|driver7display:disp                                                                                                                                               ; work         ;
+;    |exception_controller:exc|                      ; 3 (3)             ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|exception_controller:exc                                                                                                                                          ; work         ;
+;    |interrupt_controller:intr_con|                 ; 3 (3)             ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|interrupt_controller:intr_con                                                                                                                                     ; work         ;
+;    |interruptors:swi|                              ; 9 (9)             ; 25 (25)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|interruptors:swi                                                                                                                                                  ; work         ;
+;    |keyboard_controller:kb|                        ; 294 (8)           ; 71 (10)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|keyboard_controller:kb                                                                                                                                            ; work         ;
+;       |ps2_keyboard_interface:k0|                  ; 286 (286)         ; 61 (61)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|keyboard_controller:kb|ps2_keyboard_interface:k0                                                                                                                  ; work         ;
+;    |proc:pro0|                                     ; 3022 (0)          ; 1316 (0)     ; 0           ; 4            ; 0       ; 2         ; 0    ; 0            ; |sisa|proc:pro0                                                                                                                                                         ; work         ;
+;       |datapath:e0|                                ; 2840 (1556)       ; 1280 (0)     ; 0           ; 4            ; 0       ; 2         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0                                                                                                                                             ; work         ;
+;          |alu:alu0|                                ; 858 (86)          ; 0 (0)        ; 0           ; 4            ; 0       ; 2         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0                                                                                                                                    ; work         ;
+;             |addsub:addsub_inst|                   ; 33 (33)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|addsub:addsub_inst                                                                                                                 ; work         ;
+;             |cmp:cmp_inst|                         ; 32 (32)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|cmp:cmp_inst                                                                                                                       ; work         ;
+;             |div:div_inst|                         ; 631 (0)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst                                                                                                                       ; work         ;
+;                |lpm_divide:Div0|                   ; 277 (0)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div0                                                                                                       ; work         ;
+;                   |lpm_divide_3gm:auto_generated|  ; 277 (0)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div0|lpm_divide_3gm:auto_generated                                                                         ; work         ;
+;                      |sign_div_unsign_dnh:divider| ; 277 (0)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div0|lpm_divide_3gm:auto_generated|sign_div_unsign_dnh:divider                                             ; work         ;
+;                         |alt_u_div_s5f:divider|    ; 277 (276)         ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div0|lpm_divide_3gm:auto_generated|sign_div_unsign_dnh:divider|alt_u_div_s5f:divider                       ; work         ;
+;                            |add_sub_mkc:add_sub_1| ; 1 (1)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div0|lpm_divide_3gm:auto_generated|sign_div_unsign_dnh:divider|alt_u_div_s5f:divider|add_sub_mkc:add_sub_1 ; work         ;
+;                |lpm_divide:Div1|                   ; 354 (0)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1                                                                                                       ; work         ;
+;                   |lpm_divide_rto:auto_generated|  ; 354 (0)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1|lpm_divide_rto:auto_generated                                                                         ; work         ;
+;                      |abs_divider_8dg:divider|     ; 354 (17)          ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1|lpm_divide_rto:auto_generated|abs_divider_8dg:divider                                                 ; work         ;
+;                         |alt_u_div_s5f:divider|    ; 286 (283)         ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1|lpm_divide_rto:auto_generated|abs_divider_8dg:divider|alt_u_div_s5f:divider                           ; work         ;
+;                            |add_sub_lkc:add_sub_0| ; 1 (1)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1|lpm_divide_rto:auto_generated|abs_divider_8dg:divider|alt_u_div_s5f:divider|add_sub_lkc:add_sub_0     ; work         ;
+;                            |add_sub_mkc:add_sub_1| ; 2 (2)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1|lpm_divide_rto:auto_generated|abs_divider_8dg:divider|alt_u_div_s5f:divider|add_sub_mkc:add_sub_1     ; work         ;
+;                         |lpm_abs_2s9:my_abs_den|   ; 27 (27)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1|lpm_divide_rto:auto_generated|abs_divider_8dg:divider|lpm_abs_2s9:my_abs_den                          ; work         ;
+;                         |lpm_abs_2s9:my_abs_num|   ; 24 (24)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1|lpm_divide_rto:auto_generated|abs_divider_8dg:divider|lpm_abs_2s9:my_abs_num                          ; work         ;
+;             |mul:mul_inst|                         ; 2 (2)             ; 0 (0)        ; 0           ; 4            ; 0       ; 2         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|mul:mul_inst                                                                                                                       ; work         ;
+;                |lpm_mult:Mult0|                    ; 0 (0)             ; 0 (0)        ; 0           ; 2            ; 0       ; 1         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult0                                                                                                        ; work         ;
+;                   |mult_l8t:auto_generated|        ; 0 (0)             ; 0 (0)        ; 0           ; 2            ; 0       ; 1         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult0|mult_l8t:auto_generated                                                                                ; work         ;
+;                |lpm_mult:Mult1|                    ; 0 (0)             ; 0 (0)        ; 0           ; 2            ; 0       ; 1         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult1                                                                                                        ; work         ;
+;                   |mult_h1t:auto_generated|        ; 0 (0)             ; 0 (0)        ; 0           ; 2            ; 0       ; 1         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult1|mult_h1t:auto_generated                                                                                ; work         ;
+;             |shift:shift_inst|                     ; 74 (74)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|alu:alu0|shift:shift_inst                                                                                                                   ; work         ;
+;          |regfile:reg0|                            ; 380 (380)         ; 256 (256)    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|regfile:reg0                                                                                                                                ; work         ;
+;          |valu:valu0|                              ; 30 (30)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|valu:valu0                                                                                                                                  ; work         ;
+;          |vregfile:vreg0|                          ; 16 (16)           ; 1024 (1024)  ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|datapath:e0|vregfile:vreg0                                                                                                                              ; work         ;
+;       |unidad_control:c0|                          ; 182 (84)          ; 36 (32)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|unidad_control:c0                                                                                                                                       ; work         ;
+;          |control_l:c_l|                           ; 52 (52)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|unidad_control:c0|control_l:c_l                                                                                                                         ; work         ;
+;          |multi:m|                                 ; 46 (46)           ; 4 (4)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|proc:pro0|unidad_control:c0|multi:m                                                                                                                               ; work         ;
+;    |pulsadors:keys|                                ; 6 (6)             ; 13 (13)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|pulsadors:keys                                                                                                                                                    ; work         ;
+;    |timer:tim|                                     ; 39 (39)           ; 23 (23)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|timer:tim                                                                                                                                                         ; work         ;
+;    |vga_controller:vga_con|                        ; 2062 (2001)       ; 21 (1)       ; 57344       ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|vga_controller:vga_con                                                                                                                                            ; work         ;
+;       |vga_ram_dual:U_MonitorRam|                  ; 8 (8)             ; 0 (0)        ; 57344       ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|vga_controller:vga_con|vga_ram_dual:U_MonitorRam                                                                                                                  ; work         ;
+;          |altsyncram:mem0_rtl_0|                   ; 0 (0)             ; 0 (0)        ; 32768       ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem0_rtl_0                                                                                            ; work         ;
+;             |altsyncram_qug1:auto_generated|       ; 0 (0)             ; 0 (0)        ; 32768       ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem0_rtl_0|altsyncram_qug1:auto_generated                                                             ; work         ;
+;          |altsyncram:mem1_rtl_0|                   ; 0 (0)             ; 0 (0)        ; 24576       ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem1_rtl_0                                                                                            ; work         ;
+;             |altsyncram_mug1:auto_generated|       ; 0 (0)             ; 0 (0)        ; 24576       ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem1_rtl_0|altsyncram_mug1:auto_generated                                                             ; work         ;
+;       |vga_sync:u_vga_sync|                        ; 53 (53)           ; 20 (20)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |sisa|vga_controller:vga_con|vga_sync:u_vga_sync                                                                                                                        ; work         ;
++----------------------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis RAM Summary                                                                                                                                                                                      ;
++------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+; Name                                                                                                             ; Type ; Mode             ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size  ; MIF  ;
++------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+; vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem0_rtl_0|altsyncram_qug1:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 4096         ; 8            ; 4096         ; 8            ; 32768 ; None ;
+; vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem1_rtl_0|altsyncram_mug1:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 4096         ; 6            ; 4096         ; 6            ; 24576 ; None ;
++------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+
+
++-----------------------------------------------------+
+; Analysis & Synthesis DSP Block Usage Summary        ;
++---------------------------------------+-------------+
+; Statistic                             ; Number Used ;
++---------------------------------------+-------------+
+; Simple Multipliers (9-bit)            ; 0           ;
+; Simple Multipliers (18-bit)           ; 2           ;
+; Embedded Multiplier Blocks            ; --          ;
+; Embedded Multiplier 9-bit elements    ; 4           ;
+; Signed Embedded Multipliers           ; 1           ;
+; Unsigned Embedded Multipliers         ; 1           ;
+; Mixed Sign Embedded Multipliers       ; 0           ;
+; Variable Sign Embedded Multipliers    ; 0           ;
+; Dedicated Input Shift Register Chains ; 0           ;
++---------------------------------------+-------------+
+Note: number of Embedded Multiplier Blocks used is only available after a successful fit.
+
+
+Encoding Type:  One-Hot
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |sisa|keyboard_controller:kb|ps2_keyboard_interface:k0|m1_state                                                                                                                                                                                                                                                                                                                                                                                                                                  ;
++--------------------------------------+-----------------------------------+--------------------------------------+------------------------------+----------------------------------+----------------------+----------------------+---------------------------+----------------------------+---------------------------------+---------------------------------+----------------------------+-----------------------------------+------------------------------------+----------------------+----------------------+
+; Name                                 ; m1_state.m1_tx_rising_edge_marker ; m1_state.m1_tx_error_no_keyboard_ack ; m1_state.m1_tx_done_recovery ; m1_state.m1_tx_wait_keyboard_ack ; m1_state.m1_tx_clk_l ; m1_state.m1_tx_clk_h ; m1_state.m1_tx_wait_clk_h ; m1_state.m1_tx_reset_timer ; m1_state.m1_tx_first_wait_clk_l ; m1_state.m1_tx_first_wait_clk_h ; m1_state.m1_tx_force_clk_l ; m1_state.m1_rx_rising_edge_marker ; m1_state.m1_rx_falling_edge_marker ; m1_state.m1_rx_clk_l ; m1_state.m1_rx_clk_h ;
++--------------------------------------+-----------------------------------+--------------------------------------+------------------------------+----------------------------------+----------------------+----------------------+---------------------------+----------------------------+---------------------------------+---------------------------------+----------------------------+-----------------------------------+------------------------------------+----------------------+----------------------+
+; m1_state.m1_rx_clk_h                 ; 0                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 0                         ; 0                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 0                    ;
+; m1_state.m1_rx_clk_l                 ; 0                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 0                         ; 0                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 1                    ; 1                    ;
+; m1_state.m1_rx_falling_edge_marker   ; 0                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 0                         ; 0                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 1                                  ; 0                    ; 1                    ;
+; m1_state.m1_rx_rising_edge_marker    ; 0                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 0                         ; 0                          ; 0                               ; 0                               ; 0                          ; 1                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_force_clk_l           ; 0                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 0                         ; 0                          ; 0                               ; 0                               ; 1                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_first_wait_clk_h      ; 0                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 0                         ; 0                          ; 0                               ; 1                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_first_wait_clk_l      ; 0                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 0                         ; 0                          ; 1                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_reset_timer           ; 0                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 0                         ; 1                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_wait_clk_h            ; 0                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 1                         ; 0                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_clk_h                 ; 0                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 1                    ; 0                         ; 0                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_clk_l                 ; 0                                 ; 0                                    ; 0                            ; 0                                ; 1                    ; 0                    ; 0                         ; 0                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_wait_keyboard_ack     ; 0                                 ; 0                                    ; 0                            ; 1                                ; 0                    ; 0                    ; 0                         ; 0                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_done_recovery         ; 0                                 ; 0                                    ; 1                            ; 0                                ; 0                    ; 0                    ; 0                         ; 0                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_error_no_keyboard_ack ; 0                                 ; 1                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 0                         ; 0                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
+; m1_state.m1_tx_rising_edge_marker    ; 1                                 ; 0                                    ; 0                            ; 0                                ; 0                    ; 0                    ; 0                         ; 0                          ; 0                               ; 0                               ; 0                          ; 0                                 ; 0                                  ; 0                    ; 1                    ;
++--------------------------------------+-----------------------------------+--------------------------------------+------------------------------+----------------------------------+----------------------+----------------------+---------------------------+----------------------------+---------------------------------+---------------------------------+----------------------------+-----------------------------------+------------------------------------+----------------------+----------------------+
+
+
+Encoding Type:  One-Hot
++--------------------------------------------------------------------------+
+; State Machine - |sisa|MemoryController:mem0|rd_state                     ;
++-------------------+-------------------+-------------------+--------------+
+; Name              ; rd_state.VEC_WAIT ; rd_state.VEC_READ ; rd_state.INI ;
++-------------------+-------------------+-------------------+--------------+
+; rd_state.INI      ; 0                 ; 0                 ; 0            ;
+; rd_state.VEC_READ ; 0                 ; 1                 ; 1            ;
+; rd_state.VEC_WAIT ; 1                 ; 0                 ; 1            ;
++-------------------+-------------------+-------------------+--------------+
+
+
+Encoding Type:  One-Hot
++----------------------------------------------------------------------------+
+; State Machine - |sisa|MemoryController:mem0|wr_state                       ;
++--------------------+-------------------+--------------------+--------------+
+; Name               ; wr_state.VEC_WAIT ; wr_state.VEC_WRITE ; wr_state.INI ;
++--------------------+-------------------+--------------------+--------------+
+; wr_state.INI       ; 0                 ; 0                  ; 0            ;
+; wr_state.VEC_WRITE ; 0                 ; 1                  ; 1            ;
+; wr_state.VEC_WAIT  ; 1                 ; 0                  ; 1            ;
++--------------------+-------------------+--------------------+--------------+
+
+
+Encoding Type:  One-Hot
++-------------------------------------------------------------------------+
+; State Machine - |sisa|MemoryController:mem0|SRAMController:sram_c|state ;
++---------------+---------------+---------------+-------------------------+
+; Name          ; state.WRITE_2 ; state.WRITE_1 ; state.WRITE_0           ;
++---------------+---------------+---------------+-------------------------+
+; state.WRITE_0 ; 0             ; 0             ; 0                       ;
+; state.WRITE_1 ; 0             ; 1             ; 1                       ;
+; state.WRITE_2 ; 1             ; 0             ; 1                       ;
++---------------+---------------+---------------+-------------------------+
+
+
+Encoding Type:  One-Hot
++-----------------------------------------------------------------+
+; State Machine - |sisa|proc:pro0|unidad_control:c0|multi:m|state ;
++--------------+---------+--------------+------------+------------+
+; Name         ; state.M ; state.SYSTEM ; state.DEMW ; state.F    ;
++--------------+---------+--------------+------------+------------+
+; state.F      ; 0       ; 0            ; 0          ; 0          ;
+; state.DEMW   ; 0       ; 0            ; 1          ; 1          ;
+; state.SYSTEM ; 0       ; 1            ; 0          ; 1          ;
+; state.M      ; 1       ; 0            ; 0          ; 1          ;
++--------------+---------+--------------+------------+------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; User-Specified and Inferred Latches                                                                                     ;
++-----------------------------------------------------+------------------------------------------+------------------------+
+; Latch Name                                          ; Latch Enable Signal                      ; Free of Timing Hazards ;
++-----------------------------------------------------+------------------------------------------+------------------------+
+; MemoryController:mem0|addr_wr[1]                    ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[1]                    ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[2]                    ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[2]                    ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[3]                    ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[3]                    ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[4]                    ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[4]                    ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[5]                    ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[5]                    ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[6]                    ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[6]                    ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[7]                    ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[7]                    ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[8]                    ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[8]                    ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[9]                    ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[9]                    ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[10]                   ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[10]                   ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[11]                   ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[11]                   ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[12]                   ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[12]                   ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[13]                   ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[13]                   ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[14]                   ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[14]                   ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[15]                   ; MemoryController:mem0|wr_state.VEC_WRITE ; yes                    ;
+; MemoryController:mem0|addr_rd[15]                   ; MemoryController:mem0|rd_state.VEC_READ  ; yes                    ;
+; MemoryController:mem0|addr_wr[0]                    ; MemoryController:mem0|wr_state.INI       ; yes                    ;
+; MemoryController:mem0|addr_rd[0]                    ; MemoryController:mem0|rd_state.INI       ; yes                    ;
+; keyboard_controller:kb|data_available               ; keyboard_controller:kb|data_ready_we     ; yes                    ;
+; Number of user-specified and inferred latches = 33  ;                                          ;                        ;
++-----------------------------------------------------+------------------------------------------+------------------------+
+Note: All latches listed above may not be present at the end of synthesis due to various synthesis optimizations.
+
+
++---------------------------------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                                                    ;
++----------------------------------------------------------------------------------+----------------------------------------------------+
+; Register name                                                                    ; Reason for Removal                                 ;
++----------------------------------------------------------------------------------+----------------------------------------------------+
+; exception_controller:exc|exc_code[3]                                             ; Merged with exception_controller:exc|exc_code[1]   ;
+; interrupt_controller:intr_con|iid_s[3..7]                                        ; Merged with interrupt_controller:intr_con|iid_s[2] ;
+; exception_controller:exc|exc_code[1]                                             ; Stuck at GND due to stuck port data_in             ;
+; interrupt_controller:intr_con|iid_s[2]                                           ; Stuck at GND due to stuck port data_in             ;
+; keyboard_controller:kb|ps2_keyboard_interface:k0|m1_state.m1_tx_reset_timer      ; Lost fanout                                        ;
+; MemoryController:mem0|SRAMController:sram_c|state.WRITE_2                        ; Lost fanout                                        ;
+; keyboard_controller:kb|ps2_keyboard_interface:k0|m1_state.m1_tx_force_clk_l      ; Stuck at GND due to stuck port data_in             ;
+; keyboard_controller:kb|ps2_keyboard_interface:k0|m1_state.m1_tx_first_wait_clk_h ; Stuck at GND due to stuck port data_in             ;
+; keyboard_controller:kb|ps2_keyboard_interface:k0|m1_state.m1_tx_first_wait_clk_l ; Stuck at GND due to stuck port data_in             ;
+; Total Number of Removed Registers = 13                                           ;                                                    ;
++----------------------------------------------------------------------------------+----------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Removed Registers Triggering Further Register Optimizations                                                                                                                                ;
++-----------------------------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
+; Register name                                                               ; Reason for Removal        ; Registers Removed due to This Register                                           ;
++-----------------------------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
+; keyboard_controller:kb|ps2_keyboard_interface:k0|m1_state.m1_tx_force_clk_l ; Stuck at GND              ; keyboard_controller:kb|ps2_keyboard_interface:k0|m1_state.m1_tx_first_wait_clk_h ;
+;                                                                             ; due to stuck port data_in ;                                                                                  ;
++-----------------------------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 2013  ;
+; Number of registers using Synchronous Clear  ; 52    ;
+; Number of registers using Synchronous Load   ; 46    ;
+; Number of registers using Asynchronous Clear ; 142   ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 1920  ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++--------------------------------------------------+
+; Inverted Register Statistics                     ;
++----------------------------------------+---------+
+; Inverted Register                      ; Fan out ;
++----------------------------------------+---------+
+; counter[2]                             ; 1382    ;
+; counter[1]                             ; 2       ;
+; counter[0]                             ; 3       ;
+; Total number of inverted registers = 3 ;         ;
++----------------------------------------+---------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------+
+; Registers Packed Into Inferred Megafunctions                                                                                    ;
++------------------------------------------------------------+-------------------------------------------------------------+------+
+; Register Name                                              ; Megafunction                                                ; Type ;
++------------------------------------------------------------+-------------------------------------------------------------+------+
+; vga_controller:vga_con|vga_ram_dual:U_MonitorRam|o2[8..13] ; vga_controller:vga_con|vga_ram_dual:U_MonitorRam|mem1_rtl_0 ; RAM  ;
+; vga_controller:vga_con|vga_ram_dual:U_MonitorRam|o2[0..7]  ; vga_controller:vga_con|vga_ram_dual:U_MonitorRam|mem0_rtl_0 ; RAM  ;
++------------------------------------------------------------+-------------------------------------------------------------+------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                             ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                   ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------------------+
+; 3:1                ; 16 bits   ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |sisa|proc:pro0|unidad_control:c0|ir[14]                                     ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |sisa|controladores_io:io0|io_mem[15][0]                                     ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 10 LEs               ; 10 LEs                 ; Yes        ; |sisa|vga_controller:vga_con|vga_sync:u_vga_sync|v_count_reg[5]              ;
+; 3:1                ; 11 bits   ; 22 LEs        ; 11 LEs               ; 11 LEs                 ; Yes        ; |sisa|keyboard_controller:kb|ps2_keyboard_interface:k0|q[8]                  ;
+; 3:1                ; 12 bits   ; 24 LEs        ; 12 LEs               ; 12 LEs                 ; Yes        ; |sisa|keyboard_controller:kb|ps2_keyboard_interface:k0|timer_60usec_count[8] ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |sisa|keyboard_controller:kb|ps2_keyboard_interface:k0|timer_5usec_count[7]  ;
+; 3:1                ; 9 bits    ; 18 LEs        ; 9 LEs                ; 9 LEs                  ; Yes        ; |sisa|keyboard_controller:kb|ps2_keyboard_interface:k0|rx_ascii[0]           ;
+; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |sisa|exception_controller:exc|exc_code[0]                                   ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |sisa|keyboard_controller:kb|ps2_keyboard_interface:k0|bit_count[1]          ;
+; 4:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |sisa|interruptors:swi|estat_anterior[6]                                     ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 0 LEs                ; 8 LEs                  ; Yes        ; |sisa|pulsadors:keys|estat_anterior[3]                                       ;
+; 4:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; Yes        ; |sisa|controladores_io:io0|io_mem[8][6]                                      ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |sisa|controladores_io:io0|io_mem[7][1]                                      ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 4 LEs                ; 2 LEs                  ; Yes        ; |sisa|interrupt_controller:intr_con|iid_s[1]                                 ;
+; 6:1                ; 15 bits   ; 60 LEs        ; 15 LEs               ; 45 LEs                 ; Yes        ; |sisa|proc:pro0|datapath:e0|regfile:reg0|sys_regs[7][14]                     ;
+; 5:1                ; 16 bits   ; 48 LEs        ; 16 LEs               ; 32 LEs                 ; Yes        ; |sisa|proc:pro0|datapath:e0|regfile:reg0|sys_regs[3][11]                     ;
+; 5:1                ; 14 bits   ; 42 LEs        ; 14 LEs               ; 28 LEs                 ; Yes        ; |sisa|proc:pro0|datapath:e0|regfile:reg0|sys_regs[2][14]                     ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 2 LEs                ; 4 LEs                  ; Yes        ; |sisa|proc:pro0|datapath:e0|regfile:reg0|sys_regs[2][0]                      ;
+; 5:1                ; 16 bits   ; 48 LEs        ; 16 LEs               ; 32 LEs                 ; Yes        ; |sisa|proc:pro0|datapath:e0|regfile:reg0|sys_regs[1][12]                     ;
+; 5:1                ; 16 bits   ; 48 LEs        ; 16 LEs               ; 32 LEs                 ; Yes        ; |sisa|proc:pro0|datapath:e0|regfile:reg0|sys_regs[0][12]                     ;
+; 7:1                ; 15 bits   ; 60 LEs        ; 45 LEs               ; 15 LEs                 ; Yes        ; |sisa|proc:pro0|unidad_control:c0|pc_s[8]                                    ;
+; 1:1                ; 8 bits    ; 0 LEs         ; 0 LEs                ; 0 LEs                  ; No         ; |sisa|MemoryController:mem0|SRAMController:sram_c|Mux16                      ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; No         ; |sisa|proc:pro0|unidad_control:c0|control_l:c_l|immed[3]                     ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|rb_out[9]                                        ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |sisa|vga_controller:vga_con|vga_ram_dual:U_MonitorRam|mem1                  ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; No         ; |sisa|proc:pro0|unidad_control:c0|multi:m|op.MOVHI_I                         ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; No         ; |sisa|proc:pro0|unidad_control:c0|multi:m|op.XOR_I                           ;
+; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; No         ; |sisa|proc:pro0|unidad_control:c0|multi:m|op.CMPEQ_I                         ;
+; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; No         ; |sisa|proc:pro0|unidad_control:c0|multi:m|op.DIV_I                           ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|vd[123]                                          ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|vd[99]                                           ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|vd[82]                                           ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|vd[75]                                           ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|vd[50]                                           ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|vd[43]                                           ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|vd[17]                                           ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|vd[2]                                            ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; No         ; |sisa|proc:pro0|unidad_control:c0|multi:m|op.JAL_I                           ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; No         ; |sisa|proc:pro0|unidad_control:c0|multi:m|op.BNZ_I                           ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |sisa|proc:pro0|unidad_control:c0|multi:m|addr_a[0]                          ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |sisa|MemoryController:mem0|addr_s[10]                                       ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; No         ; |sisa|MemoryController:mem0|SRAMController:sram_c|Mux29                      ;
+; 16:1               ; 3 bits    ; 30 LEs        ; 3 LEs                ; 27 LEs                 ; No         ; |sisa|proc:pro0|unidad_control:c0|control_l:c_l|Mux91                        ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |sisa|proc:pro0|unidad_control:c0|multi:m|in_d[1]                            ;
+; 9:1                ; 16 bits   ; 96 LEs        ; 96 LEs               ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|regfile:reg0|a[11]                               ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|rb_out[1]                                        ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|rb_out[7]                                        ;
+; 16:1               ; 128 bits  ; 1280 LEs      ; 640 LEs              ; 640 LEs                ; No         ; |sisa|proc:pro0|datapath:e0|va[83]                                           ;
+; 37:1               ; 14 bits   ; 336 LEs       ; 336 LEs              ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|Mux13                                            ;
+; 37:1               ; 2 bits    ; 48 LEs        ; 48 LEs               ; 0 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|Mux15                                            ;
+; 36:1               ; 3 bits    ; 72 LEs        ; 66 LEs               ; 6 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|aluout[6]                                        ;
+; 37:1               ; 3 bits    ; 72 LEs        ; 66 LEs               ; 6 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|aluout[11]                                       ;
+; 37:1               ; 2 bits    ; 48 LEs        ; 46 LEs               ; 2 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|aluout[2]                                        ;
+; 38:1               ; 2 bits    ; 50 LEs        ; 46 LEs               ; 4 LEs                  ; No         ; |sisa|proc:pro0|datapath:e0|aluout[12]                                       ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------+
+; Source assignments for vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem1_rtl_0|altsyncram_mug1:auto_generated ;
++---------------------------------+--------------------+------+----------------------------------------------------------------+
+; Assignment                      ; Value              ; From ; To                                                             ;
++---------------------------------+--------------------+------+----------------------------------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                                              ;
++---------------------------------+--------------------+------+----------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------+
+; Source assignments for vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem0_rtl_0|altsyncram_qug1:auto_generated ;
++---------------------------------+--------------------+------+----------------------------------------------------------------+
+; Assignment                      ; Value              ; From ; To                                                             ;
++---------------------------------+--------------------+------+----------------------------------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                                              ;
++---------------------------------+--------------------+------+----------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: keyboard_controller:kb|ps2_keyboard_interface:k0 ;
++-----------------------+-------+---------------------------------------------------------------+
+; Parameter Name        ; Value ; Type                                                          ;
++-----------------------+-------+---------------------------------------------------------------+
+; TIMER_60USEC_VALUE_PP ; 2950  ; Signed Integer                                                ;
+; TIMER_60USEC_BITS_PP  ; 12    ; Signed Integer                                                ;
+; TIMER_5USEC_VALUE_PP  ; 186   ; Signed Integer                                                ;
+; TIMER_5USEC_BITS_PP   ; 8     ; Signed Integer                                                ;
+; TRAP_SHIFT_KEYS_PP    ; 0     ; Signed Integer                                                ;
++-----------------------+-------+---------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: vga_controller:vga_con|vga_ram_dual:U_MonitorRam ;
++----------------+-------+----------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                 ;
++----------------+-------+----------------------------------------------------------------------+
+; d_width        ; 16    ; Signed Integer                                                       ;
+; addr_width     ; 12    ; Signed Integer                                                       ;
++----------------+-------+----------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem1_rtl_0 ;
++------------------------------------+----------------------+-------------------------------------------------------------+
+; Parameter Name                     ; Value                ; Type                                                        ;
++------------------------------------+----------------------+-------------------------------------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                                                     ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                                              ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                                                     ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                                                     ;
+; WIDTH_A                            ; 6                    ; Untyped                                                     ;
+; WIDTHAD_A                          ; 12                   ; Untyped                                                     ;
+; NUMWORDS_A                         ; 4096                 ; Untyped                                                     ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                                                     ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                                                     ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                                                     ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                                                     ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                                                     ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                                                     ;
+; WIDTH_B                            ; 6                    ; Untyped                                                     ;
+; WIDTHAD_B                          ; 12                   ; Untyped                                                     ;
+; NUMWORDS_B                         ; 4096                 ; Untyped                                                     ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                                                     ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                                                     ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                                                     ;
+; ADDRESS_REG_B                      ; CLOCK0               ; Untyped                                                     ;
+; OUTDATA_REG_B                      ; UNREGISTERED         ; Untyped                                                     ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                                                     ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                                                     ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                     ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                                                     ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                                                     ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                     ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                                                     ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Untyped                                                     ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                                                     ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                                                     ;
+; BYTE_SIZE                          ; 8                    ; Untyped                                                     ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; OLD_DATA             ; Untyped                                                     ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                                                     ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                                                     ;
+; INIT_FILE                          ; UNUSED               ; Untyped                                                     ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                                                     ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                                                     ;
+; CLOCK_ENABLE_INPUT_A               ; NORMAL               ; Untyped                                                     ;
+; CLOCK_ENABLE_INPUT_B               ; NORMAL               ; Untyped                                                     ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                                                     ;
+; CLOCK_ENABLE_OUTPUT_B              ; NORMAL               ; Untyped                                                     ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                                                     ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                                                     ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                                                     ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                                                     ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                                                     ;
+; DEVICE_FAMILY                      ; Cyclone II           ; Untyped                                                     ;
+; CBXI_PARAMETER                     ; altsyncram_mug1      ; Untyped                                                     ;
++------------------------------------+----------------------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem0_rtl_0 ;
++------------------------------------+----------------------+-------------------------------------------------------------+
+; Parameter Name                     ; Value                ; Type                                                        ;
++------------------------------------+----------------------+-------------------------------------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                                                     ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                                              ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                                                     ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                                                     ;
+; WIDTH_A                            ; 8                    ; Untyped                                                     ;
+; WIDTHAD_A                          ; 12                   ; Untyped                                                     ;
+; NUMWORDS_A                         ; 4096                 ; Untyped                                                     ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                                                     ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                                                     ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                                                     ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                                                     ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                                                     ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                                                     ;
+; WIDTH_B                            ; 8                    ; Untyped                                                     ;
+; WIDTHAD_B                          ; 12                   ; Untyped                                                     ;
+; NUMWORDS_B                         ; 4096                 ; Untyped                                                     ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                                                     ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                                                     ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                                                     ;
+; ADDRESS_REG_B                      ; CLOCK0               ; Untyped                                                     ;
+; OUTDATA_REG_B                      ; UNREGISTERED         ; Untyped                                                     ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                                                     ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                                                     ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                     ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                                                     ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                                                     ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                     ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                                                     ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Untyped                                                     ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                                                     ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                                                     ;
+; BYTE_SIZE                          ; 8                    ; Untyped                                                     ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; OLD_DATA             ; Untyped                                                     ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                                                     ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                                                     ;
+; INIT_FILE                          ; UNUSED               ; Untyped                                                     ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                                                     ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                                                     ;
+; CLOCK_ENABLE_INPUT_A               ; NORMAL               ; Untyped                                                     ;
+; CLOCK_ENABLE_INPUT_B               ; NORMAL               ; Untyped                                                     ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                                                     ;
+; CLOCK_ENABLE_OUTPUT_B              ; NORMAL               ; Untyped                                                     ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                                                     ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                                                     ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                                                     ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                                                     ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                                                     ;
+; DEVICE_FAMILY                      ; Cyclone II           ; Untyped                                                     ;
+; CBXI_PARAMETER                     ; altsyncram_qug1      ; Untyped                                                     ;
++------------------------------------+----------------------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult1 ;
++------------------------------------------------+------------+-----------------------------------------------+
+; Parameter Name                                 ; Value      ; Type                                          ;
++------------------------------------------------+------------+-----------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON         ; AUTO_CARRY                                    ;
+; IGNORE_CARRY_BUFFERS                           ; OFF        ; IGNORE_CARRY                                  ;
+; AUTO_CASCADE_CHAINS                            ; ON         ; AUTO_CASCADE                                  ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF        ; IGNORE_CASCADE                                ;
+; LPM_WIDTHA                                     ; 16         ; Untyped                                       ;
+; LPM_WIDTHB                                     ; 16         ; Untyped                                       ;
+; LPM_WIDTHP                                     ; 32         ; Untyped                                       ;
+; LPM_WIDTHR                                     ; 32         ; Untyped                                       ;
+; LPM_WIDTHS                                     ; 1          ; Untyped                                       ;
+; LPM_REPRESENTATION                             ; SIGNED     ; Untyped                                       ;
+; LPM_PIPELINE                                   ; 0          ; Untyped                                       ;
+; LATENCY                                        ; 0          ; Untyped                                       ;
+; INPUT_A_IS_CONSTANT                            ; NO         ; Untyped                                       ;
+; INPUT_B_IS_CONSTANT                            ; NO         ; Untyped                                       ;
+; USE_EAB                                        ; OFF        ; Untyped                                       ;
+; MAXIMIZE_SPEED                                 ; 5          ; Untyped                                       ;
+; DEVICE_FAMILY                                  ; Cyclone II ; Untyped                                       ;
+; CARRY_CHAIN                                    ; MANUAL     ; Untyped                                       ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT        ; TECH_MAPPER_APEX20K                           ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO       ; Untyped                                       ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0          ; Untyped                                       ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0          ; Untyped                                       ;
+; CBXI_PARAMETER                                 ; mult_h1t   ; Untyped                                       ;
+; INPUT_A_FIXED_VALUE                            ; Bx         ; Untyped                                       ;
+; INPUT_B_FIXED_VALUE                            ; Bx         ; Untyped                                       ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF        ; Untyped                                       ;
++------------------------------------------------+------------+-----------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult0 ;
++------------------------------------------------+------------+-----------------------------------------------+
+; Parameter Name                                 ; Value      ; Type                                          ;
++------------------------------------------------+------------+-----------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON         ; AUTO_CARRY                                    ;
+; IGNORE_CARRY_BUFFERS                           ; OFF        ; IGNORE_CARRY                                  ;
+; AUTO_CASCADE_CHAINS                            ; ON         ; AUTO_CASCADE                                  ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF        ; IGNORE_CASCADE                                ;
+; LPM_WIDTHA                                     ; 16         ; Untyped                                       ;
+; LPM_WIDTHB                                     ; 16         ; Untyped                                       ;
+; LPM_WIDTHP                                     ; 32         ; Untyped                                       ;
+; LPM_WIDTHR                                     ; 32         ; Untyped                                       ;
+; LPM_WIDTHS                                     ; 1          ; Untyped                                       ;
+; LPM_REPRESENTATION                             ; UNSIGNED   ; Untyped                                       ;
+; LPM_PIPELINE                                   ; 0          ; Untyped                                       ;
+; LATENCY                                        ; 0          ; Untyped                                       ;
+; INPUT_A_IS_CONSTANT                            ; NO         ; Untyped                                       ;
+; INPUT_B_IS_CONSTANT                            ; NO         ; Untyped                                       ;
+; USE_EAB                                        ; OFF        ; Untyped                                       ;
+; MAXIMIZE_SPEED                                 ; 6          ; Untyped                                       ;
+; DEVICE_FAMILY                                  ; Cyclone II ; Untyped                                       ;
+; CARRY_CHAIN                                    ; MANUAL     ; Untyped                                       ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT        ; TECH_MAPPER_APEX20K                           ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO       ; Untyped                                       ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0          ; Untyped                                       ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0          ; Untyped                                       ;
+; CBXI_PARAMETER                                 ; mult_l8t   ; Untyped                                       ;
+; INPUT_A_FIXED_VALUE                            ; Bx         ; Untyped                                       ;
+; INPUT_B_FIXED_VALUE                            ; Bx         ; Untyped                                       ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF        ; Untyped                                       ;
++------------------------------------------------+------------+-----------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div0 ;
++------------------------+----------------+--------------------------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                                               ;
++------------------------+----------------+--------------------------------------------------------------------+
+; LPM_WIDTHN             ; 16             ; Untyped                                                            ;
+; LPM_WIDTHD             ; 16             ; Untyped                                                            ;
+; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                                            ;
+; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                                            ;
+; LPM_PIPELINE           ; 0              ; Untyped                                                            ;
+; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                                            ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                                            ;
+; CBXI_PARAMETER         ; lpm_divide_3gm ; Untyped                                                            ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                                            ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                                            ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                                         ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                                       ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                                       ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                                     ;
++------------------------+----------------+--------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1 ;
++------------------------+----------------+--------------------------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                                               ;
++------------------------+----------------+--------------------------------------------------------------------+
+; LPM_WIDTHN             ; 16             ; Untyped                                                            ;
+; LPM_WIDTHD             ; 16             ; Untyped                                                            ;
+; LPM_NREPRESENTATION    ; SIGNED         ; Untyped                                                            ;
+; LPM_DREPRESENTATION    ; SIGNED         ; Untyped                                                            ;
+; LPM_PIPELINE           ; 0              ; Untyped                                                            ;
+; LPM_REMAINDERPOSITIVE  ; FALSE          ; Untyped                                                            ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                                            ;
+; CBXI_PARAMETER         ; lpm_divide_rto ; Untyped                                                            ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                                            ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                                            ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                                         ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                                       ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                                       ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                                     ;
++------------------------+----------------+--------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------------------------------------------------------------------+
+; altsyncram Parameter Settings by Entity Instance                                                                   ;
++-------------------------------------------+------------------------------------------------------------------------+
+; Name                                      ; Value                                                                  ;
++-------------------------------------------+------------------------------------------------------------------------+
+; Number of entity instances                ; 2                                                                      ;
+; Entity Instance                           ; vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem1_rtl_0 ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                                              ;
+;     -- WIDTH_A                            ; 6                                                                      ;
+;     -- NUMWORDS_A                         ; 4096                                                                   ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                                           ;
+;     -- WIDTH_B                            ; 6                                                                      ;
+;     -- NUMWORDS_B                         ; 4096                                                                   ;
+;     -- ADDRESS_REG_B                      ; CLOCK0                                                                 ;
+;     -- OUTDATA_REG_B                      ; UNREGISTERED                                                           ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                                                   ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; OLD_DATA                                                               ;
+; Entity Instance                           ; vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem0_rtl_0 ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                                              ;
+;     -- WIDTH_A                            ; 8                                                                      ;
+;     -- NUMWORDS_A                         ; 4096                                                                   ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                                           ;
+;     -- WIDTH_B                            ; 8                                                                      ;
+;     -- NUMWORDS_B                         ; 4096                                                                   ;
+;     -- ADDRESS_REG_B                      ; CLOCK0                                                                 ;
+;     -- OUTDATA_REG_B                      ; UNREGISTERED                                                           ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                                                   ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; OLD_DATA                                                               ;
++-------------------------------------------+------------------------------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------+
+; lpm_mult Parameter Settings by Entity Instance                                                     ;
++---------------------------------------+------------------------------------------------------------+
+; Name                                  ; Value                                                      ;
++---------------------------------------+------------------------------------------------------------+
+; Number of entity instances            ; 2                                                          ;
+; Entity Instance                       ; proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult1 ;
+;     -- LPM_WIDTHA                     ; 16                                                         ;
+;     -- LPM_WIDTHB                     ; 16                                                         ;
+;     -- LPM_WIDTHP                     ; 32                                                         ;
+;     -- LPM_REPRESENTATION             ; SIGNED                                                     ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                         ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                         ;
+;     -- USE_EAB                        ; OFF                                                        ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                       ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                         ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                         ;
+; Entity Instance                       ; proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult0 ;
+;     -- LPM_WIDTHA                     ; 16                                                         ;
+;     -- LPM_WIDTHB                     ; 16                                                         ;
+;     -- LPM_WIDTHP                     ; 32                                                         ;
+;     -- LPM_REPRESENTATION             ; UNSIGNED                                                   ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                         ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                         ;
+;     -- USE_EAB                        ; OFF                                                        ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                       ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                         ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                         ;
++---------------------------------------+------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "vga_controller:vga_con|vga_sync:u_vga_sync"                                                 ;
++--------------+--------+----------+-------------------------------------------------------------------------------------+
+; Port         ; Type   ; Severity ; Details                                                                             ;
++--------------+--------+----------+-------------------------------------------------------------------------------------+
+; pixel_row[9] ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++--------------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "vga_controller:vga_con"                                                                          ;
++-------------------+--------+----------+-------------------------------------------------------------------------------------+
+; Port              ; Type   ; Severity ; Details                                                                             ;
++-------------------+--------+----------+-------------------------------------------------------------------------------------+
+; blank_out         ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; csync_out         ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; red_out[7..4]     ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; green_out[7..4]   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; blue_out[7..4]    ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; vga_cursor        ; Input  ; Info     ; Stuck at GND                                                                        ;
+; vga_cursor_enable ; Input  ; Info     ; Stuck at GND                                                                        ;
++-------------------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "keyboard_controller:kb|ps2_keyboard_interface:k0"                                                       ;
++--------------------------+--------+----------+-------------------------------------------------------------------------------------+
+; Port                     ; Type   ; Severity ; Details                                                                             ;
++--------------------------+--------+----------+-------------------------------------------------------------------------------------+
+; rx_extended              ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; rx_scan_code             ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; tx_data                  ; Input  ; Info     ; Stuck at GND                                                                        ;
+; tx_write                 ; Input  ; Info     ; Stuck at GND                                                                        ;
+; tx_write_ack_o           ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; tx_error_no_keyboard_ack ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++--------------------------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "proc:pro0|unidad_control:c0|control_l:c_l"                                          ;
++------+--------+----------+-------------------------------------------------------------------------------------+
+; Port ; Type   ; Severity ; Details                                                                             ;
++------+--------+----------+-------------------------------------------------------------------------------------+
+; geti ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "proc:pro0|unidad_control:c0|multi:m"                                                                                                            ;
++----------+-------+----------+----------------------------------------------------------------------------------------------------------------------------------------------+
+; Port     ; Type  ; Severity ; Details                                                                                                                                      ;
++----------+-------+----------+----------------------------------------------------------------------------------------------------------------------------------------------+
+; vec_done ; Input ; Warning  ; Declared by entity but not connected by instance. If a default value exists, it will be used.  Otherwise, the port will be connected to GND. ;
++----------+-------+----------+----------------------------------------------------------------------------------------------------------------------------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:23     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus II 64-Bit Analysis & Synthesis
+    Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
+    Info: Processing started: Wed Jun 19 19:58:13 2024
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off sisa -c sisa
+Warning (20028): Parallel compilation is not licensed and has been disabled
+Info (12021): Found 2 design units, including 1 entities, in source file alu_modules/shift.vhd
+    Info (12022): Found design unit 1: shift-Structural
+    Info (12023): Found entity 1: shift
+Info (12021): Found 2 design units, including 1 entities, in source file alu_modules/mul.vhd
+    Info (12022): Found design unit 1: mul-Structural
+    Info (12023): Found entity 1: mul
+Info (12021): Found 2 design units, including 1 entities, in source file alu_modules/div.vhd
+    Info (12022): Found design unit 1: div-Structural
+    Info (12023): Found entity 1: div
+Info (12021): Found 2 design units, including 1 entities, in source file alu_modules/cmp.vhd
+    Info (12022): Found design unit 1: cmp-Structural
+    Info (12023): Found entity 1: cmp
+Info (12021): Found 2 design units, including 1 entities, in source file alu_modules/addsub.vhd
+    Info (12022): Found design unit 1: addsub-Structural
+    Info (12023): Found entity 1: addsub
+Info (12021): Found 2 design units, including 1 entities, in source file IO_controllers/vga_sync.vhd
+    Info (12022): Found design unit 1: vga_sync-vga_sync_arch
+    Info (12023): Found entity 1: vga_sync
+Info (12021): Found 2 design units, including 1 entities, in source file IO_controllers/vga_ram_dual.vhd
+    Info (12022): Found design unit 1: vga_ram_dual-vga_ram_dual_arch
+    Info (12023): Found entity 1: vga_ram_dual
+Info (12021): Found 2 design units, including 1 entities, in source file IO_controllers/vga_font_rom.vhd
+    Info (12022): Found design unit 1: vga_font_rom-vga_font_rom_arch
+    Info (12023): Found entity 1: vga_font_rom
+Info (12021): Found 2 design units, including 1 entities, in source file IO_controllers/vga_controller.vhd
+    Info (12022): Found design unit 1: vga_controller-vga_controller_rtl
+    Info (12023): Found entity 1: vga_controller
+Info (12021): Found 2 design units, including 1 entities, in source file IO_controllers/ps2_keyboard.vhd
+    Info (12022): Found design unit 1: ps2_keyboard_interface-trans
+    Info (12023): Found entity 1: ps2_keyboard_interface
+Info (12021): Found 2 design units, including 1 entities, in source file IO_controllers/keyboard_controller.vhd
+    Info (12022): Found design unit 1: keyboard_controller-Behavioral
+    Info (12023): Found entity 1: keyboard_controller
+Info (12021): Found 2 design units, including 1 entities, in source file IO_controllers/driver7display.vhd
+    Info (12022): Found design unit 1: driver7display-Structure
+    Info (12023): Found entity 1: driver7display
+Info (12021): Found 2 design units, including 1 entities, in source file IO_controllers/dataVisualizer.vhd
+    Info (12022): Found design unit 1: dataVisualizer-Structure
+    Info (12023): Found entity 1: dataVisualizer
+Info (12021): Found 2 design units, including 1 entities, in source file vregfile.vhd
+    Info (12022): Found design unit 1: vregfile-Structure
+    Info (12023): Found entity 1: vregfile
+Info (12021): Found 2 design units, including 1 entities, in source file unidad_control.vhd
+    Info (12022): Found design unit 1: unidad_control-Structure
+    Info (12023): Found entity 1: unidad_control
+Info (12021): Found 2 design units, including 1 entities, in source file timer.vhd
+    Info (12022): Found design unit 1: timer-Structure
+    Info (12023): Found entity 1: timer
+Info (12021): Found 2 design units, including 1 entities, in source file SRAMController.vhd
+    Info (12022): Found design unit 1: SRAMController-comportament
+    Info (12023): Found entity 1: SRAMController
+Info (12021): Found 2 design units, including 1 entities, in source file sisa.vhd
+    Info (12022): Found design unit 1: sisa-Structure
+    Info (12023): Found entity 1: sisa
+Info (12021): Found 2 design units, including 0 entities, in source file renacuajo.vhd
+    Info (12022): Found design unit 1: renacuajo_pkg
+    Info (12022): Found design unit 2: renacuajo_pkg-body
+Info (12021): Found 2 design units, including 1 entities, in source file regfile.vhd
+    Info (12022): Found design unit 1: regfile-Structure
+    Info (12023): Found entity 1: regfile
+Info (12021): Found 2 design units, including 1 entities, in source file pulsadors.vhd
+    Info (12022): Found design unit 1: pulsadors-Structure
+    Info (12023): Found entity 1: pulsadors
+Info (12021): Found 2 design units, including 1 entities, in source file proc.vhd
+    Info (12022): Found design unit 1: proc-Structure
+    Info (12023): Found entity 1: proc
+Info (12021): Found 2 design units, including 1 entities, in source file multi.vhd
+    Info (12022): Found design unit 1: multi-Structure
+    Info (12023): Found entity 1: multi
+Info (12021): Found 2 design units, including 1 entities, in source file MemoryController.vhd
+    Info (12022): Found design unit 1: MemoryController-comportament
+    Info (12023): Found entity 1: MemoryController
+Info (12021): Found 2 design units, including 1 entities, in source file interruptors.vhd
+    Info (12022): Found design unit 1: interruptors-Structure
+    Info (12023): Found entity 1: interruptors
+Info (12021): Found 2 design units, including 1 entities, in source file interrupt_controller.vhd
+    Info (12022): Found design unit 1: interrupt_controller-Structure
+    Info (12023): Found entity 1: interrupt_controller
+Info (12021): Found 2 design units, including 1 entities, in source file exception_controller.vhd
+    Info (12022): Found design unit 1: exception_controller-Structure
+    Info (12023): Found entity 1: exception_controller
+Info (12021): Found 2 design units, including 1 entities, in source file datapath.vhd
+    Info (12022): Found design unit 1: datapath-Structure
+    Info (12023): Found entity 1: datapath
+Info (12021): Found 2 design units, including 1 entities, in source file controlador_io.vhd
+    Info (12022): Found design unit 1: controladores_io-Structure
+    Info (12023): Found entity 1: controladores_io
+Info (12021): Found 2 design units, including 1 entities, in source file control_l.vhd
+    Info (12022): Found design unit 1: control_l-Structure
+    Info (12023): Found entity 1: control_l
+Info (12021): Found 2 design units, including 1 entities, in source file alu.vhd
+    Info (12022): Found design unit 1: alu-Structure
+    Info (12023): Found entity 1: alu
+Info (12127): Elaborating entity "sisa" for the top level hierarchy
+Info (12128): Elaborating entity "proc" for hierarchy "proc:pro0"
+Info (12128): Elaborating entity "unidad_control" for hierarchy "proc:pro0|unidad_control:c0"
+Info (12128): Elaborating entity "multi" for hierarchy "proc:pro0|unidad_control:c0|multi:m"
+Warning (10492): VHDL Process Statement warning at multi.vhd(91): signal "state" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Info (12128): Elaborating entity "control_l" for hierarchy "proc:pro0|unidad_control:c0|control_l:c_l"
+Warning (10541): VHDL Signal Declaration warning at control_l.vhd(32): used implicit default value for signal "geti" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
+Info (12128): Elaborating entity "datapath" for hierarchy "proc:pro0|datapath:e0"
+Info (12128): Elaborating entity "regfile" for hierarchy "proc:pro0|datapath:e0|regfile:reg0"
+Info (12128): Elaborating entity "vregfile" for hierarchy "proc:pro0|datapath:e0|vregfile:vreg0"
+Info (12128): Elaborating entity "alu" for hierarchy "proc:pro0|datapath:e0|alu:alu0"
+Info (12128): Elaborating entity "addsub" for hierarchy "proc:pro0|datapath:e0|alu:alu0|addsub:addsub_inst"
+Info (12128): Elaborating entity "cmp" for hierarchy "proc:pro0|datapath:e0|alu:alu0|cmp:cmp_inst"
+Info (12128): Elaborating entity "div" for hierarchy "proc:pro0|datapath:e0|alu:alu0|div:div_inst"
+Info (12128): Elaborating entity "mul" for hierarchy "proc:pro0|datapath:e0|alu:alu0|mul:mul_inst"
+Info (12128): Elaborating entity "shift" for hierarchy "proc:pro0|datapath:e0|alu:alu0|shift:shift_inst"
+Warning (12125): Using design file valu.vhd, which is not specified as a design file for the current project, but contains definitions for 2 design units and 1 entities in project
+    Info (12022): Found design unit 1: valu-Structure
+    Info (12023): Found entity 1: valu
+Info (12128): Elaborating entity "valu" for hierarchy "proc:pro0|datapath:e0|valu:valu0"
+Info (12128): Elaborating entity "MemoryController" for hierarchy "MemoryController:mem0"
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(128): signal "write_s" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(148): signal "wr_state" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(150): signal "wr_vec" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(152): signal "addr" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(154): signal "wr_vec" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(156): signal "counter_wr" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(157): signal "addr_wr" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(158): signal "wr_vdata" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(159): signal "wr_vdata_s" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(162): signal "counter_wr" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10631): VHDL Process Statement warning at MemoryController.vhd(146): inferring latch(es) for signal or variable "wr_vec", which holds its previous value in one or more paths through the process
+Warning (10631): VHDL Process Statement warning at MemoryController.vhd(146): inferring latch(es) for signal or variable "counter_wr", which holds its previous value in one or more paths through the process
+Warning (10631): VHDL Process Statement warning at MemoryController.vhd(146): inferring latch(es) for signal or variable "addr_wr", which holds its previous value in one or more paths through the process
+Warning (10631): VHDL Process Statement warning at MemoryController.vhd(146): inferring latch(es) for signal or variable "wr_vdata_s", which holds its previous value in one or more paths through the process
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(176): signal "write_s" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(196): signal "rd_state" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(198): signal "rd_vec_s" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(200): signal "addr" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(202): signal "rd_vec_s" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(204): signal "counter_rd" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(205): signal "addr_rd" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(206): signal "rd_data_s" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(207): signal "rd_vec_s" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(210): signal "counter_rd" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(212): signal "rd_done" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at MemoryController.vhd(213): signal "rd_vec_s" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10631): VHDL Process Statement warning at MemoryController.vhd(194): inferring latch(es) for signal or variable "rd_vec_s", which holds its previous value in one or more paths through the process
+Warning (10631): VHDL Process Statement warning at MemoryController.vhd(194): inferring latch(es) for signal or variable "counter_rd", which holds its previous value in one or more paths through the process
+Warning (10631): VHDL Process Statement warning at MemoryController.vhd(194): inferring latch(es) for signal or variable "addr_rd", which holds its previous value in one or more paths through the process
+Warning (10631): VHDL Process Statement warning at MemoryController.vhd(194): inferring latch(es) for signal or variable "rd_vec", which holds its previous value in one or more paths through the process
+Info (10041): Inferred latch for "rd_vec[0]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[1]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[2]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[3]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[4]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[5]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[6]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[7]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[8]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[9]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[10]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[11]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[12]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[13]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[14]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[15]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[16]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[17]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[18]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[19]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[20]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[21]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[22]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[23]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[24]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[25]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[26]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[27]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[28]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[29]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[30]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[31]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[32]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[33]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[34]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[35]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[36]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[37]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[38]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[39]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[40]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[41]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[42]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[43]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[44]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[45]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[46]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[47]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[48]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[49]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[50]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[51]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[52]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[53]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[54]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[55]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[56]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[57]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[58]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[59]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[60]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[61]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[62]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[63]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[64]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[65]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[66]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[67]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[68]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[69]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[70]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[71]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[72]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[73]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[74]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[75]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[76]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[77]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[78]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[79]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[80]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[81]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[82]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[83]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[84]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[85]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[86]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[87]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[88]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[89]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[90]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[91]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[92]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[93]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[94]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[95]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[96]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[97]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[98]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[99]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[100]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[101]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[102]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[103]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[104]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[105]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[106]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[107]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[108]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[109]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[110]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[111]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[112]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[113]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[114]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[115]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[116]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[117]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[118]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[119]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[120]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[121]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[122]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[123]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[124]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[125]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[126]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec[127]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[0]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[1]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[2]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[3]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[4]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[5]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[6]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[7]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[8]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[9]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[10]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[11]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[12]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[13]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[14]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "addr_rd[15]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "counter_rd[0]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "counter_rd[1]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "counter_rd[2]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "counter_rd[3]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[0]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[1]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[2]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[3]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[4]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[5]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[6]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[7]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[8]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[9]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[10]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[11]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[12]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[13]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[14]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[15]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[16]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[17]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[18]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[19]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[20]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[21]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[22]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[23]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[24]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[25]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[26]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[27]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[28]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[29]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[30]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[31]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[32]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[33]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[34]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[35]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[36]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[37]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[38]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[39]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[40]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[41]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[42]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[43]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[44]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[45]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[46]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[47]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[48]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[49]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[50]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[51]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[52]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[53]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[54]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[55]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[56]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[57]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[58]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[59]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[60]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[61]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[62]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[63]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[64]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[65]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[66]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[67]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[68]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[69]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[70]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[71]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[72]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[73]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[74]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[75]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[76]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[77]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[78]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[79]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[80]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[81]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[82]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[83]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[84]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[85]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[86]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[87]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[88]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[89]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[90]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[91]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[92]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[93]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[94]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[95]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[96]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[97]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[98]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[99]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[100]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[101]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[102]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[103]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[104]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[105]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[106]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[107]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[108]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[109]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[110]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[111]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[112]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[113]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[114]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[115]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[116]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[117]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[118]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[119]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[120]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[121]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[122]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[123]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[124]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[125]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[126]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "rd_vec_s[127]" at MemoryController.vhd(194)
+Info (10041): Inferred latch for "wr_vdata_s[0]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[1]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[2]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[3]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[4]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[5]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[6]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[7]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[8]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[9]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[10]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[11]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[12]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[13]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[14]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vdata_s[15]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[0]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[1]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[2]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[3]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[4]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[5]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[6]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[7]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[8]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[9]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[10]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[11]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[12]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[13]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[14]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "addr_wr[15]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "counter_wr[0]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "counter_wr[1]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "counter_wr[2]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "counter_wr[3]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[0]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[1]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[2]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[3]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[4]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[5]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[6]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[7]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[8]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[9]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[10]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[11]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[12]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[13]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[14]" at MemoryController.vhd(146)
+Info (10041): Inferred latch for "wr_vec[15]" at MemoryController.vhd(146)
+Info (12128): Elaborating entity "SRAMController" for hierarchy "MemoryController:mem0|SRAMController:sram_c"
+Info (12128): Elaborating entity "controladores_io" for hierarchy "controladores_io:io0"
+Info (12128): Elaborating entity "driver7display" for hierarchy "driver7display:disp"
+Info (12128): Elaborating entity "keyboard_controller" for hierarchy "keyboard_controller:kb"
+Warning (10036): Verilog HDL or VHDL warning at keyboard_controller.vhd(39): object "rx_extended" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at keyboard_controller.vhd(44): object "tx_write_ack_o" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at keyboard_controller.vhd(45): object "tx_error_no_keyboard_ack" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at keyboard_controller.vhd(47): object "rx_scan_code" assigned a value but never read
+Warning (10492): VHDL Process Statement warning at keyboard_controller.vhd(100): signal "rx_data_ready" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at keyboard_controller.vhd(100): signal "rx_released" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at keyboard_controller.vhd(101): signal "rx_shift_key_on" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at keyboard_controller.vhd(101): signal "rx_ascii" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10631): VHDL Process Statement warning at keyboard_controller.vhd(96): inferring latch(es) for signal or variable "data_available", which holds its previous value in one or more paths through the process
+Info (10041): Inferred latch for "data_available" at keyboard_controller.vhd(96)
+Info (12128): Elaborating entity "ps2_keyboard_interface" for hierarchy "keyboard_controller:kb|ps2_keyboard_interface:k0"
+Info (12128): Elaborating entity "vga_controller" for hierarchy "vga_controller:vga_con"
+Info (12128): Elaborating entity "vga_sync" for hierarchy "vga_controller:vga_con|vga_sync:u_vga_sync"
+Info (12128): Elaborating entity "vga_font_rom" for hierarchy "vga_controller:vga_con|vga_font_rom:u_font_rom"
+Info (12128): Elaborating entity "vga_ram_dual" for hierarchy "vga_controller:vga_con|vga_ram_dual:U_MonitorRam"
+Info (12128): Elaborating entity "interrupt_controller" for hierarchy "interrupt_controller:intr_con"
+Info (12128): Elaborating entity "pulsadors" for hierarchy "pulsadors:keys"
+Info (12128): Elaborating entity "timer" for hierarchy "timer:tim"
+Info (12128): Elaborating entity "interruptors" for hierarchy "interruptors:swi"
+Info (12128): Elaborating entity "exception_controller" for hierarchy "exception_controller:exc"
+Info (276014): Found 1 instances of uninferred RAM logic
+    Info (276004): RAM logic "proc:pro0|datapath:e0|regfile:reg0|regs" is uninferred due to inappropriate RAM size
+Info (19000): Inferred 2 megafunctions from design logic
+    Info (276029): Inferred altsyncram megafunction from the following design logic: "vga_controller:vga_con|vga_ram_dual:U_MonitorRam|mem1_rtl_0" 
+        Info (286033): Parameter OPERATION_MODE set to DUAL_PORT
+        Info (286033): Parameter WIDTH_A set to 6
+        Info (286033): Parameter WIDTHAD_A set to 12
+        Info (286033): Parameter NUMWORDS_A set to 4096
+        Info (286033): Parameter WIDTH_B set to 6
+        Info (286033): Parameter WIDTHAD_B set to 12
+        Info (286033): Parameter NUMWORDS_B set to 4096
+        Info (286033): Parameter ADDRESS_ACLR_A set to NONE
+        Info (286033): Parameter OUTDATA_REG_B set to UNREGISTERED
+        Info (286033): Parameter ADDRESS_ACLR_B set to NONE
+        Info (286033): Parameter OUTDATA_ACLR_B set to NONE
+        Info (286033): Parameter ADDRESS_REG_B set to CLOCK0
+        Info (286033): Parameter INDATA_ACLR_A set to NONE
+        Info (286033): Parameter WRCONTROL_ACLR_A set to NONE
+        Info (286033): Parameter READ_DURING_WRITE_MODE_MIXED_PORTS set to OLD_DATA
+    Info (276029): Inferred altsyncram megafunction from the following design logic: "vga_controller:vga_con|vga_ram_dual:U_MonitorRam|mem0_rtl_0" 
+        Info (286033): Parameter OPERATION_MODE set to DUAL_PORT
+        Info (286033): Parameter WIDTH_A set to 8
+        Info (286033): Parameter WIDTHAD_A set to 12
+        Info (286033): Parameter NUMWORDS_A set to 4096
+        Info (286033): Parameter WIDTH_B set to 8
+        Info (286033): Parameter WIDTHAD_B set to 12
+        Info (286033): Parameter NUMWORDS_B set to 4096
+        Info (286033): Parameter ADDRESS_ACLR_A set to NONE
+        Info (286033): Parameter OUTDATA_REG_B set to UNREGISTERED
+        Info (286033): Parameter ADDRESS_ACLR_B set to NONE
+        Info (286033): Parameter OUTDATA_ACLR_B set to NONE
+        Info (286033): Parameter ADDRESS_REG_B set to CLOCK0
+        Info (286033): Parameter INDATA_ACLR_A set to NONE
+        Info (286033): Parameter WRCONTROL_ACLR_A set to NONE
+        Info (286033): Parameter READ_DURING_WRITE_MODE_MIXED_PORTS set to OLD_DATA
+Info (278001): Inferred 4 megafunctions from design logic
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|Mult1"
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|Mult0"
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "proc:pro0|datapath:e0|alu:alu0|div:div_inst|Div0"
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "proc:pro0|datapath:e0|alu:alu0|div:div_inst|Div1"
+Info (12130): Elaborated megafunction instantiation "vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem1_rtl_0"
+Info (12133): Instantiated megafunction "vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem1_rtl_0" with the following parameter:
+    Info (12134): Parameter "OPERATION_MODE" = "DUAL_PORT"
+    Info (12134): Parameter "WIDTH_A" = "6"
+    Info (12134): Parameter "WIDTHAD_A" = "12"
+    Info (12134): Parameter "NUMWORDS_A" = "4096"
+    Info (12134): Parameter "WIDTH_B" = "6"
+    Info (12134): Parameter "WIDTHAD_B" = "12"
+    Info (12134): Parameter "NUMWORDS_B" = "4096"
+    Info (12134): Parameter "ADDRESS_ACLR_A" = "NONE"
+    Info (12134): Parameter "OUTDATA_REG_B" = "UNREGISTERED"
+    Info (12134): Parameter "ADDRESS_ACLR_B" = "NONE"
+    Info (12134): Parameter "OUTDATA_ACLR_B" = "NONE"
+    Info (12134): Parameter "ADDRESS_REG_B" = "CLOCK0"
+    Info (12134): Parameter "INDATA_ACLR_A" = "NONE"
+    Info (12134): Parameter "WRCONTROL_ACLR_A" = "NONE"
+    Info (12134): Parameter "READ_DURING_WRITE_MODE_MIXED_PORTS" = "OLD_DATA"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_mug1.tdf
+    Info (12023): Found entity 1: altsyncram_mug1
+Info (12130): Elaborated megafunction instantiation "vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem0_rtl_0"
+Info (12133): Instantiated megafunction "vga_controller:vga_con|vga_ram_dual:U_MonitorRam|altsyncram:mem0_rtl_0" with the following parameter:
+    Info (12134): Parameter "OPERATION_MODE" = "DUAL_PORT"
+    Info (12134): Parameter "WIDTH_A" = "8"
+    Info (12134): Parameter "WIDTHAD_A" = "12"
+    Info (12134): Parameter "NUMWORDS_A" = "4096"
+    Info (12134): Parameter "WIDTH_B" = "8"
+    Info (12134): Parameter "WIDTHAD_B" = "12"
+    Info (12134): Parameter "NUMWORDS_B" = "4096"
+    Info (12134): Parameter "ADDRESS_ACLR_A" = "NONE"
+    Info (12134): Parameter "OUTDATA_REG_B" = "UNREGISTERED"
+    Info (12134): Parameter "ADDRESS_ACLR_B" = "NONE"
+    Info (12134): Parameter "OUTDATA_ACLR_B" = "NONE"
+    Info (12134): Parameter "ADDRESS_REG_B" = "CLOCK0"
+    Info (12134): Parameter "INDATA_ACLR_A" = "NONE"
+    Info (12134): Parameter "WRCONTROL_ACLR_A" = "NONE"
+    Info (12134): Parameter "READ_DURING_WRITE_MODE_MIXED_PORTS" = "OLD_DATA"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_qug1.tdf
+    Info (12023): Found entity 1: altsyncram_qug1
+Info (12130): Elaborated megafunction instantiation "proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult1"
+Info (12133): Instantiated megafunction "proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult1" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTHA" = "16"
+    Info (12134): Parameter "LPM_WIDTHB" = "16"
+    Info (12134): Parameter "LPM_WIDTHP" = "32"
+    Info (12134): Parameter "LPM_WIDTHR" = "32"
+    Info (12134): Parameter "LPM_WIDTHS" = "1"
+    Info (12134): Parameter "LPM_REPRESENTATION" = "SIGNED"
+    Info (12134): Parameter "INPUT_A_IS_CONSTANT" = "NO"
+    Info (12134): Parameter "INPUT_B_IS_CONSTANT" = "NO"
+    Info (12134): Parameter "MAXIMIZE_SPEED" = "5"
+Info (12021): Found 1 design units, including 1 entities, in source file db/mult_h1t.tdf
+    Info (12023): Found entity 1: mult_h1t
+Info (12130): Elaborated megafunction instantiation "proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult0"
+Info (12133): Instantiated megafunction "proc:pro0|datapath:e0|alu:alu0|mul:mul_inst|lpm_mult:Mult0" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTHA" = "16"
+    Info (12134): Parameter "LPM_WIDTHB" = "16"
+    Info (12134): Parameter "LPM_WIDTHP" = "32"
+    Info (12134): Parameter "LPM_WIDTHR" = "32"
+    Info (12134): Parameter "LPM_WIDTHS" = "1"
+    Info (12134): Parameter "LPM_REPRESENTATION" = "UNSIGNED"
+    Info (12134): Parameter "INPUT_A_IS_CONSTANT" = "NO"
+    Info (12134): Parameter "INPUT_B_IS_CONSTANT" = "NO"
+    Info (12134): Parameter "MAXIMIZE_SPEED" = "6"
+Info (12021): Found 1 design units, including 1 entities, in source file db/mult_l8t.tdf
+    Info (12023): Found entity 1: mult_l8t
+Info (12130): Elaborated megafunction instantiation "proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div0"
+Info (12133): Instantiated megafunction "proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div0" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTHN" = "16"
+    Info (12134): Parameter "LPM_WIDTHD" = "16"
+    Info (12134): Parameter "LPM_NREPRESENTATION" = "UNSIGNED"
+    Info (12134): Parameter "LPM_DREPRESENTATION" = "UNSIGNED"
+Info (12021): Found 1 design units, including 1 entities, in source file db/lpm_divide_3gm.tdf
+    Info (12023): Found entity 1: lpm_divide_3gm
+Info (12021): Found 1 design units, including 1 entities, in source file db/sign_div_unsign_dnh.tdf
+    Info (12023): Found entity 1: sign_div_unsign_dnh
+Info (12021): Found 1 design units, including 1 entities, in source file db/alt_u_div_s5f.tdf
+    Info (12023): Found entity 1: alt_u_div_s5f
+Info (12021): Found 1 design units, including 1 entities, in source file db/add_sub_lkc.tdf
+    Info (12023): Found entity 1: add_sub_lkc
+Info (12021): Found 1 design units, including 1 entities, in source file db/add_sub_mkc.tdf
+    Info (12023): Found entity 1: add_sub_mkc
+Info (12130): Elaborated megafunction instantiation "proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1"
+Info (12133): Instantiated megafunction "proc:pro0|datapath:e0|alu:alu0|div:div_inst|lpm_divide:Div1" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTHN" = "16"
+    Info (12134): Parameter "LPM_WIDTHD" = "16"
+    Info (12134): Parameter "LPM_NREPRESENTATION" = "SIGNED"
+    Info (12134): Parameter "LPM_DREPRESENTATION" = "SIGNED"
+    Info (12134): Parameter "LPM_HINT" = "LPM_REMAINDERPOSITIVE=FALSE"
+Info (12021): Found 1 design units, including 1 entities, in source file db/lpm_divide_rto.tdf
+    Info (12023): Found entity 1: lpm_divide_rto
+Info (12021): Found 1 design units, including 1 entities, in source file db/abs_divider_8dg.tdf
+    Info (12023): Found entity 1: abs_divider_8dg
+Info (12021): Found 1 design units, including 1 entities, in source file db/lpm_abs_2s9.tdf
+    Info (12023): Found entity 1: lpm_abs_2s9
+Warning (12241): 1 hierarchies have connectivity warnings - see the Connectivity Checks report folder
+Info (13014): Ignored 30 buffer(s)
+    Info (13016): Ignored 30 CARRY_SUM buffer(s)
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "SRAM_ADDR[15]" is stuck at GND
+    Warning (13410): Pin "SRAM_ADDR[16]" is stuck at GND
+    Warning (13410): Pin "SRAM_ADDR[17]" is stuck at GND
+    Warning (13410): Pin "SRAM_CE_N" is stuck at GND
+    Warning (13410): Pin "SRAM_OE_N" is stuck at GND
+Info (17049): 2 registers lost all their fanouts during netlist optimizations.
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Warning (21074): Design contains 1 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "SW[8]"
+Info (21057): Implemented 7695 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 15 input pins
+    Info (21059): Implemented 81 output pins
+    Info (21060): Implemented 18 bidirectional pins
+    Info (21061): Implemented 7563 logic cells
+    Info (21064): Implemented 14 RAM segments
+    Info (21062): Implemented 4 DSP elements
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 52 warnings
+    Info: Peak virtual memory: 697 megabytes
+    Info: Processing ended: Wed Jun 19 19:58:39 2024
+    Info: Elapsed time: 00:00:26
+    Info: Total CPU time (on all processors): 00:00:25
+
+

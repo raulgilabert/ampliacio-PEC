@@ -25,12 +25,10 @@ ARCHITECTURE Structural of addsub is
 BEGIN
     WITH op SELECT
         y_op <= not y when SUB_I,
-                not y when SUBV_I,
                 y     when others;
     
     WITH op SELECT
         cin <= "1" when SUB_I,
-               "1" when SUBV_I,
                "0" when others;
 
     -- bit 16: carry out; else result
