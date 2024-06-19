@@ -1,0 +1,17 @@
+Mem[01:00] = FFFF
+Mem[03:02] = FFF8
+Mem[05:04] = FF00
+Mem[07:06] = 8000
+Mem[09:08] = 8000
+Mem[0b:0a] = FFFF
+Mem[0d:0c] = FFFF
+Mem[0f:0e] = FFFF
+Mem[11:10] = FFFF
+Mem[13:12] = FFF8
+Mem[15:14] = FF00
+Mem[17:16] = 8000
+Mem[19:18] = 8000
+Mem[1b:1a] = 0000
+Mem[1d:1c] = 000F
+Mem[1f:1e] = 7FFF
+

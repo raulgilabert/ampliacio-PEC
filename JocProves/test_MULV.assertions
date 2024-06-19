@@ -1,0 +1,25 @@
+Mem[01:00] = ef00
+Mem[03:02] = 3c5a
+Mem[05:04] = 70ac
+Mem[07:06] = 8bf6
+Mem[09:08] = 8e38
+Mem[0b:0a] = 7772
+Mem[0d:0c] = 47a4
+Mem[0f:0e] = fece
+Mem[11:10] = fede
+Mem[13:12] = f5c9
+Mem[15:14] = e399
+Mem[17:16] = c84f
+Mem[19:18] = d6fc
+Mem[1b:1a] = edc2
+Mem[1d:1c] = fb6e
+Mem[1f:1e] = ffff
+Mem[21:20] = 0fde
+Mem[23:22] = 28eb
+Mem[25:24] = 38dd
+Mem[27:26] = 3fb5
+Mem[29:28] = 3d73
+Mem[2b:2a] = 3217
+Mem[2d:2c] = 1da1
+Mem[2f:2e] = 0010
+
