@@ -8,7 +8,8 @@ entity bf16_mult is
         reset: in std_logic;
         in1: in std_logic_vector(15 downto 0) ;
         in2: in std_logic_vector(15 downto 0) ;
-        result: out std_logic_vector(15 downto 0)
+        result: out std_logic_vector(15 downto 0);
+        of_mult: out std_logic := '0'
     );
 end bf16_mult;
 
@@ -60,6 +61,7 @@ begin
         variable alu_r: std_logic_vector(15 downto 0);
 
         begin
+            of_mult <= '0';
             exp_1 := to_integer(unsigned(b3_in1(14 downto 7)));
             exp_2 := to_integer(unsigned(b3_in2(14 downto 7)));
 
@@ -99,8 +101,10 @@ begin
                 s_r := b3_in1(15) xor b3_in2(15);
                 -- detect overflow/underflow
                 if ((exp_r > 127) and (s_r = '0')) then
+                    of_mult <= '1';
                     result <= "0111111110000000"; -- +inf
                 elsif ((exp_r > 127) and (s_r = '1')) then
+                    of_mult <= '1';
                     result <= "1111111110000000"; -- -inf
                 elsif (exp_r < (-126)) then
                     result <= "0000000000000000"; -- zero

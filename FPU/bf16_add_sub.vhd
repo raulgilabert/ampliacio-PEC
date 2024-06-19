@@ -9,7 +9,8 @@ entity bf16_add_sub is
         in1: in std_logic_vector(15 downto 0) ;
         in2: in std_logic_vector(15 downto 0) ;
         funct5: in std_logic_vector(4 downto 0) ;
-        result: out std_logic_vector(15 downto 0)
+        result: out std_logic_vector(15 downto 0);
+        of_add_sub: out std_logic := '0'
     );
 end bf16_add_sub;
 
@@ -219,6 +220,7 @@ begin
         variable p2_alu_r: std_logic_vector(9 downto 0) ;
         variable p2_exp_r: integer range -7 to 255 ;
         begin
+            of_add_sub <= '0';
             -- Normalize mantissa and adjust exponent
             count := 1;
             p2_alu_r := p2_out_alu_r;
@@ -238,8 +240,10 @@ begin
             if (p2_out_exc_flag = '1') then
                 result <= p2_out_exc_res;
             elsif ((p2_exp_r = 255) and (p2_out_s_r = '0')) then
+                of_add_sub <= '1';
                 result <= "0111111110000000"; -- overflow, result = +inf
             elsif ((p2_exp_r = 255) and (p2_out_s_r = '1')) then
+                of_add_sub <= '1';
                 result <= "1111111110000000"; -- overflow, result = -inf
             elsif (p2_exp_r < (-126)) then
                 result <= "0000000000000000"; -- underflow, result = zero

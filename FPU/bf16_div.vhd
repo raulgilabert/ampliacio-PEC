@@ -8,7 +8,8 @@ entity bf16_div is
         reset: in std_logic;
         in1: in std_logic_vector(15 downto 0) ;
         in2: in std_logic_vector(15 downto 0) ;
-        result: out std_logic_vector(15 downto 0)
+        result: out std_logic_vector(15 downto 0);
+        of_div: out std_logic := '0'
     );
 end bf16_div;
 
@@ -215,6 +216,7 @@ begin
     stage_3: process(p2_out_exc_res, p2_out_exc_flag, p2_out_exp_r, p2_out_s_r, p2_out_alu_r, p2_out_count) is
         variable p2_alu_r: std_logic_vector(17 downto 0) ;
         begin
+            of_div <= '0';
             p2_alu_r := p2_out_alu_r;
             -- Perform correct allignment
             p2_alu_r := std_logic_vector(shift_left(unsigned(p2_alu_r), 7-p2_out_count));
@@ -223,8 +225,10 @@ begin
             if (p2_out_exc_flag = '1') then
                 result <= p2_out_exc_res;
             elsif ((p2_out_exp_r = 255) and (p2_out_s_r = '0')) then
+                of_div <= '1';
                 result <= "0111111110000000"; -- overflow, result = +inf
             elsif ((p2_out_exp_r = 255) and (p2_out_s_r = '1')) then
+                of_div <= '1';
                 result <= "1111111110000000"; -- overflow, result = -inf
             elsif (p2_out_exp_r < (-126)) then
                 result <= "0000000000000000"; -- underflow, result = zero

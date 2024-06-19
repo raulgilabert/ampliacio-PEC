@@ -28,7 +28,10 @@ ENTITY proc IS
 			call 		: out std_logic;
 			mem_op 	: out std_logic;
 			mode		: out mode_t;
-			inst_prot	: out std_logic
+			inst_prot	: out std_logic;
+			of_en		: out std_logic;
+			div_z_fp	: out std_logic;
+			of_fp		: out std_logic
 	);
 END proc;
 
@@ -113,7 +116,10 @@ ARCHITECTURE Structure OF proc IS
 				 exc_code : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 				 div_zero : OUT STD_LOGIC;
 				 mode : OUT mode_t;
-				 call : IN std_logic
+				 call : IN std_logic;
+				 of_en : out std_logic;
+				 div_z_fp : out std_logic;
+				 of_fp: out std_logic
 		 );	
 	END COMPONENT;
 
@@ -222,7 +228,10 @@ BEGIN
 				exc_code => exc_code,
 				div_zero => div_zero,
 				mode => mode_s,
-				call => call_s
+				call => call_s,
+				of_en => of_en,
+				div_z_fp => div_z_fp,
+				of_fp => of_fp
 			);
 			int_e <= int_e_s;
 			mode <= mode_s;

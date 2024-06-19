@@ -41,7 +41,10 @@ ENTITY datapath IS
 		  pc_sys : OUT STD_LOGIC_VECTOR(15 downto 0);
 		  div_zero : OUT std_logic;
 		  mode		: OUT mode_t;
-		  call		: IN STD_LOGIC
+		  call		: IN STD_LOGIC;
+		  of_en		: OUT STD_LOGIC;
+		  div_z_fp	: OUT STD_LOGIC;
+		  of_fp		: OUT  STD_LOGIC
 		  );
 END datapath;
 
@@ -72,7 +75,8 @@ ARCHITECTURE Structure OF datapath IS
 		except	: IN  STD_LOGIC;
 		exc_code: IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
 		mode	: OUT mode_t;
-		call	: IN STD_LOGIC
+		call	: IN STD_LOGIC;
+		of_en	: OUT STD_LOGIC
 	);
 	END COMPONENT;
 	
@@ -92,7 +96,8 @@ ARCHITECTURE Structure OF datapath IS
 		 	 in1: in std_logic_vector(15 downto 0) ;
 			 in2: in std_logic_vector(15 downto 0) ;
 			 funct5: in std_logic_vector(4 downto 0) ;
-			 result: out std_logic_vector(15 downto 0)
+			 result: out std_logic_vector(15 downto 0);
+			 of_fp: out std_logic
 			);
     END COMPONENT;
 
@@ -148,7 +153,8 @@ BEGIN
 			except => except,
 			exc_code => exc_code,
 			mode => mode,
-			call => call
+			call => call,
+			of_en => of_en
 		);
 		
 	alu0: alu
@@ -168,7 +174,8 @@ BEGIN
 		 	in1 => fp_ra,
 			in2 => fp_rb,
 			funct5 => fp_funct,
-			result => fp_result
+			result => fp_result,
+			of_fp => of_fp
 		);
 
 	reg0_fpu: regfile_fpu
@@ -231,5 +238,7 @@ BEGIN
 					"00100" when CMPLTF_I,
 					"00101" when CMPLEF_I,
 					"00111" when others;
+
+	div_z_fp <= '1' when fp_rb = x"0000" and op = DIVF_I else '0';
 	
 END Structure;

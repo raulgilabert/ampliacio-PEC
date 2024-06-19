@@ -10,7 +10,7 @@ entity bf16_unit is
         in2: in std_logic_vector(15 downto 0) ;
         funct5: in std_logic_vector(4 downto 0) ;
         result: out std_logic_vector(15 downto 0);
-        done: out std_logic
+        of_fp : out std_logic
     );
 end bf16_unit;
 
@@ -22,7 +22,8 @@ architecture rtl of bf16_unit is
             in1: in std_logic_vector(15 downto 0) ;
             in2: in std_logic_vector(15 downto 0) ;
             funct5: in std_logic_vector(4 downto 0) ;
-            result: out std_logic_vector(15 downto 0)
+            result: out std_logic_vector(15 downto 0);
+            of_add_sub: out std_logic
         );
     end component;
 
@@ -32,7 +33,8 @@ architecture rtl of bf16_unit is
             reset: in std_logic;
             in1: in std_logic_vector(15 downto 0) ;
             in2: in std_logic_vector(15 downto 0) ;
-            result: out std_logic_vector(15 downto 0)
+            result: out std_logic_vector(15 downto 0);
+            of_mult: out std_logic
         );
     end component;
 
@@ -42,7 +44,8 @@ architecture rtl of bf16_unit is
             reset: in std_logic;
             in1: in std_logic_vector(15 downto 0) ;
             in2: in std_logic_vector(15 downto 0) ;
-            result: out std_logic_vector(15 downto 0)
+            result: out std_logic_vector(15 downto 0);
+            of_div: out std_logic
         );
     end component;
 
@@ -66,25 +69,30 @@ architecture rtl of bf16_unit is
     signal mux_mult: std_logic_vector(15 downto 0) ;
     signal mux_div: std_logic_vector(15 downto 0) ;
 
+    signal of_add_sub, of_mult, of_div : std_logic;
+
 begin
     add_sub: bf16_add_sub port map (    clk => clk,
                                         reset => reset,
                                         in1 => in1,
                                         in2 => in2,
                                         funct5 => funct5,
-                                    	result => mux_add_sub );
+                                    	result => mux_add_sub,
+                                        of_add_sub => of_add_sub );
 
     mult: bf16_mult port map (  clk => clk,
                                 reset => reset,
                                 in1 => in1,
                                 in2 => in2,
-                                result => mux_mult );
+                                result => mux_mult,
+                                of_mult => of_mult );
 
     div: bf16_div port map (    clk => clk,
 				                reset => reset,
 				                in1 => in1,
                         	    in2 => in2,
-                             	result => mux_div );
+                             	result => mux_div,
+                                of_div => of_div );
 
     mux: mux_funct5 port map (   add_sub => mux_add_sub,
                                  mult => mux_mult,
@@ -104,6 +112,13 @@ begin
                 p3_funct5 <= p2_funct5;
             end if;
     end process p_reg;
+
+    with p3_funct5
+        select of_fp <= of_add_sub when "00000",
+                        of_add_sub when "00001",
+                        of_mult when "00010",
+                        of_div when "00011",
+                        '0' when others;
 end architecture;
 
 
