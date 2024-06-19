@@ -17,12 +17,12 @@ END mul;
 ARCHITECTURE Structural of mul is
     SIGNAL mult_result : std_logic_vector(31 DOWNTO 0);
 BEGIN
-    mult_result <= std_logic_vector(signed(x) * signed(y)) WHEN op = MUL_I or op = MULH_I else
-                   std_logic_vector(unsigned(x) * unsigned(y)) WHEN op = MULHU_I else
+    mult_result <= std_logic_vector(signed(x) * signed(y)) WHEN op = MUL_I or op = MULH_I or op = MULV_I or op = MULHV_I else
+                   std_logic_vector(unsigned(x) * unsigned(y)) WHEN op = MULHU_I or op = MULHUV_I else
                    x"00000000";
 
-    w <= mult_result(15 DOWNTO 0) when op = MUL_I else
-         mult_result(31 DOWNTO 16) when op = MULH_I or op = MULHU_I else
+    w <= mult_result(15 DOWNTO 0) when op = MUL_I  or op = MULV_I else
+         mult_result(31 DOWNTO 16) when op = MULH_I or op = MULHU_I or op = MULHV_I or op = MULHUV_I else
          x"0000";
 END Structural;
 

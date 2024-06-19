@@ -50,6 +50,7 @@ ARCHITECTURE Structure OF proc IS
 			exc_code	: IN STD_LOGIC_VECTOR(3 DOWNTO 0);
           op        : OUT INST;
           wrd       : OUT STD_LOGIC;
+          vwrd       : OUT STD_LOGIC;
           addr_a    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_b    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_d    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -77,6 +78,8 @@ ARCHITECTURE Structure OF proc IS
 			 mem_op : OUT STD_LOGIC;
 			 mode	: IN mode_t;
 			 inst_prot : OUT std_logic;
+			 va_old_vd : OUT STD_LOGIC;
+			 vec_produce_sca : OUT STD_LOGIC;
 			 wrd_fpu : OUT STD_LOGIC
 		 );
 	END COMPONENT;
@@ -85,6 +88,7 @@ ARCHITECTURE Structure OF proc IS
 		 PORT (clk      : IN  STD_LOGIC;
 				 op       : IN INST;
 				 wrd      : IN  STD_LOGIC;
+				 vwrd      : IN  STD_LOGIC;
 				 addr_a   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 				 addr_b   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 				 addr_d   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -104,6 +108,8 @@ ARCHITECTURE Structure OF proc IS
 				 boot	 : IN STD_LOGIC;
 				 --intr	 : IN STD_LOGIC;
 				 sys	: IN STD_LOGIC;
+				 va_old_vd	: IN STD_LOGIC;
+				 vec_produce_sca : IN STD_LOGIC;
 				 wrd_fpu  : IN STD_LOGIC;
 				 addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				 data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -127,6 +133,7 @@ ARCHITECTURE Structure OF proc IS
 		SIGNAL in_d: std_logic_vector(1 downto 0);
 		SIGNAL ins_dad: std_logic;
 		SIGNAL wrd: std_logic;
+		SIGNAL vwrd: std_logic;
 		SIGNAL op: INST;
 		SIGNAL addr_a: std_logic_vector(2 downto 0);
 		SIGNAL addr_b: std_logic_vector(2 downto 0);
@@ -146,6 +153,8 @@ ARCHITECTURE Structure OF proc IS
 		SIGNAL pc_sys : STD_LOGIC_VECTOR(15 downto 0);
 		SIGNAL mode_s : mode_t;
 		SIGNAL call_s : std_logic;
+		SIGNAL va_old_vd : std_logic;
+		SIGNAL vec_produce_sca : std_logic;
 		SIGNAL wrd_fpu_s : STD_LOGIC;
 BEGIN
 
@@ -158,6 +167,7 @@ BEGIN
 				tknbr => tknbr,
 				op => op,
 				wrd => wrd,
+				vwrd => vwrd,
 				addr_a => addr_a,
 				addr_b => addr_b,
 				addr_d => addr_d,
@@ -189,6 +199,8 @@ BEGIN
 			mem_op => mem_op,
 			mode => mode_s,
 			inst_prot => inst_prot,
+			va_old_vd => va_old_vd,
+			vec_produce_sca => vec_produce_sca,
 				wrd_fpu => wrd_fpu_s
 			);
 		
@@ -199,6 +211,7 @@ BEGIN
 				in_d => in_d,
 				ins_dad => ins_dad,
 				wrd => wrd,
+				vwrd => vwrd,
 				op => op,
 				addr_a => addr_a,
 				addr_b => addr_b,
@@ -229,6 +242,8 @@ BEGIN
 				div_zero => div_zero,
 				mode => mode_s,
 				call => call_s,
+				va_old_vd => va_old_vd,
+				vec_produce_sca => vec_produce_sca,
 				of_en => of_en,
 				div_z_fp => div_z_fp,
 				of_fp => of_fp

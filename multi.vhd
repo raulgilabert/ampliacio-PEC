@@ -9,6 +9,7 @@ entity multi is
          boot      : IN  STD_LOGIC;
          ldpc_l    : IN  STD_LOGIC;
          wrd_l     : IN  STD_LOGIC;
+         vwrd_l    : IN  STD_LOGIC;
          wr_m_l    : IN  STD_LOGIC;
          w_b       : IN  STD_LOGIC;
          intr      : IN  STD_LOGIC;
@@ -26,6 +27,7 @@ entity multi is
 			wrd_fpu_l : IN STD_LOGIC;
          ldpc      : OUT STD_LOGIC;
          wrd       : OUT STD_LOGIC;
+         vwrd      : OUT STD_LOGIC;
          wr_m      : OUT STD_LOGIC;
          ldir      : OUT STD_LOGIC;
          ins_dad   : OUT STD_LOGIC;
@@ -101,6 +103,9 @@ begin
     wrd <= wrd_l when state_s = DEMW else
             '0' when state_s = SYSTEM else 
             '0';
+
+    vwrd <= vwrd_l when state = DEMW else
+            '0';
     wr_m <= wr_m_l when state_s = DEMW else '0';
     word_byte <= w_b when state_s = DEMW else '0';
     ldpc <= ldpc_l when (state_s = DEMW and not fp_op) or state_s = SYSTEM or state_s = FP3 else '0';
@@ -112,5 +117,4 @@ begin
     wrd_fpu <= wrd_fpu_l when state_s = DEMW or state_s = FP3 else '0';
 
     state <= state_s;
-
 end Structure;
