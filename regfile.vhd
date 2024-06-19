@@ -58,9 +58,14 @@ BEGIN
 				sys_regs(0) <= sys_regs(7);
 				sys_regs(1) <= PCret;
 				sys_regs(2) <= x"000" & exc_code;
-				sys_regs(3) <= addr_m;
 				sys_regs(7)(1) <= '0';
 				sys_regs(7)(0) <= '1'; --activem el mode sistema
+                                				
+				if exc_code = x"1" then
+					sys_regs(3) <= addr_m;
+				elsif exc_code = x"E" then
+					sys_regs(3) <= regs(to_integer(unsigned(addr_a)));
+				END if;
 			END if;
 		END if;
 			
