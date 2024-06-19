@@ -28,7 +28,10 @@ ENTITY proc IS
 			call 		: out std_logic;
 			mem_op 	: out std_logic;
 			mode		: out mode_t;
-			inst_prot	: out std_logic
+			inst_prot	: out std_logic;
+			of_en		: out std_logic;
+			div_z_fp	: out std_logic;
+			of_fp		: out std_logic
 	);
 END proc;
 
@@ -73,7 +76,8 @@ ARCHITECTURE Structure OF proc IS
 			 il_inst : OUT STD_LOGIC;
 			 mem_op : OUT STD_LOGIC;
 			 mode	: IN mode_t;
-			 inst_prot : OUT std_logic
+			 inst_prot : OUT std_logic;
+			 wrd_fpu : OUT STD_LOGIC
 		 );
 	END COMPONENT;
 	
@@ -100,6 +104,7 @@ ARCHITECTURE Structure OF proc IS
 				 boot	 : IN STD_LOGIC;
 				 --intr	 : IN STD_LOGIC;
 				 sys	: IN STD_LOGIC;
+				 wrd_fpu  : IN STD_LOGIC;
 				 addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				 data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				 aluout	 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -111,7 +116,10 @@ ARCHITECTURE Structure OF proc IS
 				 exc_code : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 				 div_zero : OUT STD_LOGIC;
 				 mode : OUT mode_t;
-				 call : IN std_logic
+				 call : IN std_logic;
+				 of_en : out std_logic;
+				 div_z_fp : out std_logic;
+				 of_fp: out std_logic
 		 );	
 	END COMPONENT;
 
@@ -138,6 +146,7 @@ ARCHITECTURE Structure OF proc IS
 		SIGNAL pc_sys : STD_LOGIC_VECTOR(15 downto 0);
 		SIGNAL mode_s : mode_t;
 		SIGNAL call_s : std_logic;
+		SIGNAL wrd_fpu_s : STD_LOGIC;
 BEGIN
 
 		c0: unidad_control
@@ -179,7 +188,8 @@ BEGIN
 				il_inst => il_inst,
 			mem_op => mem_op,
 			mode => mode_s,
-			inst_prot => inst_prot
+			inst_prot => inst_prot,
+				wrd_fpu => wrd_fpu_s
 			);
 		
 		e0: datapath
@@ -204,7 +214,7 @@ BEGIN
 				rd_io => rd_io,
 				wr_io => wr_io,
 				d_sys => d_sys_s,
-				a_sys => a_sys_s, 
+				a_sys => a_sys_s,
 				ei => ei_s,
 				di => di_s,
 				reti => reti_s,
@@ -212,12 +222,16 @@ BEGIN
 				--intr => intr,
 				int_e => int_e_s,
 				sys => sys_s,
+				wrd_fpu => wrd_fpu_s,
 				pc_sys => pc_sys,
 				except => except,
 				exc_code => exc_code,
 				div_zero => div_zero,
 				mode => mode_s,
-				call => call_s
+				call => call_s,
+				of_en => of_en,
+				div_z_fp => div_z_fp,
+				of_fp => of_fp
 			);
 			int_e <= int_e_s;
 			mode <= mode_s;

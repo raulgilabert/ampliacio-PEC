@@ -31,7 +31,8 @@ ENTITY control_l IS
 		  inta		 : OUT STD_LOGIC;
 		  call       : OUT STD_LOGIC;
 		  il_inst	 : OUT STD_LOGIC;
-		  mem_op     : OUT STD_LOGIC
+		  mem_op     : OUT STD_LOGIC;
+		  wrd_fpu	 : OUT STD_LOGIC
 		 );
 END control_l; 
 
@@ -39,6 +40,7 @@ ARCHITECTURE Structure OF control_l IS
 	SIGNAL arit_log: INST;
 	SIGNAL cmp: INST;
 	SIGNAL mul_div: INST;
+	SIGNAL fp_op: INST;
 	SIGNAL jump: INST;
 	SIGNAL move: INST;
 	SIGNAL branch: INST;
@@ -46,6 +48,8 @@ ARCHITECTURE Structure OF control_l IS
 	SIGNAL jump_wd: std_logic;
 	SIGNAL special: INST;
 	SIGNAL op_s: INST;
+	SIGNAL arit_cmp_float: INST;
+
 BEGIN
 
 	with ir(5 downto 3) select
@@ -74,6 +78,16 @@ BEGIN
 				   DIV_I WHEN F_DIV, -- DIV
 				   DIVU_I WHEN F_DIVU,-- DIVU
 				   ILLEGAL_I WHEN others;
+
+	with ir(5 downto 3) select
+		fp_op <= ADDF_I when F_ADDF, -- ADDF
+				 SUBF_I WHEN F_SUBF, -- SUBF
+				 MULF_I WHEN F_MULF, -- MULF
+				 DIVF_I WHEN F_DIVF, -- DIVF
+				 CMPLTF_I WHEN F_CMPLTF,-- CMPLTF
+				 CMPLEF_I WHEN F_CMPLEF,-- CMPLEF
+				 CMPEQF_I WHEN F_CMPEQF,-- CMPEQF
+				 ILLEGAL_I WHEN others;
 				 
 	with ir(2 downto 0) select
 		jump <= JZ_I when F_JZ, -- JZ
@@ -92,6 +106,16 @@ BEGIN
 				   GETIID_I when F_GETIID,
 				   HALT_I when F_HALT,
 				   ILLEGAL_I when others;
+
+	with ir(5 downto 3) select
+		arit_cmp_float <= ADDF_I when F_ADDF, -- ADDF
+						  SUBF_I  WHEN F_SUBF, -- SUBF
+						  MULF_I WHEN F_MULF, -- MULF
+						  DIVF_I WHEN F_DIVF, -- DIVF
+						  CMPLTF_I WHEN F_CMPLTF, -- CMPLTF
+						  CMPLEF_I WHEN F_CMPLEF, -- CMPLEF
+						  CMPEQF_I WHEN F_CMPEQF, -- CMPEQF
+						  ILLEGAL_I WHEN others;
 
 	with ir(8) select
 		move <= MOVI_I when '0', -- MOVI
@@ -120,6 +144,9 @@ BEGIN
 		        LDB_I when OP_LDB, --LDB
 			    STB_I when OP_STB, -- STB
 			    special when OP_SPECIAL, -- HALT
+				LDF_I when OP_LDF, --LDF
+				STF_I when OP_STF, --STF
+				arit_cmp_float when OP_FLOAT,
 			    ILLEGAL_I when others;
 
 	op <= op_s;
@@ -134,6 +161,8 @@ BEGIN
 				'1' when OP_MOV, --MOVI i MOVHI
 				'1' when OP_LDB, --LDB
 				'1' when OP_STB, --STB
+				'1' when OP_STF, --STF
+				'1' when OP_LDF, --LDF
 				'0' when others;
 
 	addr_a <= ir(11 downto 9) when ir(15 downto 12) = OP_MOV else
@@ -156,6 +185,7 @@ BEGIN
 					 ir(11 downto 9) when OP_BRANCH,
 					 ir(11 downto 9) when OP_IO,
 					 ir(11 downto 9) when OP_JUMP,
+					 ir(11 downto 9) when OP_STF,
 					 ir(2 downto 0) when others;
 
 	immed <= ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7) & ir(7 downto 0) when ir(15 downto 12) = OP_MOV else
@@ -191,6 +221,7 @@ BEGIN
 	 with ir(15 downto 12) select
 		wr_m <= '1' when OP_ST,
 				  '1' when OP_STB,
+				  '1' when OP_STF,
 				  '0' when others;
 				  
 	with ir(15 downto 12) select
@@ -205,11 +236,14 @@ BEGIN
 	with ir(15 downto 12) select
 		immed_x2 <= '1' when OP_LD,
 						'1' when OP_ST,
+						'1' when OP_LDF,
+						'1' when OP_STF,
 						'1' when OP_BRANCH,
 						'0' when others;
 		
 	in_d <= "01" when ir(15 downto 12) = OP_LD else --ld
 			"01" when ir(15 downto 12) = OP_LDB else --ldb
+			"01" when ir(15 downto 12) = OP_LDF else --ldf
 			"10" when ir(15 downto 12) = OP_JUMP else --jal
 			"11" when ir(15 downto 12) = OP_IO and ir(8) = '0' else --in
 			"11" when ir(15 downto 12) = OP_SPECIAL and special = GETIID_I else --in
@@ -241,4 +275,8 @@ BEGIN
 	mem_op <= '1' when (ir(15 downto 12) = OP_LD or ir(15 downto 12) = OP_LDB or
 				        ir(15 downto 12) = OP_ST or ir(15 downto 12) = OP_STB) else
 			  '0';
+
+	wrd_fpu <= '1' when ir(15 downto 12) = OP_LDF or ir(15 downto 12) = OP_FLOAT else
+			   '0';			
+
 END Structure;

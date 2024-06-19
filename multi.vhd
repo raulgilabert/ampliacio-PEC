@@ -23,6 +23,7 @@ entity multi is
 			d_sys_l   : IN std_LOGIc;
          except   : IN  STD_LOGIC;
          exc_code : IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
+			wrd_fpu_l : IN STD_LOGIC;
          ldpc      : OUT STD_LOGIC;
          wrd       : OUT STD_LOGIC;
          wr_m      : OUT STD_LOGIC;
@@ -36,6 +37,7 @@ entity multi is
          addr_d    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
          addr_a    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
          op        : OUT INST;
+			wrd_fpu	 : OUT STD_LOGIC;
 			d_sys		 : OUT STD_LOGIC;
             sys    : OUT STD_LOGIC;
             state     : OUT state_t
@@ -45,10 +47,12 @@ end entity;
 architecture Structure of multi is
 
     -- Aqui iria la declaracion de las los estados de la maquina de estados
-
     SIGNAL state_s: state_t; 
+    SIGNAL fp_op : boolean;
 
 begin
+
+    fp_op <= true when (op_l = ADDF_I or op_l = SUBF_I or op_l = MULF_I or op_l = DIVF_I or op_l = CMPLTF_I or op_l = CMPLEF_I or op_l = CMPEQF_I) else false;
 
     -- Aqui iria la m quina de estados del modelos de Moore que gestiona el multiciclo
     -- Aqui irian la generacion de las senales de control que su valor depende del ciclo en que se esta.
@@ -67,14 +71,22 @@ begin
                         state_s <= DEMW;
                     END if;
                 when DEMW => 
-                    if (intr = '1' and int_e = '1') or except = '1' then 
+                    if (intr = '1' and int_e = '1') or except = '1' then
                         state_s <= SYSTEM;
-                    else 
+                    elsif (fp_op) then
+                        state_s <= FP1;
+                    else
                         state_s <= F;
                     END if;
                 when SYSTEM => 
                     state_s <= F;
-                END case;
+                when FP1 =>
+                    state_s <= FP2;
+                when FP2 =>
+                    state_s <= FP3;
+                when FP3 =>
+                    state_s <= F;
+            END case;
 		 else 
 			state_s <= state_s;
 		 END if;
@@ -91,12 +103,13 @@ begin
             '0';
     wr_m <= wr_m_l when state_s = DEMW else '0';
     word_byte <= w_b when state_s = DEMW else '0';
-    ldpc <= ldpc_l when state_s = DEMW or state_s = SYSTEM else '0';
+    ldpc <= ldpc_l when (state_s = DEMW and not fp_op) or state_s = SYSTEM or state_s = FP3 else '0';
     in_d <= "10" when state_s = SYSTEM else in_d_l;
     addr_d <= "001" when state_s = SYSTEM else addr_d_l;
     addr_a <= "101" when state_s = SYSTEM else addr_a_l;
     op <= op_l;
     sys <= '1' when state_s = SYSTEM else '0';
+    wrd_fpu <= wrd_fpu_l when state_s = DEMW or state_s = FP3 else '0';
 
     state <= state_s;
 

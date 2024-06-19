@@ -46,7 +46,8 @@ ENTITY unidad_control IS
 		  il_inst : OUT STD_LOGIC;
 		  mem_op : OUT STD_LOGIC;
 		  inst_prot : OUT STD_LOGIC;
-		  mode : IN mode_t
+		  mode : IN mode_t;
+		  wrd_fpu : OUT STD_LOGIC
 		  );
 END unidad_control;
 
@@ -78,7 +79,8 @@ ARCHITECTURE Structure OF unidad_control IS
 				inta		 : OUT STD_LOGIC;
 				call		 : OUT STD_LOGIC;
 				il_inst	 : OUT STD_LOGIC;
-				mem_op : OUT STD_LOGIC
+				mem_op : OUT STD_LOGIC;
+				wrd_fpu : OUT STD_LOGIC
 		);
 	END COMPONENT;
 
@@ -101,6 +103,7 @@ ARCHITECTURE Structure OF unidad_control IS
 		 d_sys_l : IN STD_LOGIC;
 		 except    : IN  STD_LOGIC;
          exc_code  : IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
+			wrd_fpu_l : IN STD_LOGIC;
          ldpc      : OUT STD_LOGIC;
          wrd       : OUT STD_LOGIC;
          wr_m      : OUT STD_LOGIC;
@@ -116,7 +119,8 @@ ARCHITECTURE Structure OF unidad_control IS
 		 op		   : OUT INST;
 		 d_sys		: OUT STD_LOGIC;
 		 sys		: OUT STD_LOGIC;
-		 state		: OUT state_t
+		 state		: OUT state_t;
+			wrd_fpu : OUT STD_LOGIC
  	);
 	END COMPONENT;
 
@@ -142,6 +146,7 @@ ARCHITECTURE Structure OF unidad_control IS
 	SIGNAL in_d_s : std_logic_vector(1 downto 0);
 	SIGNAL d_sys_s : STD_LOGIC;
 	SIGNAL sys_s : STD_LOGIC;
+	SIGNAL wrd_fpu_s : STD_LOGIC;
 	SIGNAL state_s : state_t;
 	
 BEGIN
@@ -217,11 +222,13 @@ BEGIN
 			addr_a => addr_a,
 			addr_d => addr_d,
 			op => op,
+			wrd_fpu => wrd_fpu,
 			d_sys => d_sys,
 			sys => sys_s,
 			except => except,
 			exc_code => exc_code,
-			state => state_s
+			state => state_s,
+			wrd_fpu_l => wrd_fpu_s
 		);
 	
 	c_l: control_l
@@ -250,7 +257,8 @@ BEGIN
 			inta => inta_s,
 			call => call,
 			il_inst => il_inst,
-			mem_op => mem_op
+			mem_op => mem_op,
+			wrd_fpu => wrd_fpu_s
 		);
 	
 		reti <= reti_s;
