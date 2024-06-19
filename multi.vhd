@@ -109,7 +109,7 @@ begin
     addr_a <= "101" when state_s = SYSTEM else addr_a_l;
     op <= op_l;
     sys <= '1' when state_s = SYSTEM else '0';
-	 wrd_fpu <= wrd_fpu_l when state_s = DEMW else '0';
+    wrd_fpu <= wrd_fpu_l when state_s = DEMW or state_s = FP3 else '0';
 
     state <= state_s;
 
