@@ -31,7 +31,9 @@ ENTITY proc IS
 			inst_prot	: out std_logic;
 			of_en		: out std_logic;
 			div_z_fp	: out std_logic;
-			of_fp		: out std_logic
+			of_fp		: out std_logic;
+			vec		: out std_logic;
+			done	: in  std_logic
 	);
 END proc;
 
@@ -80,7 +82,9 @@ ARCHITECTURE Structure OF proc IS
 			 inst_prot : OUT std_logic;
 			 va_old_vd : OUT STD_LOGIC;
 			 vec_produce_sca : OUT STD_LOGIC;
-			 wrd_fpu : OUT STD_LOGIC
+			 wrd_fpu : OUT STD_LOGIC;
+			 vec_done : IN STD_LOGIC
+			 
 		 );
 	END COMPONENT;
 	
@@ -94,7 +98,9 @@ ARCHITECTURE Structure OF proc IS
 				 addr_d   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 				 immed    : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 				 immed_x2 : IN  STD_LOGIC;
+				 immed_x16: IN  SRD_LOGIC;
 				 datard_m : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+				 vec_rd : IN STD_LOGIC_VECTOR(127 DOWNTO 0);
 				 ins_dad  : IN  STD_LOGIC;
 				 pc       : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 				 in_d     : IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
@@ -121,6 +127,7 @@ ARCHITECTURE Structure OF proc IS
 				 except	 : IN STD_LOGIC;
 				 exc_code : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 				 div_zero : OUT STD_LOGIC;
+				 vec_wr : OUT STD_LOGIC_VECTOR(127 DOWNTO 0);
 				 mode : OUT mode_t;
 				 call : IN std_logic;
 				 of_en : out std_logic;
@@ -129,6 +136,7 @@ ARCHITECTURE Structure OF proc IS
 		 );	
 	END COMPONENT;
 
+		SIGNAL immed_x16: std_logic;
 		SIGNAL immed_x2: std_logic;
 		SIGNAL in_d: std_logic_vector(1 downto 0);
 		SIGNAL ins_dad: std_logic;
@@ -156,6 +164,7 @@ ARCHITECTURE Structure OF proc IS
 		SIGNAL va_old_vd : std_logic;
 		SIGNAL vec_produce_sca : std_logic;
 		SIGNAL wrd_fpu_s : STD_LOGIC;
+		SIGNAL vec_s : std_logic;
 BEGIN
 
 		c0: unidad_control
@@ -201,8 +210,13 @@ BEGIN
 			inst_prot => inst_prot,
 			va_old_vd => va_old_vd,
 			vec_produce_sca => vec_produce_sca,
-				wrd_fpu => wrd_fpu_s
+				wrd_fpu => wrd_fpu_s,
+				vec_inst => vec_s,
+				vec_done => done,
+				immed_x16 => immed_x16
 			);
+
+			vec <= vec_s;
 		
 		e0: datapath
 			PORT map(
@@ -246,7 +260,11 @@ BEGIN
 				vec_produce_sca => vec_produce_sca,
 				of_en => of_en,
 				div_z_fp => div_z_fp,
-				of_fp => of_fp
+				of_fp => of_fp,
+				vec_wr => vec_wr,
+				vec_rd => vec_rd,
+				vec => vec_s,
+				immed_x16 => immed_x16
 			);
 			int_e <= int_e_s;
 			mode <= mode_s;

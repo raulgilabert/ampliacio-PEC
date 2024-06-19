@@ -42,7 +42,9 @@ entity multi is
 			wrd_fpu	 : OUT STD_LOGIC;
 			d_sys		 : OUT STD_LOGIC;
             sys    : OUT STD_LOGIC;
-            state     : OUT state_t
+            state     : OUT state_t;
+            vec       : IN  STD_LOGIC;
+            vec_done  : IN  STD_LOGIC
      );
 end entity;
 
@@ -77,6 +79,8 @@ begin
                         state_s <= SYSTEM;
                     elsif (fp_op) then
                         state_s <= FP1;
+                    elsif vec = '1' then 
+                        state <= M;
                     else
                         state_s <= F;
                     END if;
@@ -88,6 +92,12 @@ begin
                     state_s <= FP3;
                 when FP3 =>
                     state_s <= F;
+                when M => 
+                    if vec_done = '0' then 
+                        state <= M;
+                    else 
+                        state <= F;
+                    END if;
             END case;
 		 else 
 			state_s <= state_s;
@@ -105,6 +115,7 @@ begin
             '0';
 
     vwrd <= vwrd_l when state_s = DEMW else
+            '1' when state = M else
             '0';
     wr_m <= wr_m_l when state_s = DEMW else '0';
     word_byte <= w_b when state_s = DEMW else '0';

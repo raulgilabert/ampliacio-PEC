@@ -72,7 +72,7 @@ BEGIN
          x or y                           when op = OR_I else
          x xor y                          when op = XOR_I else
          not x                            when op = NOT_I else
-         addsub_res                       when op = ADD_I or op = SUB_I or op = ADDI_I or op = LD_I or op = ST_I or op = LDB_I or op = STB_I or op = LDF_I or op = STF_I else
+         addsub_res                       when op = ADD_I or op = SUB_I or op = ADDI_I or op = LD_I or op = ST_I or op = LDB_I or op = STB_I or op = LDF_I or op = STF_I or op = LDV_I or op = STV_I else
          cmp_res                          when op = CMPLT_I or op = CMPLE_I or op = CMPEQ_I or op = CMPLTU_I or op = CMPLEU_I else
          mul_res                          when op = MUL_I or op = MULH_I or op = MULHU_I else
          div_res                          when op = DIV_I or op = DIVU_I else

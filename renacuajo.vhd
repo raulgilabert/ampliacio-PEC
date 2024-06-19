@@ -29,7 +29,7 @@ package renacuajo_pkg is
         NOP_I, ILLEGAL_I                                            -- No operation and illegal instruction
     );
 
-    TYPE state_t is (F, DEMW, SYSTEM, FP1, FP2, FP3);
+    TYPE state_t is (F, DEMW, SYSTEM, FP1, FP2, FP3, M);
     TYPE mode_t is (USER, SYSTEM);
 
 -- OP CODES--

@@ -18,6 +18,7 @@ ENTITY unidad_control IS
 		  int_e		: IN  STD_LOGIC;
 		  except	: IN  STD_LOGIC;
 		  exc_code	: IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
+		  vec_done : IN STD_LOGIC;
           op        : OUT INST;
           wrd       : OUT STD_LOGIC;
           vwrd       : OUT STD_LOGIC;
@@ -29,6 +30,7 @@ ENTITY unidad_control IS
           ins_dad   : OUT STD_LOGIC;
           in_d      : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
           immed_x2  : OUT STD_LOGIC;
+		  vec_done : IN STD_LOGIC;
           wr_m      : OUT STD_LOGIC;
           word_byte : OUT STD_LOGIC;
 		  Rb_N 	    : OUT STD_LOGIC;
@@ -50,7 +52,8 @@ ENTITY unidad_control IS
 		  mode : IN mode_t;
 		  va_old_vd : OUT STD_LOGIC;
 		  vec_produce_sca : OUT STD_LOGIC;
-		  wrd_fpu : OUT STD_LOGIC
+		  wrd_fpu : OUT STD_LOGIC;
+		  vec_inst : OUT STD_LOGIC
 		  );
 END unidad_control;
 
@@ -86,7 +89,9 @@ ARCHITECTURE Structure OF unidad_control IS
 				mem_op : OUT STD_LOGIC;
 				va_old_vd 	 : OUT STD_LOGIC;
 				vec_produce_sca : OUT STD_LOGIC;
-				wrd_fpu : OUT STD_LOGIC
+				wrd_fpu : OUT STD_LOGIC;
+				immed_x16  : OUT STD_LOGIC;
+				vec_inst : OUT STD_LOGIC
 		);
 	END COMPONENT;
 
@@ -111,6 +116,7 @@ ARCHITECTURE Structure OF unidad_control IS
 		 except    : IN  STD_LOGIC;
          exc_code  : IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
 			wrd_fpu_l : IN STD_LOGIC;
+			vec : IN STD_LOGIC;
          ldpc      : OUT STD_LOGIC;
          wrd       : OUT STD_LOGIC;
          vwrd      : OUT STD_LOGIC;
@@ -128,11 +134,12 @@ ARCHITECTURE Structure OF unidad_control IS
 		 d_sys		: OUT STD_LOGIC;
 		 sys		: OUT STD_LOGIC;
 		 state		: OUT state_t;
-			wrd_fpu : OUT STD_LOGIC
+			wrd_fpu : OUT STD_LOGIC;
+			vec_inst : OUT STD_LOGIC
  	);
 	END COMPONENT;
 
-
+	SIGNAL vec_inst_s : STD_LOGIC;
 	SIGNAL ir: std_logic_vector(15 downto 0);
 	SIGNAL ir_reg: std_logic_vector(15 downto 0);
 	SIGNAL pc_s: std_logic_vector(15 downto 0);
@@ -239,9 +246,12 @@ BEGIN
 			except => except,
 			exc_code => exc_code,
 			state => state_s,
-			wrd_fpu_l => wrd_fpu_s
+			wrd_fpu_l => wrd_fpu_s,
+			vec => vec_inst_s
 		);
 	
+		vec_inst <= vec_inst_s;
+
 	c_l: control_l
 		PORT map(
 			ir => ir,
@@ -272,7 +282,9 @@ BEGIN
 			mem_op => mem_op,
 			va_old_vd => va_old_vd,
 			vec_produce_sca => vec_produce_sca,
-			wrd_fpu => wrd_fpu_s
+			wrd_fpu => wrd_fpu_s,
+			vec_inst => vec_inst_s,
+			immed_x16 => immed_x16
 		);
 	
 		reti <= reti_s;

@@ -16,14 +16,17 @@ ENTITY datapath IS
           addr_d   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           immed    : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           immed_x2 : IN  STD_LOGIC;
+		  immed_x16: IN STD_LOGIC;
           datard_m : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           ins_dad  : IN  STD_LOGIC;
+		  vec_rd : IN STD_LOGIC_VECTOR(127 DOWNTO 0);
           pc       : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           in_d     : IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
 		  Rb_N     : IN  STD_LOGIC;
 		  d_sys	   : IN  STD_LOGIC;
 	      a_sys	   : IN  STD_LOGIC;
 		  ei 	   : IN  STD_LOGIC;
+		  vec : IN STD_LOGIC;
 		  di 	   : IN  STD_LOGIC;
 		  reti	   : IN  STD_LOGIC;
 		  rd_io	   : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);	
@@ -35,6 +38,7 @@ ENTITY datapath IS
 		  wrd_fpu  : IN std_logic;
           addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
           data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		  vec_wr : OUT STD_LOGIC_VECTOR(127 DOWNTO 0);
 		  aluout   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		  tknbr    : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
 		  wr_io    : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -165,6 +169,9 @@ ARCHITECTURE Structure OF datapath IS
 	SIGNAL fp_ra, fp_rb, fp_result: std_logic_vector(15 downto 0);
 	SIGNAL fp_funct: std_logic_vector(4 downto 0);
 	SIGNAL d_fpu: std_logic_vector(15 downto 0);
+	SIGNAL div_zero_s: std_LOGIC;
+	SIGNAL div_zero_s1: std_LOGIC;
+	SIGNAL vd_alu: std_logic_vector(127 downto 0);
 
   BEGIN
 
@@ -229,7 +236,7 @@ ARCHITECTURE Structure OF datapath IS
 			y => vb,
 			immed => rb_out(2 downto 0),
 			op => op,
-			w_vec => vd,
+			w_vec => vd_alu,
 			w_sca => rd_alu_vec,
 			div_zero => div_zero_vec
 		);
@@ -279,9 +286,15 @@ ARCHITECTURE Structure OF datapath IS
 		addr_m_s <= pc when '0',
 					 rd_alu when others;
 					 
-	with immed_x2 select
-		immed_out <= immed when '0',
-						 immed(14 downto 0) & '0' when others;
+	--with immed_x2 select
+	--	immed_out <= immed when '0',
+	--					 immed(14 downto 0) & '0' when others;
+
+	immed_out <= immed(14 downto 0) & '0' when immed_x2 = '1' and immed_x16 = '0' else
+	immed(11 downto 0) & "0000" when immed_x2 = '0' and immed_x16 = '1' else
+	immed;
+
+	vec_wr <= vb;
 
 	with op select
 		data_wr <= fp_rb when STF_I, --quan hi hagi stf deixar sortir la dada a escriure desde el regfile_fpu

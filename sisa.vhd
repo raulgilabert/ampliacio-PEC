@@ -41,7 +41,10 @@ ARCHITECTURE Structure OF sisa IS
 			boot 			: IN STD_LOGIC;
 			datard_m 	: IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 			addr_m 		: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			vec_rd : IN STD_LOGIC_VECTOR(127 DOWNTO 0);
 			data_wr 		: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			data_wr		: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			vec_wr		: OUT STD_LOGIC_VECTOR(127 DOWNTO 0);
 			wr_m 			: OUT STD_LOGIC;
 			word_byte	: OUT STD_LOGIC;
 			addr_io	  	: out std_LOGIC_VECTOR(7 DOWNTO 0);
@@ -62,7 +65,9 @@ ARCHITECTURE Structure OF sisa IS
 			inst_prot	: out std_logic;
 			of_en		: out std_logic;
 			div_z_fp	: out std_logic;
-			of_fp		: out std_logic
+			of_fp		: out std_logic;
+			vec		: out std_logic;
+			done		: in  std_logic
 		);
 	END COMPONENT;
 	
@@ -90,7 +95,11 @@ ARCHITECTURE Structure OF sisa IS
 		mem_except 	: OUT std_logic;
 		mem_op	    : IN  std_logic;
 		mem_prot		: OUT  std_logic;
-		mode		: IN mode_t
+		mode		: IN mode_t;
+		vec				: IN STD_LOGIC;
+		wr_vdata		: IN STD_LOGIC_VECTOR(127 DOWNTO 0);
+		rd_vec			: OUT STD_LOGIC_VECTOR(127 DOWNTO 0);
+		done 			: OUT STD_LOGIC
 		);
 	END COMPONENT;
 	
@@ -300,6 +309,10 @@ ARCHITECTURE Structure OF sisa IS
 	SIGNAL inst_prot_s : std_logic;
 	SIGNAL mode_s : mode_t;
 	SIGNAL of_en_s, div_z_fp_s, of_fp_s : std_logic; 
+	SIGNAL vec_s : std_logic;
+	SIGNAL vec_rd_s	: STD_LOGIC_VECTOR(127 DOWNTO 0);
+	SIGNAL vec_wr_s : STD_LOGIC_VECTOR(127 DOWNTO 0);
+	SIGNAL done_s : std_logic;
 
 BEGIN
 
@@ -339,7 +352,11 @@ BEGIN
 			inst_prot => inst_prot_s,
 			of_en => of_en_s,
 			div_z_fp => div_z_fp_s,
-			of_fp => of_fp_s
+			of_fp => of_fp_s,
+			vec => vec_s,
+			vec_wr => vec_wr_s,
+			vec_rd => vec_rd_s,
+			done => done_s
 		);
 		
 	mem0: MemoryController
@@ -365,7 +382,11 @@ BEGIN
 			mem_except => mem_except_s,
 			mem_op => mem_op_s,
 			mode => mode_s,
-			mem_prot => mem_prot_s
+			mem_prot => mem_prot_s,
+			vec => vec_s,
+			wr_vdata => vec_wr_s,
+			rd_vec => vec_rd_s,
+			done => done_s
 		);
 		
 		io0: controladores_io
