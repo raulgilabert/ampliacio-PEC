@@ -165,6 +165,7 @@ ARCHITECTURE Structure OF datapath IS
 	SIGNAL fp_ra, fp_rb, fp_result: std_logic_vector(15 downto 0);
 	SIGNAL fp_funct: std_logic_vector(4 downto 0);
 	SIGNAL d_fpu: std_logic_vector(15 downto 0);
+  SIGNAL reset: std_logic;
 
   BEGIN
 
@@ -240,10 +241,12 @@ ARCHITECTURE Structure OF datapath IS
 
 	div_zero <= div_zero_sca when wrd = '1' else div_zero_vec when vwrd = '1' else '0';
 	
+  reset <= not boot;
+
 	fpu: bf16_unit
 		PORT map(
 			clk => clk,
-			reset => not boot,
+			reset => reset,
 		 	in1 => fp_ra,
 			in2 => fp_rb,
 			funct5 => fp_funct,
